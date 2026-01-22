@@ -11,6 +11,7 @@
 &lt;li&gt;购买的域名&lt;/li&gt;
 &lt;li&gt;国内CDN加速 需要备案&lt;/li&gt;
 &lt;li&gt;如何检测访问 数量与来源 -&amp;gt; Google Analytics + Cloudflare&lt;/li&gt;
+&lt;li&gt;添加各种 SEO&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -72,11 +73,15 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;author&lt;/td&gt;
-&lt;td&gt;作者名称&lt;/td&gt;
+&lt;td&gt;作者名称 默认 ryou&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;draft&lt;/td&gt;
+&lt;td&gt;是否公开，默认 true&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;image&lt;/td&gt;
-&lt;td&gt;文章封面图片链接 （需要随机返回heavenwall.cc）&lt;/td&gt;
+&lt;td&gt;文章封面图片链接 （需要随机返回wallhaven.cc）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;title&lt;/td&gt;

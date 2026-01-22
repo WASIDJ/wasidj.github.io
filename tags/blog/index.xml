@@ -11,6 +11,7 @@
 &lt;li&gt;购买的域名&lt;/li&gt;
 &lt;li&gt;国内CDN加速 需要备案&lt;/li&gt;
 &lt;li&gt;如何检测访问 数量与来源 -&amp;gt; Google Analytics + Cloudflare&lt;/li&gt;
+&lt;li&gt;添加各种 SEO&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -72,11 +73,15 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;author&lt;/td&gt;
-&lt;td&gt;作者名称&lt;/td&gt;
+&lt;td&gt;作者名称 默认 ryou&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;draft&lt;/td&gt;
+&lt;td&gt;是否公开，默认 true&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;image&lt;/td&gt;
-&lt;td&gt;文章封面图片链接 （需要随机返回heavenwall.cc）&lt;/td&gt;
+&lt;td&gt;文章封面图片链接 （需要随机返回wallhaven.cc）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;title&lt;/td&gt;
@@ -108,8 +113,7 @@
 &lt;h2 id="参考资料"&gt;参考资料
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>博客完善代办清单</title><link>https://wasidj.github.io/post/todo/</link><pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/todo/</guid><description>&lt;p&gt;o&lt;/p&gt;
-&lt;h2 id="当前阶段需要完成"&gt;当前阶段需要完成
+&lt;/ul&gt;</description></item><item><title>博客完善代办清单</title><link>https://wasidj.github.io/post/%E5%8D%9A%E5%AE%A2%E5%AE%8C%E5%96%84%E4%BB%A3%E5%8A%9E%E6%B8%85%E5%8D%95/</link><pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/%E5%8D%9A%E5%AE%A2%E5%AE%8C%E5%96%84%E4%BB%A3%E5%8A%9E%E6%B8%85%E5%8D%95/</guid><description>&lt;h2 id="当前阶段需要完成"&gt;当前阶段需要完成
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 在OBSIDIAN中完成 formatter yaml 模板(添加 动态图片链接 更新时间)&lt;/li&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 导入直接的域名 国内加速&lt;/li&gt;
