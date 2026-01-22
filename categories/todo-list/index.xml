@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TODO-LIST on Ryou's Blog</title><link>https://wasidj.github.io/categories/todo-list/</link><description>Recent content in TODO-LIST on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 16 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://wasidj.github.io/categories/todo-list/index.xml" rel="self" type="application/rss+xml"/><item><title>博客完善代办清单</title><link>https://wasidj.github.io/post/todo-list/todo/</link><pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/todo-list/todo/</guid><description>&lt;h2 id="当前阶段需要完成"&gt;当前阶段需要完成
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 在OBSIDIAN中完成 formatter yaml 模板(添加 动态图片链接 更新时间)&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 导入直接的域名 国内加速&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 导入直接的域名 国内加速&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 使用&lt;code&gt;Crontab&lt;/code&gt; 完成 每周/天 固定时间段 更新（或者 &lt;del&gt;监控 draft 字段变化动态更新 ，消耗过大&lt;/del&gt;）&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 支持更多的markdown语法
+&lt;li&gt;[-] 支持更多的markdown语法
 &lt;ol&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; obsidian callout 语法&lt;/li&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 支持mermaid&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; tikz&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; tikz hugo实现不了（hugo没有插件系统，无法做到部署前执行），直接截图吧&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加&lt;code&gt;formatte&lt;/code&gt; 字段 天气 坐标 该文档的 &lt;code&gt;git log&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加 DIY&lt;code&gt;widget&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 完成备份 在&lt;code&gt;hugo-main&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加&lt;code&gt;formatter&lt;/code&gt; 字段 天气 坐标 该文档的 &lt;code&gt;git log&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加 DIY&lt;code&gt;widget&lt;/code&gt; 添加 访客统计 文章热度 站点运行时间等&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 完成备份 在&lt;code&gt;hugo-main&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 使用 obsidian中的 base 功能实现更加完善的 文档输出管理&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; sidebar 添加 PPT 展示 &lt;code&gt;slidev&lt;/code&gt; 打包生成的 PPT页面&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 完成基础的配置，就可以大写特写。
@@ -29,13 +29,14 @@
 &lt;/ol&gt;
 &lt;h3 id="fqa"&gt;FQA
 &lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; hugo 打包 content中 md的规则是什么？ 看看源码？&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; hugo 打包 content中 md的规则是什么？ 看看源码？&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 我的 paginate 现在翻页 文章数量为什么没有生效？&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; obsidian中的 base 数据库管理是否需要跟进？ 感觉不太必要&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
 &lt;h2 id="效果验证"&gt;效果验证
-&lt;/h2&gt;&lt;h3 id="morecode"&gt;moreCode
+&lt;/h2&gt;&lt;h3 id="常见的markdown-yaml字段"&gt;常见的markdown &lt;code&gt;yaml&lt;/code&gt;字段
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="morecode"&gt;moreCode
 &lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// DFS for finding bridges in an undirected graph
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
@@ -184,8 +185,8 @@
 &lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
 &lt;span&gt;Warning: This operation will delete all data&lt;/span&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id="foldable-admonitions"&gt;Foldable Admonitions
-&lt;/h2&gt;
+&lt;/div&gt;&lt;h4 id="foldable-admonitions"&gt;Foldable Admonitions
+&lt;/h4&gt;
 &lt;details class="admonition note"&gt;
 &lt;summary class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
 &lt;span&gt;Here are the details regarding API usage:&lt;/span&gt;
@@ -202,8 +203,8 @@
 &lt;summary class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
 &lt;span&gt;Click here to view the tips&lt;/span&gt;
 &lt;/summary&gt;
-&lt;/details&gt;&lt;h2 id="nested-admonitions"&gt;Nested Admonitions
-&lt;/h2&gt;
+&lt;/details&gt;&lt;h4 id="nested-admonitions"&gt;Nested Admonitions
+&lt;/h4&gt;
 &lt;div class="admonition question"&gt;
 &lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/&gt;&lt;/svg&gt;
 &lt;span&gt;Can admonitions be nested?&lt;/span&gt;
@@ -223,7 +224,10 @@
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id="mermaid-diagram"&gt;mermaid diagram
-&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;需要添加 &lt;code&gt;mermaid: true&lt;/code&gt; 到 yaml 头部&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="mermaid"&gt;
 graph TD
 A[Start] --&amp;gt; B{Is it working?}
 B -- Yes --&amp;gt; C[Great!]
@@ -231,21 +235,30 @@ B -- No --&amp;gt; D[Check the code]
 D --&amp;gt; B
 &lt;/pre&gt;
 &lt;h3 id="tikz"&gt;TikZ
-&lt;/h3&gt;&lt;h3 id="code-block"&gt;code block
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-latex" data-lang="latex"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\documentclass&lt;/span&gt;{article}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\usepackage&lt;/span&gt;{tikz}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\begin&lt;/span&gt;{document}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\begin&lt;/span&gt;{tikzpicture}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;\draw&lt;/span&gt; (0,0) -- (4,0) -- (4,4) -- (0,4) -- cycle;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;\draw&lt;/span&gt; (0,0) -- (4,4);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;\draw&lt;/span&gt; (0,4) -- (4,0);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\end&lt;/span&gt;{tikzpicture}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;\end&lt;/span&gt;{document}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;做不了放弃&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex="0"&gt;&lt;code class="language-tikz" data-lang="tikz"&gt;\documentclass{standalone}
+\usepackage{tikz}
+\begin{document}
+\begin{tikzpicture}
+% Draw a rectangle
+\draw (0,0) rectangle (4,2);
+% Draw a circle
+\draw (2,1) circle (0.5);
+% Draw a line
+\draw (0,0) -- (4,2);
+\end{tikzpicture}
+\end{document}
+&lt;/code&gt;&lt;/pre&gt;&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;hr&gt;
 &lt;h2 id="参考资料"&gt;参考资料
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;a class="link" href="https://prinsss.github.io/graphics-with-tikz-in-hexo/#tldr" target="_blank" rel="noopener"
 &gt;Tikz&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://enriqueacosta.github.io/blog/en/posts/creating-this-blog-part-4/" target="_blank" rel="noopener"
+&gt;hugo 中添加Tikz&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://navendu.me/posts/adding-diagrams-to-your-hugo-blog-with-mermaid/?utm_source=chatgpt.com" target="_blank" rel="noopener"
 &gt;mermaid配置&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="link" href="https://anthonyirwin.com/blog/tech/programming/hugo/setting-up-hugo-admonitions/" target="_blank" rel="noopener"
