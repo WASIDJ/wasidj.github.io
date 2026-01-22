@@ -53,16 +53,13 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 我的obsidian中的picgo插件为什么不自动生效？&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ol start="2"&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;crontab&lt;/code&gt; 完成 每周/天 固定时间段&lt;/li&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; &lt;code&gt;crontab&lt;/code&gt; 完成 每周/天 固定时间段 &lt;code&gt;/home/ryou/scripts/auto_push_blog_content.sh&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 支持更多的markdown语法&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加&lt;code&gt;formatter&lt;/code&gt; 字段 天气 坐标 该文档的 &lt;code&gt;git log&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;img src="https://raw.githubusercontent.com/WASIDJ/picBed/main/img/20260120163517485.png"
-loading="lazy"
-&gt;&lt;/p&gt;
-&lt;h2 id="前言"&gt;前言
+&lt;/div&gt;&lt;h2 id="前言"&gt;前言
 &lt;/h2&gt;&lt;p&gt;在使用&lt;code&gt;Obsidian&lt;/code&gt;进行写作时，模板的使用可以大大提高写作效率。本文将介绍如何创建和使用&lt;code&gt;Obsidian&lt;/code&gt;模板，以便更加方便地进行写作。&lt;/p&gt;
 &lt;h2 id="formatter-yaml"&gt;formatter Yaml
 &lt;/h2&gt;&lt;table&gt;
@@ -109,4 +106,6 @@ loading="lazy"
 &lt;/table&gt;
 &lt;hr&gt;
 &lt;h2 id="参考资料"&gt;参考资料
-&lt;/h2&gt;</description></item></channel></rss>
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
