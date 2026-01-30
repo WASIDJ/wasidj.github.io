@@ -1,477 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://wasidj.github.io/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 20 Jun 2026 10:00:00 +0000</lastBuildDate><atom:link href="https://wasidj.github.io/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>Formatter 字段实现指南</title><link>https://wasidj.github.io/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
-&lt;/h1&gt;&lt;h2 id="-概述"&gt;📋 概述
-&lt;/h2&gt;&lt;p&gt;本指南展示如何在 Obsidian 模板中添加动态的 formatter 字段，包括：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;🌤️ &lt;strong&gt;天气信息&lt;/strong&gt; - 从 Open-Meteo API 获取 (基于高德地图定位)&lt;/li&gt;
-&lt;li&gt;📍 &lt;strong&gt;位置信息&lt;/strong&gt; - 自动获取当前城市/地区 (基于高德地图 IP 定位)&lt;/li&gt;
-&lt;li&gt;📝 &lt;strong&gt;Git 日志&lt;/strong&gt; - 文件的提交历史&lt;/li&gt;
-&lt;li&gt;⏰ &lt;strong&gt;时间戳&lt;/strong&gt; - 生成时的 ISO 时间&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="-已实现的字段"&gt;🎯 已实现的字段
-&lt;/h2&gt;&lt;h3 id="1-自动定位与天气"&gt;1. 自动定位与天气
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;位置&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;上海市 - 上海市&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;坐标&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;121.4737&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;31.2304&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;温度&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;℃ &lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;风速&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;5.2&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;m/s&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;天气&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;晴朗&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;位置&lt;/strong&gt;: &lt;a class="link" href="https://lbs.amap.com/api/webservice/guide/api/ipconfig" target="_blank" rel="noopener"
-&gt;高德地图 IP 定位&lt;/a&gt; (国内最准，需要 API Key)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;天气&lt;/strong&gt;: &lt;a class="link" href="https://open-meteo.com/" target="_blank" rel="noopener"
-&gt;Open-Meteo API&lt;/a&gt; (免费，无需 Key)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;更新频率&lt;/strong&gt;: 每次生成模板时自动获取&lt;/p&gt;
-&lt;h3 id="2-timestamp时间戳"&gt;2. Timestamp（时间戳）
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;timestamp&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-01-22T22:33:21&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;+08&lt;/span&gt;:&lt;span style="color:#ae81ff"&gt;00&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;格式&lt;/strong&gt;: ISO 8601 标准&lt;/p&gt;
-&lt;h3 id="3-git-loggit-日志"&gt;3. Git Log（Git 日志）
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;git_log: &amp;lt;!-- git-log&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;auto-generated during build --&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;说明&lt;/strong&gt;: 需要额外的 build script 支持&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="-使用方法"&gt;🔧 使用方法
-&lt;/h2&gt;&lt;h3 id="方案-1-使用增强版模板推荐快速开始"&gt;方案 1: 使用增强版模板（推荐快速开始）
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;在 Obsidian 中创建新笔记&lt;/li&gt;
-&lt;li&gt;输入 &lt;code&gt;/blog-enhanced&lt;/code&gt; 并选择 &lt;code&gt;blog-base-enhanced&lt;/code&gt; 模板&lt;/li&gt;
-&lt;li&gt;模板自动添加所有 formatter 字段&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="方案-2-手动集成到现有模板"&gt;方案 2: 手动集成到现有模板
-&lt;/h3&gt;&lt;p&gt;复制以下代码到你的 Templater 模板文件最上方：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后在 YAML Frontmatter 区域使用变量：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;位置&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Unknown - Unknown&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;坐标&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;温度&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;℃ &lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;风速&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;m/s&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;天气&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Unknown&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-api-说明"&gt;⚙️ API 说明
-&lt;/h2&gt;&lt;h3 id="高德地图-ip-定位-api"&gt;高德地图 IP 定位 API
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;需要 Key&lt;/strong&gt;: 前往 &lt;a class="link" href="https://lbs.amap.com/" target="_blank" rel="noopener"
-&gt;高德开放平台&lt;/a&gt; 申请 &amp;ldquo;Web服务&amp;rdquo; Key&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;准确度&lt;/strong&gt;: 国内 IP 识别率极高，精确到城市/区县&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;IPv6 限制&lt;/strong&gt;: 目前免费版接口对 IPv6 地址支持有限，可能无法定位。建议在仅 IPv4 环境下使用，或通过系统配置优先 IPv4。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="open-meteo-天气-api"&gt;Open-Meteo 天气 API
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;无需 Key&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;无需认证&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;全球覆盖&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="-字段对比"&gt;📊 字段对比
-&lt;/h2&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;字段&lt;/th&gt;
-&lt;th&gt;来源&lt;/th&gt;
-&lt;th&gt;更新&lt;/th&gt;
-&lt;th&gt;自动化&lt;/th&gt;
-&lt;th&gt;成本&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;位置&lt;/td&gt;
-&lt;td&gt;高德地图&lt;/td&gt;
-&lt;td&gt;每次&lt;/td&gt;
-&lt;td&gt;✅ 国内最准&lt;/td&gt;
-&lt;td&gt;免费 (需申请Key)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;天气&lt;/td&gt;
-&lt;td&gt;Open-Meteo&lt;/td&gt;
-&lt;td&gt;每次&lt;/td&gt;
-&lt;td&gt;✅ 基于定位&lt;/td&gt;
-&lt;td&gt;免费&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;timestamp&lt;/td&gt;
-&lt;td&gt;系统&lt;/td&gt;
-&lt;td&gt;每次&lt;/td&gt;
-&lt;td&gt;✅ 完全自动&lt;/td&gt;
-&lt;td&gt;免费&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;git_log&lt;/td&gt;
-&lt;td&gt;Git&lt;/td&gt;
-&lt;td&gt;手动&lt;/td&gt;
-&lt;td&gt;⚠️ 需要脚本&lt;/td&gt;
-&lt;td&gt;免费&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="-故障排除"&gt;🐛 故障排除
-&lt;/h2&gt;&lt;h3 id="坐标显示为-unknown-或-0"&gt;坐标显示为 Unknown 或 0
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;原因 1: 网络问题 (代理)
-如果开启了全局代理，高德 API 请求会通过国外节点发出，导致无法定位到国内位置。
-解决: 将 restapi.amap.com 加入直连白名单。
-原因 2: IPv6 问题
-高德免费 API 无法识别某些 IPv6 地址。
-解决: 禁用系统 IPv6，或者等待高德 API 升级。
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="模板执行卡顿"&gt;模板执行卡顿
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;原因: 等待 API 响应。
-解决: 高德 API 在国内响应极快 (通常 &amp;lt;100ms)，如果卡顿请检查 DNS 或网络连接。
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;</description></item><item><title>Obsidian 数据库 (Base) 文档管理实现指南</title><link>https://wasidj.github.io/post/obsidian-%E6%95%B0%E6%8D%AE%E5%BA%93-base-%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/obsidian-%E6%95%B0%E6%8D%AE%E5%BA%93-base-%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="obsidian-database-文档管理指南"&gt;Obsidian Database 文档管理指南
-&lt;/h1&gt;&lt;h2 id="-概述"&gt;🎯 概述
-&lt;/h2&gt;&lt;p&gt;Obsidian Database（数据库）是一个强大的工具，用于：&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;功能&lt;/th&gt;
-&lt;th&gt;用途&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;集中管理&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;统一追踪所有博客文章的元数据&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;状态跟踪&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;草稿 → 待审 → 已发布 → 归档&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;关系管理&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;链接相关文章、分类、标签&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;智能查询&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;快速找到特定状态/分类的文章&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;工作流自动化&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;基于规则的状态转换和通知&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="-数据库结构设计"&gt;📊 数据库结构设计
-&lt;/h2&gt;&lt;h3 id="核心表article文章"&gt;核心表：Article（文章）
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;表名: Article
-字段:
-├─ Title (Text) - 文章标题
-├─ Status (Select) - 状态: Draft/Pending/Published/Archived
-├─ Created (Date) - 创建日期
-├─ Published (Date) - 发布日期
-├─ LastModified (Date) - 最后修改
-├─ Author (Select) - 作者
-├─ Category (Relation) - 分类（关联Category表）
-├─ Tags (Relation) - 标签（关联Tag表）
-├─ Views (Number) - 浏览量
-├─ Content Link (Link) - 到实际 markdown 文件的链接
-├─ Hugo Path (Text) - Hugo 中的完整路径
-├─ Draft (Checkbox) - 是否草稿
-├─ Priority (Select) - 优先级: High/Medium/Low
-└─ Notes (Text) - 备注
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="关联表category分类"&gt;关联表：Category（分类）
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;表名: Category
-字段:
-├─ Name (Text) - 分类名称
-├─ Slug (Text) - URL 友好名
-├─ Description (Text) - 描述
-├─ Color (Select) - 颜色标记
-└─ Articles (Relation) - 关联的文章
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="关联表tag标签"&gt;关联表：Tag（标签）
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;表名: Tag
-字段:
-├─ Name (Text) - 标签名称
-├─ Slug (Text) - URL 友好名
-├─ Usage Count (Number) - 使用次数（自动计算）
-└─ Articles (Relation) - 关联的文章
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-创建步骤"&gt;🔧 创建步骤
-&lt;/h2&gt;&lt;h3 id="step-1-启用-database-插件"&gt;Step 1: 启用 Database 插件
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;打开 Obsidian 设置 → &lt;strong&gt;Community Plugins&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;搜索并安装：&lt;strong&gt;Database&lt;/strong&gt; (由 Taidot 开发)&lt;/li&gt;
-&lt;li&gt;或使用内置的表格支持（Obsidian 1.4+）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="step-2-创建数据库文件"&gt;Step 2: 创建数据库文件
-&lt;/h3&gt;&lt;p&gt;在 Obsidian vault 中创建文件：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;📁 projects
-├─ 📄 articles.md
-├─ 📄 categories.md
-└─ 📄 tags.md
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="step-3-定义表结构"&gt;Step 3: 定义表结构
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;# Articles Database
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| Title | Status | Category | Tags | Views | Created | Published | Draft |
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;|-------|--------|----------|------|-------|---------|-----------|-------|
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| 我的第一篇文章 | Published | 技术 | obsidian, blog | 42 | 2026-01-01 | 2026-01-15 | false |
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| 草稿文章 | Draft | 随笔 | 思考 | 0 | 2026-01-20 | - | true |
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或使用 YAML Frontmatter（更结构化）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;articles&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;id&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;title&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;文章标题&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;status&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;published&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;category&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;技术&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;tags&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;&amp;#34;obsidian&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;blog&amp;#34;&lt;/span&gt;]
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;views&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;42&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;created&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-01-01&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;published&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-01-15&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;draft&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;false&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;content_link&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;[[../../post/文章标题]]&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;hugo_path&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;content/post/文章标题.md&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;priority&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;medium&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-工作流集成"&gt;🎯 工作流集成
-&lt;/h2&gt;&lt;h3 id="文章发布流程"&gt;文章发布流程
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;Draft (草稿)
-↓
-Pending Review (待审)
-↓
-Published (已发布)
-↓
-Featured (精选) [可选]
-↓
-Archived (归档)
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="使用-templater-自动创建数据库记录"&gt;使用 Templater 自动创建数据库记录
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;%*&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 在文章模板中自动记录到数据库
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;title&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;file&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;title&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;created&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;file&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;creation_date&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;YYYY-MM-DD&amp;#34;&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;published&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;date&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;now&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;YYYY-MM-DD&amp;#34;&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 添加到数据库
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;dbEntry&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;`
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;| &lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;title&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; | Draft | | | 0 | &lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;created&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; | &lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;published&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; | true |
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;`&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 更新数据库文件
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;dbPath&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;/projects/articles.md&amp;#34;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;dbFile&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;app&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;vault&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;adapter&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;read&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;dbPath&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 追加到表格
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;app&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;vault&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;adapter&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;write&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;dbPath&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;dbFile&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;\n&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;dbEntry&lt;/span&gt;);
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;%&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-高级用法"&gt;📈 高级用法
-&lt;/h2&gt;&lt;h3 id="视图和筛选"&gt;视图和筛选
-&lt;/h3&gt;&lt;p&gt;创建不同的视图来显示特定状态的文章：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 待发布文章
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| Title | Category | Created |
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;|-------|----------|---------|
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| ... (filtered: Status = &amp;#34;Pending&amp;#34;) |
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 最受欢迎的文章
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| Title | Views | Published |
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;|-------|-------|-----------|
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;| ... (sorted by: Views DESC, limit: 10) |
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="自动化统计"&gt;自动化统计
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;### 统计信息
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; **总文章数**: &lt;span style="color:#e6db74"&gt;`= length(records)`&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; **已发布**: &lt;span style="color:#e6db74"&gt;`= length(filter(records, &amp;#34;Status = &amp;#39;Published&amp;#39;&amp;#34;))`&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; **草稿**: &lt;span style="color:#e6db74"&gt;`= length(filter(records, &amp;#34;Status = &amp;#39;Draft&amp;#39;&amp;#34;))`&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; **总浏览**: &lt;span style="color:#e6db74"&gt;`= sum(records, &amp;#34;Views&amp;#34;)`&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-与-hugo-集成"&gt;🔗 与 Hugo 集成
-&lt;/h2&gt;&lt;h3 id="生成-hugo-发布时间表"&gt;生成 Hugo 发布时间表
-&lt;/h3&gt;&lt;p&gt;创建脚本从数据库导出发布计划：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# export-publishing-schedule.sh&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 从 Obsidian 数据库导出 CSV&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;OBSIDIAN_DB&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;/path/to/vault/projects/articles.md&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 提取&amp;#34;Pending&amp;#34;状态的文章&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;grep &lt;span style="color:#e6db74"&gt;&amp;#34;| Pending |&amp;#34;&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;$OBSIDIAN_DB&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt; &amp;gt; publishing-schedule.csv
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 输出发布计划&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cat publishing-schedule.csv
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="双向同步"&gt;双向同步
-&lt;/h3&gt;&lt;p&gt;同步 Hugo frontmatter 中的元数据回到 Obsidian 数据库：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/usr/bin/env python3&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; yaml
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; csv
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; pathlib &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Path
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;sync_hugo_to_obsidian&lt;/span&gt;(hugo_dir, obsidian_db):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;将 Hugo 文章元数据同步到 Obsidian 数据库&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; articles &lt;span style="color:#f92672"&gt;=&lt;/span&gt; []
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; md_file &lt;span style="color:#f92672"&gt;in&lt;/span&gt; Path(hugo_dir)&lt;span style="color:#f92672"&gt;.&lt;/span&gt;glob(&lt;span style="color:#e6db74"&gt;&amp;#34;post/*.md&amp;#34;&lt;/span&gt;):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(md_file) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; content &lt;span style="color:#f92672"&gt;=&lt;/span&gt; f&lt;span style="color:#f92672"&gt;.&lt;/span&gt;read()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 解析 YAML frontmatter&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; fm &lt;span style="color:#f92672"&gt;=&lt;/span&gt; yaml&lt;span style="color:#f92672"&gt;.&lt;/span&gt;safe_load(content&lt;span style="color:#f92672"&gt;.&lt;/span&gt;split(&lt;span style="color:#e6db74"&gt;&amp;#39;---&amp;#39;&lt;/span&gt;)[&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; articles&lt;span style="color:#f92672"&gt;.&lt;/span&gt;append({
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;: fm&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;title&amp;#39;&lt;/span&gt;, md_file&lt;span style="color:#f92672"&gt;.&lt;/span&gt;stem),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Status&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;Draft&amp;#39;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; fm&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;draft&amp;#39;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Published&amp;#39;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Views&amp;#39;&lt;/span&gt;: fm&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;views&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Published&amp;#39;&lt;/span&gt;: fm&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;date&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Hugo Path&amp;#39;&lt;/span&gt;: str(md_file),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; })
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 写入 Obsidian 数据库&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(obsidian_db, &lt;span style="color:#e6db74"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; writer &lt;span style="color:#f92672"&gt;=&lt;/span&gt; csv&lt;span style="color:#f92672"&gt;.&lt;/span&gt;DictWriter(f, fieldnames&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[&lt;span style="color:#e6db74"&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;Status&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;Views&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;Published&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;Hugo Path&amp;#39;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; writer&lt;span style="color:#f92672"&gt;.&lt;/span&gt;writeheader()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; writer&lt;span style="color:#f92672"&gt;.&lt;/span&gt;writerows(articles)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; sync_hugo_to_obsidian(&lt;span style="color:#e6db74"&gt;&amp;#39;/path/to/blog-content/post&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;/path/to/obsidian/projects/articles.md&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-数据库设计最佳实践"&gt;🎨 数据库设计最佳实践
-&lt;/h2&gt;&lt;h3 id="-推荐做法"&gt;✅ 推荐做法
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;使用统一命名&lt;/strong&gt;: 保持字段名称一致&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;关系设计&lt;/strong&gt;: 使用外键避免数据重复&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;类型检查&lt;/strong&gt;: 为每个字段选择合适的数据类型&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;索引关键字段&lt;/strong&gt;: 为频繁查询的字段建立索引&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;定期备份&lt;/strong&gt;: 导出为 CSV/JSON&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="-避免做法"&gt;❌ 避免做法
-&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;❌ 将所有数据存储在单一表中&lt;/li&gt;
-&lt;li&gt;❌ 使用过于复杂的字段名称&lt;/li&gt;
-&lt;li&gt;❌ 混合不同的数据类型在同一字段&lt;/li&gt;
-&lt;li&gt;❌ 忘记更新关系字段&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2 id="-数据库查询示例"&gt;📊 数据库查询示例
-&lt;/h2&gt;&lt;h3 id="查询示例"&gt;查询示例
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;# 查找所有待审文章
-WHERE Status = &amp;#34;Pending Review&amp;#34;
-ORDER BY Created DESC
-# 查找热门文章
-WHERE Views &amp;gt; 100
-ORDER BY Views DESC
-LIMIT 10
-# 查找特定分类的未发布文章
-WHERE Category = &amp;#34;技术&amp;#34; AND Status IN (&amp;#34;Draft&amp;#34;, &amp;#34;Pending Review&amp;#34;)
-# 查找最近30天的文章
-WHERE Published &amp;gt;= TODAY - 30
-ORDER BY Published DESC
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-工作流示例"&gt;🔄 工作流示例
-&lt;/h2&gt;&lt;h3 id="从创建到发布"&gt;从创建到发布
-&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;1. 创建新文章
-├─ 在 Obsidian 中新建 markdown 文件
-├─ Templater 模板自动创建数据库记录
-└─ 状态: Draft
-2. 编写和修改
-├─ 编写文章内容
-├─ 更新数据库 LastModified 时间
-└─ 状态: Draft
-3. 发起审查
-├─ 文章初稿完成
-└─ 状态: Pending Review
-4. 审查反馈
-├─ 进行必要修改
-└─ 状态: Pending Review 或 Draft
-5. 发布
-├─ 推送到 Git
-├─ Hugo 构建
-└─ 状态: Published
-6. 监控
-├─ 跟踪浏览量
-├─ 收集反馈
-└─ 状态: Published + Featured (如果热门)
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
-&lt;h2 id="-插件推荐"&gt;🚀 插件推荐
-&lt;/h2&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;插件&lt;/th&gt;
-&lt;th&gt;功能&lt;/th&gt;
-&lt;th&gt;安装&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Database&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;高级数据库支持&lt;/td&gt;
-&lt;td&gt;Community&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Dataview&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;数据查询和显示&lt;/td&gt;
-&lt;td&gt;Community&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Tasks&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;任务追踪&lt;/td&gt;
-&lt;td&gt;Community&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Templater&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;自动化模板&lt;/td&gt;
-&lt;td&gt;Community&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Metadata Menu&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;前置元数据编辑&lt;/td&gt;
-&lt;td&gt;Community&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id="-指标和报告"&gt;📈 指标和报告
-&lt;/h2&gt;&lt;h3 id="创建月度报告"&gt;创建月度报告
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;# 2026年1月博客报告
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 发布统计
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 总发布: 5 篇
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 平均浏览: 48 次
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; 最热文章: &amp;#34;{{/* highest_views */}}&amp;#34;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 分类分布
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{{/* chart: category_distribution */}}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 时间表
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{{/* timeline: published_dates */}}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-隐私和备份"&gt;🔐 隐私和备份
-&lt;/h2&gt;&lt;h3 id="数据导出"&gt;数据导出
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 导出为 CSV&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian-export articles.md articles.csv
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 导出为 JSON&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian-export articles.md articles.json
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 定期备份&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;rsync -av ~/.obsidian-vault/projects/ /backup/obsidian-projects/
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id="-实施检查表"&gt;✅ 实施检查表
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 安装 Database 插件&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 创建表结构&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 设计字段类型&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加初始数据&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 创建查询视图&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 集成 Templater 自动化&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 配置 Hugo 同步&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 设置备份计划&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 创建报告模板&lt;/li&gt;
-&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 定期维护数据质量&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id="-学习资源"&gt;🎓 学习资源
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a class="link" href="https://help.obsidian.md/Plugins/Database" target="_blank" rel="noopener"
-&gt;Obsidian 官方文档 - Databases&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://blacksmithgu.github.io/obsidian-dataview/" target="_blank" rel="noopener"
-&gt;Dataview 官方文档&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="link" href="https://www.sqlshack.com/en/database-design-best-practices/" target="_blank" rel="noopener"
-&gt;数据库设计最佳实践&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;最后更新&lt;/strong&gt;: 2026-01-22
-&lt;strong&gt;复杂度&lt;/strong&gt;: 中等
-&lt;strong&gt;相关 TODO&lt;/strong&gt;: blog-content/post/TODO.md (item #8)&lt;/p&gt;</description></item><item><title>hugo github pages 域名配置</title><link>https://wasidj.github.io/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post hugo github pages 域名配置" /&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://wasidj.github.io/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 20 Jun 2026 10:00:00 +0000</lastBuildDate><atom:link href="https://wasidj.github.io/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo github pages 域名配置</title><link>https://wasidj.github.io/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post hugo github pages 域名配置" /&gt;
 &lt;div class="admonition note"&gt;
 &lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
 &lt;span&gt;前情提要&lt;/span&gt;
@@ -484,7 +11,6 @@ ORDER BY Published DESC
 &lt;li&gt;购买的域名&lt;/li&gt;
 &lt;li&gt;国内CDN加速 需要备案&lt;/li&gt;
 &lt;li&gt;如何检测访问 数量与来源 -&amp;gt; Google Analytics + Cloudflare&lt;/li&gt;
-&lt;li&gt;添加各种 SEO&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -513,8 +39,7 @@ ORDER BY Published DESC
 &lt;/div&gt;&lt;hr&gt;
 &lt;h2 id="参考"&gt;参考
 &lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;a class="link" href="https://antping.com/web" target="_blank" rel="noopener"
-&gt;网站测速&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;</description></item><item><title>更加方便的创建Obsidian模板</title><link>https://wasidj.github.io/post/%E5%88%9B%E5%BB%BAobsidian%E6%A8%A1%E6%9D%BF%E6%9B%B4%E5%8A%A0%E6%96%B9%E4%BE%BF%E7%9A%84%E5%86%99%E4%BD%9C/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/%E5%88%9B%E5%BB%BAobsidian%E6%A8%A1%E6%9D%BF%E6%9B%B4%E5%8A%A0%E6%96%B9%E4%BE%BF%E7%9A%84%E5%86%99%E4%BD%9C/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post 更加方便的创建Obsidian模板" /&gt;
 &lt;div class="admonition task"&gt;
 &lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32l288 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-288 0c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/&gt;&lt;/svg&gt;
@@ -527,13 +52,16 @@ ORDER BY Published DESC
 &lt;ul&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 我的obsidian中的picgo插件为什么不自动生效？&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; &lt;code&gt;crontab&lt;/code&gt; 完成 每周/天 固定时间段 &lt;code&gt;/home/ryou/scripts/auto_push_blog_content.sh&lt;/code&gt;&lt;/li&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;crontab&lt;/code&gt; 完成 每周/天 固定时间段&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 支持更多的markdown语法&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 添加&lt;code&gt;formatter&lt;/code&gt; 字段 天气 坐标 该文档的 &lt;code&gt;git log&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id="前言"&gt;前言
+&lt;/div&gt;&lt;p&gt;&lt;img src="https://raw.githubusercontent.com/WASIDJ/picBed/main/img/20260120163517485.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;h2 id="前言"&gt;前言
 &lt;/h2&gt;&lt;p&gt;在使用&lt;code&gt;Obsidian&lt;/code&gt;进行写作时，模板的使用可以大大提高写作效率。本文将介绍如何创建和使用&lt;code&gt;Obsidian&lt;/code&gt;模板，以便更加方便地进行写作。&lt;/p&gt;
 &lt;h2 id="formatter-yaml"&gt;formatter Yaml
 &lt;/h2&gt;&lt;table&gt;
@@ -546,15 +74,11 @@ ORDER BY Published DESC
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;author&lt;/td&gt;
-&lt;td&gt;作者名称 默认 ryou&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;draft&lt;/td&gt;
-&lt;td&gt;是否公开，默认 true&lt;/td&gt;
+&lt;td&gt;作者名称&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;image&lt;/td&gt;
-&lt;td&gt;文章封面图片链接 （需要随机返回wallhaven.cc）&lt;/td&gt;
+&lt;td&gt;文章封面图片链接 （需要随机返回heavenwall.cc）&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;title&lt;/td&gt;
@@ -584,9 +108,7 @@ ORDER BY Published DESC
 &lt;/table&gt;
 &lt;hr&gt;
 &lt;h2 id="参考资料"&gt;参考资料
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>博客完善代办清单</title><link>https://wasidj.github.io/post/%E5%8D%9A%E5%AE%A2%E5%AE%8C%E5%96%84%E4%BB%A3%E5%8A%9E%E6%B8%85%E5%8D%95/</link><pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/%E5%8D%9A%E5%AE%A2%E5%AE%8C%E5%96%84%E4%BB%A3%E5%8A%9E%E6%B8%85%E5%8D%95/</guid><description>&lt;h2 id="当前阶段需要完成"&gt;当前阶段需要完成
+&lt;/h2&gt;</description></item><item><title>博客完善代办清单</title><link>https://wasidj.github.io/post/todo/</link><pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate><guid>https://wasidj.github.io/post/todo/</guid><description>&lt;h2 id="当前阶段需要完成"&gt;当前阶段需要完成
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 在OBSIDIAN中完成 formatter yaml 模板(添加 动态图片链接 更新时间)&lt;/li&gt;
 &lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 导入直接的域名 国内加速&lt;/li&gt;
@@ -624,8 +146,8 @@ ORDER BY Published DESC
 &lt;hr&gt;
 &lt;h2 id="效果验证"&gt;效果验证
 &lt;/h2&gt;&lt;h3 id="常见的markdown-yaml字段"&gt;常见的markdown &lt;code&gt;yaml&lt;/code&gt;字段
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="morecode"&gt;moreCode
-&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// DFS for finding bridges in an undirected graph
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="morecode"&gt;moreCode
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-cpp" data-lang="cpp"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// DFS for finding bridges in an undirected graph
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#include&lt;/span&gt; &lt;span style="color:#75715e"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span style="color:#75715e"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;using&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;namespace&lt;/span&gt; std;
