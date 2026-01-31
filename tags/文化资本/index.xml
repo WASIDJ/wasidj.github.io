@@ -144,8 +144,8 @@
 &lt;/h3&gt;&lt;p&gt;需要盘点的三资：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;资产清单&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 学历证书（学校、专业、GPA）&lt;/li&gt;
-&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 专业认证（证书名称、有效期、颁发机构）&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 学历证书（学校、专业、GPA）&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 专业认证（证书名称、有效期、颁发机构）&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 作品集（项目数量、质量指标、展示平台）&lt;/li&gt;
 &lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 可量化成就（数据、排名、奖项）&lt;/li&gt;
 &lt;/ul&gt;
