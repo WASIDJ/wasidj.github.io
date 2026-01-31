@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Template on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/template/</link><description>Recent content in Template on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 22 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/template/index.xml" rel="self" type="application/rss+xml"/><item><title>Formatter 字段实现指南</title><link>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
+&lt;/h1&gt;&lt;h2 id="-概述"&gt;📋 概述
+&lt;/h2&gt;&lt;p&gt;本指南展示如何在 Obsidian 模板中添加动态的 formatter 字段，包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;🌤️ &lt;strong&gt;天气信息&lt;/strong&gt; - 从 Open-Meteo API 获取 (基于高德地图定位)&lt;/li&gt;
+&lt;li&gt;📍 &lt;strong&gt;位置信息&lt;/strong&gt; - 自动获取当前城市/地区 (基于高德地图 IP 定位)&lt;/li&gt;
+&lt;li&gt;📝 &lt;strong&gt;Git 日志&lt;/strong&gt; - 文件的提交历史&lt;/li&gt;
+&lt;li&gt;⏰ &lt;strong&gt;时间戳&lt;/strong&gt; - 生成时的 ISO 时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-已实现的字段"&gt;🎯 已实现的字段
+&lt;/h2&gt;&lt;h3 id="1-自动定位与天气"&gt;1. 自动定位与天气
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;位置&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;上海市 - 上海市&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;坐标&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;121.4737&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;31.2304&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;温度&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;℃ &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;风速&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;5.2&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;m/s&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;天气&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;晴朗&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;位置&lt;/strong&gt;: &lt;a class="link" href="https://lbs.amap.com/api/webservice/guide/api/ipconfig" target="_blank" rel="noopener"
+&gt;高德地图 IP 定位&lt;/a&gt; (国内最准，需要 API Key)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;天气&lt;/strong&gt;: &lt;a class="link" href="https://open-meteo.com/" target="_blank" rel="noopener"
+&gt;Open-Meteo API&lt;/a&gt; (免费，无需 Key)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;更新频率&lt;/strong&gt;: 每次生成模板时自动获取&lt;/p&gt;
+&lt;h3 id="2-timestamp时间戳"&gt;2. Timestamp（时间戳）
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;timestamp&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-01-22T22:33:21&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;+08&lt;/span&gt;:&lt;span style="color:#ae81ff"&gt;00&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;格式&lt;/strong&gt;: ISO 8601 标准&lt;/p&gt;
+&lt;h3 id="3-git-loggit-日志"&gt;3. Git Log（Git 日志）
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;git_log: &amp;lt;!-- git-log&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;auto-generated during build --&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;说明&lt;/strong&gt;: 需要额外的 build script 支持&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="-使用方法"&gt;🔧 使用方法
+&lt;/h2&gt;&lt;h3 id="方案-1-使用增强版模板推荐快速开始"&gt;方案 1: 使用增强版模板（推荐快速开始）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;在 Obsidian 中创建新笔记&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;/blog-enhanced&lt;/code&gt; 并选择 &lt;code&gt;blog-base-enhanced&lt;/code&gt; 模板&lt;/li&gt;
+&lt;li&gt;模板自动添加所有 formatter 字段&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="方案-2-手动集成到现有模板"&gt;方案 2: 手动集成到现有模板
+&lt;/h3&gt;&lt;p&gt;复制以下代码到你的 Templater 模板文件最上方：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后在 YAML Frontmatter 区域使用变量：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;位置&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Unknown - Unknown&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;坐标&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;温度&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;℃ &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;风速&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;m/s&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;天气&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;Unknown&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="-api-说明"&gt;⚙️ API 说明
+&lt;/h2&gt;&lt;h3 id="高德地图-ip-定位-api"&gt;高德地图 IP 定位 API
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;需要 Key&lt;/strong&gt;: 前往 &lt;a class="link" href="https://lbs.amap.com/" target="_blank" rel="noopener"
+&gt;高德开放平台&lt;/a&gt; 申请 &amp;ldquo;Web服务&amp;rdquo; Key&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;准确度&lt;/strong&gt;: 国内 IP 识别率极高，精确到城市/区县&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IPv6 限制&lt;/strong&gt;: 目前免费版接口对 IPv6 地址支持有限，可能无法定位。建议在仅 IPv4 环境下使用，或通过系统配置优先 IPv4。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="open-meteo-天气-api"&gt;Open-Meteo 天气 API
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;无需 Key&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无需认证&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;全球覆盖&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="-字段对比"&gt;📊 字段对比
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字段&lt;/th&gt;
+&lt;th&gt;来源&lt;/th&gt;
+&lt;th&gt;更新&lt;/th&gt;
+&lt;th&gt;自动化&lt;/th&gt;
+&lt;th&gt;成本&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;位置&lt;/td&gt;
+&lt;td&gt;高德地图&lt;/td&gt;
+&lt;td&gt;每次&lt;/td&gt;
+&lt;td&gt;✅ 国内最准&lt;/td&gt;
+&lt;td&gt;免费 (需申请Key)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;天气&lt;/td&gt;
+&lt;td&gt;Open-Meteo&lt;/td&gt;
+&lt;td&gt;每次&lt;/td&gt;
+&lt;td&gt;✅ 基于定位&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;timestamp&lt;/td&gt;
+&lt;td&gt;系统&lt;/td&gt;
+&lt;td&gt;每次&lt;/td&gt;
+&lt;td&gt;✅ 完全自动&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;git_log&lt;/td&gt;
+&lt;td&gt;Git&lt;/td&gt;
+&lt;td&gt;手动&lt;/td&gt;
+&lt;td&gt;⚠️ 需要脚本&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-故障排除"&gt;🐛 故障排除
+&lt;/h2&gt;&lt;h3 id="坐标显示为-unknown-或-0"&gt;坐标显示为 Unknown 或 0
+&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;原因 1: 网络问题 (代理)
+如果开启了全局代理，高德 API 请求会通过国外节点发出，导致无法定位到国内位置。
+解决: 将 restapi.amap.com 加入直连白名单。
+原因 2: IPv6 问题
+高德免费 API 无法识别某些 IPv6 地址。
+解决: 禁用系统 IPv6，或者等待高德 API 升级。
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="模板执行卡顿"&gt;模板执行卡顿
+&lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;原因: 等待 API 响应。
+解决: 高德 API 在国内响应极快 (通常 &amp;lt;100ms)，如果卡顿请检查 DNS 或网络连接。
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;</description></item></channel></rss>
