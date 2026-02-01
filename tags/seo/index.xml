@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Seo on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/seo/</link><description>Recent content in Seo on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Feb 2026 02:58:00 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/seo/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo github pages 域名配置</title><link>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post hugo github pages 域名配置" /&gt;&lt;h1 id="hugo-github-pages-域名配置完全指南"&gt;Hugo GitHub Pages 域名配置完全指南
+&lt;/h1&gt;&lt;h2 id="-概述"&gt;🎯 概述
+&lt;/h2&gt;&lt;p&gt;本指南详细说明如何为 Hugo + GitHub Pages 博客配置自定义域名，并通过 Cloudflare 实现全球 CDN 加速和 SEO 优化。&lt;/p&gt;
+&lt;h2 id="-前置条件"&gt;📋 前置条件
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;✅ GitHub 账号&lt;/li&gt;
+&lt;li&gt;✅ 已购买的域名（支持国际和国内域名）&lt;/li&gt;
+&lt;li&gt;✅ Hugo 博客已发布到 GitHub Pages&lt;/li&gt;
+&lt;li&gt;✅ 可选：国内 CDN 加速需要域名备案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="1-github-pages-基础配置"&gt;1️⃣ GitHub Pages 基础配置
+&lt;/h2&gt;&lt;h3 id="step-1-创建-cname-文件"&gt;Step 1: 创建 CNAME 文件
+&lt;/h3&gt;&lt;p&gt;在博客仓库根目录创建 &lt;code&gt;CNAME&lt;/code&gt; 文件，内容为你的域名：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;www.jeffkafka.top
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="step-2-在-github-pages-设置中绑定域名"&gt;Step 2: 在 GitHub Pages 设置中绑定域名
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;进入仓库 Settings → Pages&lt;/li&gt;
+&lt;li&gt;在 Custom domain 输入你的域名&lt;/li&gt;
+&lt;li&gt;启用 &amp;ldquo;Enforce HTTPS&amp;rdquo;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="2-dns-解析配置cloudflare"&gt;2️⃣ DNS 解析配置（Cloudflare）
+&lt;/h2&gt;&lt;h3 id="优势"&gt;优势
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;✅ 免费全球 CDN 加速&lt;/li&gt;
+&lt;li&gt;✅ 支持 HTTPS 自动续期&lt;/li&gt;
+&lt;li&gt;✅ DDoS 防护&lt;/li&gt;
+&lt;li&gt;✅ 详细的流量分析&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="配置步骤"&gt;配置步骤
+&lt;/h3&gt;&lt;h4 id="1-添加域名到-cloudflare"&gt;1. 添加域名到 Cloudflare
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;注册 &lt;a class="link" href="https://www.cloudflare.com/" target="_blank" rel="noopener"
+&gt;Cloudflare&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;添加你的域名&lt;/li&gt;
+&lt;li&gt;修改域名注册商的 DNS 指向 Cloudflare&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="2-添加-dns-记录"&gt;2. 添加 DNS 记录
+&lt;/h4&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;类型 主机 值 优先级 TTL
+A @ 185.199.108.153 - 自动
+A @ 185.199.109.153 - 自动
+A @ 185.199.110.153 - 自动
+A @ 185.199.111.153 - 自动
+CNAME www wasidj.github.io - 自动
+TXT @ v=spf1 -all - 自动
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id="3-ssltls-配置"&gt;3. SSL/TLS 配置
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在 Cloudflare Dashboard 选择 &amp;ldquo;Full&amp;rdquo; 模式&lt;/li&gt;
+&lt;li&gt;启用 &amp;ldquo;Always Use HTTPS&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;启用 &amp;ldquo;HTTP Strict Transport Security (HSTS)&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="3-网站分析和监控"&gt;3️⃣ 网站分析和监控
+&lt;/h2&gt;&lt;h3 id="google-analytics-配置"&gt;Google Analytics 配置
+&lt;/h3&gt;&lt;p&gt;在 Hugo 主题配置中添加 GA 跟踪代码。&lt;/p&gt;
+&lt;h3 id="cloudflare-analytics"&gt;Cloudflare Analytics
+&lt;/h3&gt;&lt;p&gt;Cloudflare 默认提供实时流量分析：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问量 (UV/PV)&lt;/li&gt;
+&lt;li&gt;地域分布&lt;/li&gt;
+&lt;li&gt;设备类型&lt;/li&gt;
+&lt;li&gt;缓存命中率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="4-seo-优化"&gt;4️⃣ SEO 优化
+&lt;/h2&gt;&lt;h3 id="检查清单"&gt;检查清单
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;✅ &lt;a class="link" href="https://antping.com/web" target="_blank" rel="noopener"
+&gt;网站测速&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;✅ robots.txt 允许索引&lt;/li&gt;
+&lt;li&gt;✅ sitemap.xml 已生成&lt;/li&gt;
+&lt;li&gt;✅ Meta 标签完整&lt;/li&gt;
+&lt;li&gt;✅ Canonical 链接正确&lt;/li&gt;
+&lt;li&gt;✅ 在 Google Search Console 提交&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="关键优化"&gt;关键优化
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;启用压缩&lt;/strong&gt;: Cloudflare 自动启用 Brotli&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缓存优化&lt;/strong&gt;: 设置较长的 TTL&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图片优化&lt;/strong&gt;: Cloudflare 自动 WebP 转换&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;性能&lt;/strong&gt;: 启用 Rocket Loader&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="5-备案说明国内访问"&gt;5️⃣ 备案说明（国内访问）
+&lt;/h2&gt;&lt;p&gt;如需加速国内访问，需要进行备案：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;通过域名注册商申请备案&lt;/li&gt;
+&lt;li&gt;提供企业或个人身份信息&lt;/li&gt;
+&lt;li&gt;备案审批通常需要 7-20 天&lt;/li&gt;
+&lt;li&gt;备案完成后可使用国内 CDN&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️ 备案不是必须的，但会显著提升国内访问速度&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="-监控和维护"&gt;📊 监控和维护
+&lt;/h2&gt;&lt;h3 id="定期检查"&gt;定期检查
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Cloudflare 缓存命中率是否超过 70%&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; SSL 证书有效期（Cloudflare 自动续期）&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Google Search Console 中的索引状态&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 404 错误率是否正常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="常见问题排查"&gt;常见问题排查
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;问题&lt;/th&gt;
+&lt;th&gt;解决方案&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;访问缓慢&lt;/td&gt;
+&lt;td&gt;检查 Cloudflare 缓存规则，增加 TTL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;搜索不到&lt;/td&gt;
+&lt;td&gt;在 Search Console 提交 URL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSL 错误&lt;/td&gt;
+&lt;td&gt;Cloudflare SSL 模式改为 Full&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="-参考资源"&gt;🔗 参考资源
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.github.com/en/pages" target="_blank" rel="noopener"
+&gt;GitHub Pages 官方文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://developers.cloudflare.com/" target="_blank" rel="noopener"
+&gt;Cloudflare 文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://gohugo.io/getting-started/quick-start/" target="_blank" rel="noopener"
+&gt;Hugo 快速开始&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://antping.com/web" target="_blank" rel="noopener"
+&gt;网站测速工具&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="-完成清单"&gt;✅ 完成清单
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; GitHub Pages 基础配置&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; Cloudflare DNS 配置&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; SSL/TLS 安全设置&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; Google Analytics 集成&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; SEO 优化&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; 域名备案（可选，针对国内）&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
