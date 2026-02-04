@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/blog/</link><description>Recent content in Blog on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 04 Feb 2026 22:28:08 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo github pages 域名配置</title><link>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post hugo github pages 域名配置" /&gt;&lt;h1 id="hugo-github-pages-域名配置完全指南"&gt;Hugo GitHub Pages 域名配置完全指南
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/blog/</link><description>Recent content in Blog on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 04 Feb 2026 22:20:20 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo github pages 域名配置</title><link>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</link><pubDate>Fri, 16 Jan 2026 23:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/%E5%9F%9F%E5%90%8D%E9%85%8D%E7%BD%AE/</guid><description>&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/wechatQR.png" alt="Featured image of post hugo github pages 域名配置" /&gt;&lt;h1 id="hugo-github-pages-域名配置完全指南"&gt;Hugo GitHub Pages 域名配置完全指南
 &lt;/h1&gt;&lt;h2 id="-概述"&gt;🎯 概述
 &lt;/h2&gt;&lt;p&gt;本指南详细说明如何为 Hugo + GitHub Pages 博客配置自定义域名，并通过 Cloudflare 实现全球 CDN 加速和 SEO 优化。&lt;/p&gt;
 &lt;h2 id="-前置条件"&gt;📋 前置条件
@@ -448,13 +448,13 @@ TXT @ v=spf1 -all - 自动
 &lt;/ul&gt;
 &lt;pre class="mermaid"&gt;
 graph TD
-A[Start] --&amp;gt; B{Is it working?}
-B -- Yes --&amp;gt; C[Great!]
-B -- No --&amp;gt; D[Check the code]
-D --&amp;gt; B
+A[Start] --&gt; B{Is it working?}
+B -- Yes --&gt; C[Great!]
+B -- No --&gt; D[Check the code]
+D --&gt; B
 &lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;themes stack 有过度防御 修改 &lt;code&gt;render-codeblock-mermaid.html&lt;/code&gt; &lt;code&gt;{{ .Inner | htmlEscape | safeHTML }}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;themes stack 有过度防御 修改 &lt;code&gt;render-codeblock-mermaid.html&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-html" data-lang="html"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;pre&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;mermaid&amp;#34;&lt;/span&gt;&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;

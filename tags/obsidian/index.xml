@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 04 Feb 2026 22:28:08 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>Formatter 字段实现指南</title><link>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 04 Feb 2026 22:20:20 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>Formatter 字段实现指南</title><link>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
 &lt;/h1&gt;&lt;h2 id="-概述"&gt;📋 概述
 &lt;/h2&gt;&lt;p&gt;本指南展示如何在 Obsidian 模板中添加动态的 formatter 字段，包括：&lt;/p&gt;
 &lt;ul&gt;
@@ -773,13 +773,13 @@ ORDER BY Published DESC
 &lt;/ul&gt;
 &lt;pre class="mermaid"&gt;
 graph TD
-A[Start] --&amp;gt; B{Is it working?}
-B -- Yes --&amp;gt; C[Great!]
-B -- No --&amp;gt; D[Check the code]
-D --&amp;gt; B
+A[Start] --&gt; B{Is it working?}
+B -- Yes --&gt; C[Great!]
+B -- No --&gt; D[Check the code]
+D --&gt; B
 &lt;/pre&gt;
 &lt;ul&gt;
-&lt;li&gt;themes stack 有过度防御 修改 &lt;code&gt;render-codeblock-mermaid.html&lt;/code&gt; &lt;code&gt;{{ .Inner | htmlEscape | safeHTML }}&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;themes stack 有过度防御 修改 &lt;code&gt;render-codeblock-mermaid.html&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-html" data-lang="html"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;pre&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;class&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;mermaid&amp;#34;&lt;/span&gt;&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
