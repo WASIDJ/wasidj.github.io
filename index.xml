@@ -1,4 +1,354 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 09 Feb 2026 20:15:42 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>grpc stream传输方式</title><link>https://www.jeffkafka.top/post/grpc-stream%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F/</link><pubDate>Mon, 09 Feb 2026 20:15:42 +0800</pubDate><guid>https://www.jeffkafka.top/post/grpc-stream%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F/</guid><description>&lt;img src="https://w.wallhaven.cc/full/qr/wallhaven-qrj31d.jpg" alt="Featured image of post grpc stream传输方式" /&gt;&lt;h1 id="grpc-四种-stream-传输方式详解"&gt;gRPC 四种 Stream 传输方式详解
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 10 Feb 2026 16:18:05 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>MonoRepo</title><link>https://www.jeffkafka.top/post/monorepo/</link><pubDate>Mon, 09 Feb 2026 21:30:38 +0800</pubDate><guid>https://www.jeffkafka.top/post/monorepo/</guid><description>&lt;img src="https://w.wallhaven.cc/full/5y/wallhaven-5yzpe5.jpg" alt="Featured image of post MonoRepo" /&gt;&lt;h1 id="monorepo-详解"&gt;MonoRepo 详解
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;MonoRepo&lt;/strong&gt;（Monolithic Repository，单体仓库）是一种软件开发策略，指将多个相关或不相关的项目代码存储在&lt;strong&gt;同一个版本控制仓库&lt;/strong&gt;中。&lt;/p&gt;
+&lt;p&gt;与之相对的是 &lt;strong&gt;MultiRepo&lt;/strong&gt;（PolyRepo），即每个项目都有独立的仓库。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart LR
+subgraph MonoRepo["MonoRepo 单体仓库"]
+M1["项目A"]
+M2["项目B"]
+M3["项目C"]
+M4["共享库"]
+end
+subgraph MultiRepo["MultiRepo 多仓库"]
+R1["仓库A\n项目A"]
+R2["仓库B\n项目B"]
+R3["仓库C\n项目C"]
+R4["仓库D\n共享库"]
+end
+style MonoRepo fill:#e1f5fe
+style MultiRepo fill:#fff3e0
+&lt;/pre&gt;
+&lt;h3 id="典型案例"&gt;典型案例
+&lt;/h3&gt;&lt;p&gt;许多知名公司采用 MonoRepo 策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Google&lt;/strong&gt;：全球最大的 MonoRepo 实践者，数十亿行代码在单一仓库中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Meta (Facebook)&lt;/strong&gt;：使用自定义的 Mercurial 扩展管理大规模仓库&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Microsoft&lt;/strong&gt;：Windows 系统代码、.NET 等采用 MonoRepo&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Twitter&lt;/strong&gt;、&lt;strong&gt;Uber&lt;/strong&gt; 等科技公司&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="2-核心概念与架构"&gt;2. 核心概念与架构
+&lt;/h2&gt;&lt;h3 id="21-monorepo-的典型结构"&gt;2.1 MonoRepo 的典型结构
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+ROOT["MonoRepo 根目录"] --&gt; APPS["apps/"]
+ROOT --&gt; PACKAGES["packages/"]
+ROOT --&gt; SHARED["shared/"]
+ROOT --&gt; CONFIG["配置文件\n(package.json, tsconfig等)"]
+APPS --&gt; A1["web-app/"]
+APPS --&gt; A2["mobile-app/"]
+APPS --&gt; A3["admin-dashboard/"]
+PACKAGES --&gt; P1["ui-components/"]
+PACKAGES --&gt; P2["utils/"]
+PACKAGES --&gt; P3["api-client/"]
+SHARED --&gt; S1["types/"]
+SHARED --&gt; S2["constants/"]
+style ROOT fill:#4caf50,color:#fff
+style APPS fill:#2196f3,color:#fff
+style PACKAGES fill:#ff9800,color:#fff
+&lt;/pre&gt;
+&lt;h3 id="22-关键特性"&gt;2.2 关键特性
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;统一依赖管理&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;所有项目共享依赖版本，避免版本冲突&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;原子提交&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;一次提交可跨多个项目/包进行修改&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;代码共享&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;内部包可直接引用，无需发布到 npm&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;统一工具链&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;ESLint、TypeScript、测试框架等配置统一&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;可见性&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;所有代码对团队成员透明可见&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="3-monorepo-vs-multirepo-对比"&gt;3. MonoRepo vs MultiRepo 对比
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart LR
+subgraph 对比维度
+direction TB
+C1["代码共享"]
+C2["依赖管理"]
+C3["CI/CD"]
+C4["团队协作"]
+C5["仓库体积"]
+end
+C1 --&gt; |"MonoRepo: 简单直接"| M1["✅ 内部包直接引用"]
+C1 --&gt; |"MultiRepo: 需发布"| R1["❌ npm publish + install"]
+C2 --&gt; |"MonoRepo: 统一"| M2["✅ 版本一致"]
+C2 --&gt; |"MultiRepo: 分散"| R2["⚠️ 版本可能冲突"]
+C3 --&gt; |"MonoRepo: 受影响构建"| M3["⚠️ 需智能增量构建"]
+C3 --&gt; |"MultiRepo: 独立"| R3["✅ 各自独立流水线"]
+C4 --&gt; |"MonoRepo: 高协作"| M4["✅ 统一 PR/Code Review"]
+C4 --&gt; |"MultiRepo: 隔离"| R4["⚠️ 跨仓库协作困难"]
+C5 --&gt; |"MonoRepo: 大"| M5["⚠️ 克隆慢，需优化"]
+C5 --&gt; |"MultiRepo: 小"| R5["✅ 轻量级"]
+&lt;/pre&gt;
+&lt;h3 id="详细对比表"&gt;详细对比表
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;维度&lt;/th&gt;
+&lt;th&gt;MonoRepo&lt;/th&gt;
+&lt;th&gt;MultiRepo&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;代码复用&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 极其方便，直接引用&lt;/td&gt;
+&lt;td&gt;❌ 需发布包或使用 git submodule&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;依赖一致性&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 统一管理，版本一致&lt;/td&gt;
+&lt;td&gt;⚠️ 各项目独立，可能版本冲突&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;重构成本&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 一次重构全局生效&lt;/td&gt;
+&lt;td&gt;❌ 需逐个仓库修改&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;CI/CD 复杂度&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;⚠️ 需智能增量构建&lt;/td&gt;
+&lt;td&gt;✅ 简单独立&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;权限控制&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;⚠️ 粒度较粗&lt;/td&gt;
+&lt;td&gt;✅ 可精确到仓库级别&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;克隆速度&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;❌ 可能很慢&lt;/td&gt;
+&lt;td&gt;✅ 快速轻量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;独立发布&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;⚠️ 需工具支持&lt;/td&gt;
+&lt;td&gt;✅ 天然独立&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;跨项目修改&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 原子提交&lt;/td&gt;
+&lt;td&gt;❌ 多 PR 多仓库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="4-主流-monorepo-工具"&gt;4. 主流 MonoRepo 工具
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TB
+subgraph 工具生态["MonoRepo 工具生态"]
+direction TB
+subgraph 构建工具["构建编排工具"]
+NX["Nx"]
+TURBO["Turborepo"]
+LERNA["Lerna"]
+end
+subgraph 包管理器["支持 Workspace 的包管理器"]
+PNPM["pnpm"]
+YARN["Yarn (v1/v2+)"]
+NPM["npm (v7+)"]
+end
+subgraph 语言特定["语言特定方案"]
+BAZEL["Bazel\n(Google)"]
+BUCK["Buck\n(Meta)"]
+GRADLE["Gradle\n(Android/Java)"]
+CARGO["Cargo Workspace\n(Rust)"]
+end
+end
+NX -.-&gt; PNPM
+TURBO -.-&gt; YARN
+LERNA -.-&gt; NPM
+style NX fill:#14305c,color:#fff
+style TURBO fill:#ef4444,color:#fff
+style LERNA fill:#9333ea,color:#fff
+&lt;/pre&gt;
+&lt;h3 id="41-nx"&gt;4.1 Nx
+&lt;/h3&gt;&lt;p&gt;由 &lt;strong&gt;Nrwl&lt;/strong&gt; 公司开发，是目前最流行的 MonoRepo 工具之一。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;强大的&lt;strong&gt;依赖图分析&lt;/strong&gt;，智能增量构建&lt;/li&gt;
+&lt;li&gt;内置&lt;strong&gt;代码生成器&lt;/strong&gt;（schematics）&lt;/li&gt;
+&lt;li&gt;丰富的插件生态（React、Vue、Node、Nest 等）&lt;/li&gt;
+&lt;li&gt;可视化依赖图：&lt;code&gt;nx graph&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;官方文档：&lt;/strong&gt; &lt;a class="link" href="https://nx.dev/" target="_blank" rel="noopener"
+&gt;Nx Documentation&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="42-turborepo"&gt;4.2 Turborepo
+&lt;/h3&gt;&lt;p&gt;由 &lt;strong&gt;Vercel&lt;/strong&gt; 收购的高性能构建系统，专注于&lt;strong&gt;任务编排和缓存&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;远程缓存&lt;/strong&gt;，团队共享构建产物&lt;/li&gt;
+&lt;li&gt;极简配置，开箱即用&lt;/li&gt;
+&lt;li&gt;与 Vercel 深度集成&lt;/li&gt;
+&lt;li&gt;支持并行执行和智能调度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;官方文档：&lt;/strong&gt; &lt;a class="link" href="https://turbo.build/repo" target="_blank" rel="noopener"
+&gt;Turborepo&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="43-lerna"&gt;4.3 Lerna
+&lt;/h3&gt;&lt;p&gt;最早的 JavaScript MonoRepo 工具之一，专注于&lt;strong&gt;包版本管理和发布&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;版本管理：独立版本或统一版本&lt;/li&gt;
+&lt;li&gt;自动化 npm 发布流程&lt;/li&gt;
+&lt;li&gt;变更日志生成&lt;/li&gt;
+&lt;li&gt;现已与 Nx 集成，推荐配合使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;官方文档：&lt;/strong&gt; &lt;a class="link" href="https://lerna.js.org/" target="_blank" rel="noopener"
+&gt;Lerna&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id="44-pnpm-workspaces"&gt;4.4 pnpm Workspaces
+&lt;/h3&gt;&lt;p&gt;pnpm 原生支持的 MonoRepo 方案，以&lt;strong&gt;磁盘空间效率&lt;/strong&gt;著称。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;硬链接存储，节省磁盘空间&lt;/li&gt;
+&lt;li&gt;严格的依赖解析，避免幽灵依赖&lt;/li&gt;
+&lt;li&gt;原生 workspace 协议支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;官方文档：&lt;/strong&gt; &lt;a class="link" href="https://pnpm.io/workspaces" target="_blank" rel="noopener"
+&gt;pnpm Workspaces&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="5-工作流程示意"&gt;5. 工作流程示意
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+START["开发者提交代码"] --&gt; CHANGE{"检测变更文件"}
+CHANGE --&gt; |"apps/web-app"| AFFECT1["受影响项目分析"]
+CHANGE --&gt; |"packages/ui"| AFFECT2["受影响项目分析"]
+AFFECT1 --&gt; DEP1["依赖图遍历"]
+AFFECT2 --&gt; DEP2["依赖图遍历"]
+DEP1 --&gt; BUILD{"是否需要构建?"}
+DEP2 --&gt; BUILD
+BUILD --&gt; |"缓存命中"| CACHE["✅ 使用缓存"]
+BUILD --&gt; |"缓存未命中"| COMPILE["🔨 执行构建"]
+CACHE --&gt; TEST["运行测试"]
+COMPILE --&gt; TEST
+TEST --&gt; |"通过"| DEPLOY["部署/发布"]
+TEST --&gt; |"失败"| FAIL["❌ 阻止合并"]
+style START fill:#4caf50,color:#fff
+style DEPLOY fill:#2196f3,color:#fff
+style FAIL fill:#f44336,color:#fff
+&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id="6-优缺点总结"&gt;6. 优缺点总结
+&lt;/h2&gt;&lt;h3 id="-优点"&gt;✅ 优点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;代码共享便捷&lt;/strong&gt;：内部包无需发布即可使用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;原子提交&lt;/strong&gt;：跨项目重构一次完成&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;统一工具链&lt;/strong&gt;：ESLint、Prettier、TypeScript 配置一致&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖版本统一&lt;/strong&gt;：避免&amp;quot;依赖地狱&amp;quot;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;团队协作高效&lt;/strong&gt;：统一的 PR、Code Review 流程&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代码可见性高&lt;/strong&gt;：便于代码复用和知识共享&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="-缺点"&gt;❌ 缺点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;仓库体积大&lt;/strong&gt;：克隆和拉取可能缓慢&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CI/CD 复杂&lt;/strong&gt;：需要智能增量构建系统&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;权限控制粗&lt;/strong&gt;：难以限制特定目录的访问&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;工具学习成本&lt;/strong&gt;：需要掌握 Nx/Turborepo 等工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构建性能挑战&lt;/strong&gt;：大型仓库需要精细的缓存策略&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="7-适用场景建议"&gt;7. 适用场景建议
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+SCENE["项目场景"] --&gt; Q1{"项目数量?"}
+Q1 --&gt; |"1-3 个"| SMALL["MultiRepo 可能更简单"]
+Q1 --&gt; |"5+ 个"| Q2{"项目间依赖?"}
+Q2 --&gt; |"高度耦合"| MONO["✅ 推荐 MonoRepo"]
+Q2 --&gt; |"完全独立"| Q3{"团队规模?"}
+Q3 --&gt; |"小型团队"| MULTI["MultiRepo 可行"]
+Q3 --&gt; |"大型团队/多团队"| Q4{"需要统一规范?"}
+Q4 --&gt; |"是"| MONO
+Q4 --&gt; |"否"| MULTI
+style MONO fill:#4caf50,color:#fff
+style MULTI fill:#ff9800,color:#fff
+style SMALL fill:#ff9800,color:#fff
+&lt;/pre&gt;
+&lt;h3 id="推荐使用-monorepo-的场景"&gt;推荐使用 MonoRepo 的场景
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;微前端架构&lt;/strong&gt;：多个前端应用共享组件库&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;全栈项目&lt;/strong&gt;：前端、后端、移动端共享类型定义&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;组件库开发&lt;/strong&gt;：多个包需要协同开发和版本管理&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大型团队&lt;/strong&gt;：需要统一的代码规范和工具链&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;频繁跨项目重构&lt;/strong&gt;：需要原子提交能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="8-快速上手示例"&gt;8. 快速上手示例
+&lt;/h2&gt;&lt;h3 id="使用-nx-创建-monorepo"&gt;使用 Nx 创建 MonoRepo
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建新的 MonoRepo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npx create-nx-workspace@latest my-org --preset&lt;span style="color:#f92672"&gt;=&lt;/span&gt;apps
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 目录结构&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;my-org/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── apps/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── web-app/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── admin-app/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── libs/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── ui/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── utils/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── nx.json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── package.json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;└── tsconfig.base.json
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="使用-turborepo-创建-monorepo"&gt;使用 Turborepo 创建 MonoRepo
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建新的 Turborepo 项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npx create-turbo@latest my-turborepo
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 目录结构&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;my-turborepo/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── apps/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── web/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── docs/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── packages/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── ui/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ ├── tsconfig/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;│ └── eslint-config/
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;├── turbo.json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;└── package.json
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="9-参考链接"&gt;9. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://nx.dev/" target="_blank" rel="noopener"
+&gt;Nx Official Documentation&lt;/a&gt; — Nx 官方文档，最全面的 MonoRepo 指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://turbo.build/repo" target="_blank" rel="noopener"
+&gt;Turborepo Documentation&lt;/a&gt; — Vercel 出品的高性能构建系统&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://lerna.js.org/" target="_blank" rel="noopener"
+&gt;Lerna Documentation&lt;/a&gt; — JavaScript 包版本管理工具&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pnpm.io/workspaces" target="_blank" rel="noopener"
+&gt;pnpm Workspaces&lt;/a&gt; — pnpm 官方 Workspace 文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://research.google/pubs/pub45424/" target="_blank" rel="noopener"
+&gt;Google&amp;rsquo;s MonoRepo Practices&lt;/a&gt; — Google 关于大规模 MonoRepo 的学术论文&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.atlassian.com/git/tutorials/monorepos" target="_blank" rel="noopener"
+&gt;Why MonoRepo - Atlassian&lt;/a&gt; — Atlassian 对 MonoRepo 的介绍&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;总结&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;MonoRepo 是一种将多个项目放在同一仓库的管理策略，适合&lt;strong&gt;高度耦合、需要频繁协作&lt;/strong&gt;的项目。选择 MonoRepo 还是 MultiRepo 应根据&lt;strong&gt;团队规模、项目复杂度、协作需求&lt;/strong&gt;综合考量。现代工具如 &lt;strong&gt;Nx&lt;/strong&gt; 和 &lt;strong&gt;Turborepo&lt;/strong&gt; 已大幅降低了 MonoRepo 的维护成本。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>grpc stream传输方式</title><link>https://www.jeffkafka.top/post/grpc-stream%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F/</link><pubDate>Mon, 09 Feb 2026 20:15:42 +0800</pubDate><guid>https://www.jeffkafka.top/post/grpc-stream%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F/</guid><description>&lt;img src="https://w.wallhaven.cc/full/qr/wallhaven-qrj31d.jpg" alt="Featured image of post grpc stream传输方式" /&gt;&lt;h1 id="grpc-四种-stream-传输方式详解"&gt;gRPC 四种 Stream 传输方式详解
 &lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
 &lt;/h2&gt;&lt;p&gt;gRPC 是 Google 开源的高性能 RPC 框架，基于 &lt;strong&gt;HTTP/2&lt;/strong&gt; 协议和 &lt;strong&gt;Protocol Buffers&lt;/strong&gt; 序列化。其核心优势之一就是支持四种不同的通信模式，满足各种业务场景需求。&lt;/p&gt;
 &lt;blockquote&gt;
