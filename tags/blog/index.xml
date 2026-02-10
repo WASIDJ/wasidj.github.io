@@ -448,10 +448,10 @@ TXT @ v=spf1 -all - 自动
 &lt;/ul&gt;
 &lt;pre class="mermaid"&gt;
 graph TD
-A[Start] --&gt; B{Is it working?}
-B -- Yes --&gt; C[Great!]
-B -- No --&gt; D[Check the code]
-D --&gt; B
+A[Start] --&amp;gt; B{Is it working?}
+B -- Yes --&amp;gt; C[Great!]
+B -- No --&amp;gt; D[Check the code]
+D --&amp;gt; B
 &lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;themes stack 有过度防御 修改 &lt;code&gt;render-codeblock-mermaid.html&lt;/code&gt; &lt;code&gt;{{ .Inner | htmlEscape | safeHTML }}&lt;/code&gt;&lt;/li&gt;

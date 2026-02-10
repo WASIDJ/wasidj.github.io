@@ -80,10 +80,10 @@
 <span>Yes!, they can.</span></div><div class=admonition-content><div class="admonition example"><div class=admonition-header><svg viewBox="0 0 640 512"><path d="M192 96a48 48 0 100-96 48 48 0 100 96zm-8 384V352h16v128c0 17.7 14.3 32 32 32s32-14.3 32-32V192h56 64 16c17.7.0 32-14.3 32-32s-14.3-32-32-32h-16V64h192v192H384v-32h-64v48c0 26.5 21.5 48 48 48h224c26.5.0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H368c-26.5.0-48 21.5-48 48v80h-76.9-65.9c-33.7.0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9V480c0 17.7 14.3 32 32 32s32-14.3 32-32z"/></svg>
 <span>You can even use multiple layers of nesting.</span></div></div></div></div></div></div><h3 id=mermaid-diagram>mermaid diagram</h3><ul><li>需要添加 <code>mermaid: true</code> 到 yaml 头部</li></ul><pre class=mermaid>
   graph TD
-	A[Start] --> B{Is it working?}
-	B -- Yes --> C[Great!]
-	B -- No --> D[Check the code]
-	D --> B
+	A[Start] --&gt; B{Is it working?}
+	B -- Yes --&gt; C[Great!]
+	B -- No --&gt; D[Check the code]
+	D --&gt; B 
 </pre><ul><li>themes stack 有过度防御 修改 <code>render-codeblock-mermaid.html</code> <code>{{ .Inner | htmlEscape | safeHTML }}</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>pre</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;mermaid&#34;</span>&gt;
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>{{ .Inner}}
