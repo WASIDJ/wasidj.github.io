@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 10 Feb 2026 16:18:05 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>MonoRepo</title><link>https://www.jeffkafka.top/post/monorepo/</link><pubDate>Mon, 09 Feb 2026 21:30:38 +0800</pubDate><guid>https://www.jeffkafka.top/post/monorepo/</guid><description>&lt;img src="https://w.wallhaven.cc/full/5y/wallhaven-5yzpe5.jpg" alt="Featured image of post MonoRepo" /&gt;&lt;h1 id="monorepo-详解"&gt;MonoRepo 详解
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 10 Feb 2026 16:20:52 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo 问题修复</title><link>https://www.jeffkafka.top/post/hugo-%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/</link><pubDate>Tue, 10 Feb 2026 16:20:52 +0800</pubDate><guid>https://www.jeffkafka.top/post/hugo-%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/</guid><description>&lt;img src="https://w.wallhaven.cc/full/yq/wallhaven-yq591g.jpg" alt="Featured image of post hugo 问题修复" /&gt;&lt;h2 id="1--mermaid-渲染问题"&gt;1. mermaid 渲染问题
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/1770711816432-image.png"
+loading="lazy"
+alt="image.png"
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.jeffkafka.top/post/%E5%8D%9A%E5%AE%A2%E5%AE%8C%E5%96%84%E4%BB%A3%E5%8A%9E%E6%B8%85%E5%8D%95/" target="_blank" rel="noopener"
+&gt;博客完善代办清单&lt;/a&gt; 正常&lt;/li&gt;
+&lt;li&gt;&lt;img src="https://cdn.jsdelivr.net/gh/wasidj/picBed@main/img/1770711876128-image.png"
+loading="lazy"
+alt="image.png"
+&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>MonoRepo</title><link>https://www.jeffkafka.top/post/monorepo/</link><pubDate>Mon, 09 Feb 2026 21:30:38 +0800</pubDate><guid>https://www.jeffkafka.top/post/monorepo/</guid><description>&lt;img src="https://w.wallhaven.cc/full/5y/wallhaven-5yzpe5.jpg" alt="Featured image of post MonoRepo" /&gt;&lt;h1 id="monorepo-详解"&gt;MonoRepo 详解
 &lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;MonoRepo&lt;/strong&gt;（Monolithic Repository，单体仓库）是一种软件开发策略，指将多个相关或不相关的项目代码存储在&lt;strong&gt;同一个版本控制仓库&lt;/strong&gt;中。&lt;/p&gt;
 &lt;p&gt;与之相对的是 &lt;strong&gt;MultiRepo&lt;/strong&gt;（PolyRepo），即每个项目都有独立的仓库。&lt;/p&gt;
