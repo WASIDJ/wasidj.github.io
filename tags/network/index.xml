@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Network on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/network/</link><description>Recent content in Network on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 22 Feb 2026 17:18:51 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/network/index.xml" rel="self" type="application/rss+xml"/><item><title>Arch Linux 配置 Wireshark 指南</title><link>https://www.jeffkafka.top/post/arch%E9%85%8D%E7%BD%AEwireshark/</link><pubDate>Sun, 22 Feb 2026 17:13:11 +0800</pubDate><guid>https://www.jeffkafka.top/post/arch%E9%85%8D%E7%BD%AEwireshark/</guid><description>&lt;img src="https://w.wallhaven.cc/full/5y/wallhaven-5yz8z8.jpg" alt="Featured image of post Arch Linux 配置 Wireshark 指南" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;本文将详细介绍在 Arch Linux 系统上安装和配置 Wireshark 网络抓包工具的完整流程，包括权限配置、GUI 和 CLI 版本选择，以及常见问题的解决方案。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id="arch-linux-配置-wireshark-完整指南"&gt;Arch Linux 配置 Wireshark 完整指南
+&lt;/h1&gt;&lt;p&gt;Wireshark 是世界上最强大的网络协议分析器之一，能够让你在微观级别洞察网络流量。本文将详细介绍在 Arch Linux 上的配置方法。&lt;/p&gt;
+&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;Wireshark 是一个免费开源的包分析器，广泛用于网络故障排查、分析、软件和通信协议开发以及教育领域。&lt;/p&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;官方定义&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Wireshark 是全球领先的网络协议分析工具，支持捕获和分析网络流量。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;来源：&lt;a class="link" href="https://www.wireshark.org/" target="_blank" rel="noopener"
+&gt;Wireshark 官方网站&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="arch-linux-包选择"&gt;Arch Linux 包选择
+&lt;/h3&gt;&lt;p&gt;在 Arch Linux 上，Wireshark 提供两个主要包：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;包名&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;th&gt;适用场景&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;wireshark-qt&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Qt GUI 图形界面&lt;/td&gt;
+&lt;td&gt;需要图形界面分析&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;wireshark-cli&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;命令行工具 (tshark)&lt;/td&gt;
+&lt;td&gt;服务器/无 GUI 环境&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;用户运行 Wireshark&amp;#34;] --&amp;gt; B{&amp;#34;权限检查&amp;#34;}
+B --&amp;gt;|非 root| C[&amp;#34;权限分离机制&amp;#34;]
+B --&amp;gt;|root| D[&amp;#34;不安全警告&amp;#34;]
+C --&amp;gt; E[&amp;#34;dumpcap 以 root 运行&amp;#34;]
+C --&amp;gt; F[&amp;#34;Wireshark UI 以普通用户运行&amp;#34;]
+E --&amp;gt; G[&amp;#34;捕获网络包&amp;#34;]
+F --&amp;gt; H[&amp;#34;分析和显示&amp;#34;]
+G --&amp;gt; H
+style D fill:#ff6b6b
+style E fill:#4ecdc4
+style F fill:#4ecdc4
+&lt;/pre&gt;
+&lt;h3 id="权限分离机制"&gt;权限分离机制
+&lt;/h3&gt;&lt;p&gt;Wireshark 实现了权限分离机制：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;dumpcap&lt;/strong&gt;: 以 root 权限运行，负责实际捕获网络包&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Wireshark UI/tshark&lt;/strong&gt;: 以普通用户运行，负责分析和显示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;安全警告&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&lt;strong&gt;永远不要以 root 用户运行 Wireshark&lt;/strong&gt;！这会带来严重的安全风险。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="3-arch-linux-安装步骤"&gt;3. Arch Linux 安装步骤
+&lt;/h2&gt;&lt;h3 id="31-安装-wireshark"&gt;3.1 安装 Wireshark
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装 Qt GUI 版本（推荐桌面用户）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo pacman -S wireshark-qt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或安装 CLI 版本（服务器/无 GUI 环境）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo pacman -S wireshark-cli
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="admonition info"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/&gt;&lt;/svg&gt;
+&lt;span&gt;包信息&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;wireshark-cli&lt;/code&gt;: 4.6.2-2 版本，大小 19.4 MB&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;wireshark-qt&lt;/code&gt;: 4.6.2-2 版本，大小 4.5 MB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;来源：&lt;a class="link" href="https://archlinux.org/packages/extra/x86_64/wireshark-qt/" target="_blank" rel="noopener"
+&gt;Arch Linux 官方包&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="32-配置捕获权限"&gt;3.2 配置捕获权限
+&lt;/h3&gt;&lt;p&gt;安装后，&lt;code&gt;wireshark-cli&lt;/code&gt; 会自动设置 &lt;code&gt;/usr/bin/dumpcap&lt;/code&gt; 的权限：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 将当前用户添加到 wireshark 组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo usermod -aG wireshark $USER
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或使用 gpasswd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo gpasswd -a $USER wireshark
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 重新登录后生效&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;newgrp wireshark
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="33-验证安装"&gt;3.3 验证安装
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 检查 wireshark 组权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;groups | grep wireshark
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 测试 tshark CLI&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tshark --version
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 测试 Wireshark GUI&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;wireshark
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="4-常见问题与解决方案"&gt;4. 常见问题与解决方案
+&lt;/h2&gt;&lt;h3 id="41-权限问题"&gt;4.1 权限问题
+&lt;/h3&gt;&lt;p&gt;如果普通用户无法捕获网络包：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 检查 dumpcap 权限&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ls -l /usr/bin/dumpcap
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 手动设置权限（如果需要）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo setcap cap_net_raw,cap_net_admin+eip /usr/bin/dumpcap
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-运行崩溃问题"&gt;4.2 运行崩溃问题
+&lt;/h3&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;已知问题&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;有用户报告在某些 Arch Linux 系统上运行 tshark 时出现 &lt;code&gt;IOT instruction (core dumped)&lt;/code&gt; 错误。&lt;/p&gt;
+&lt;p&gt;来源：&lt;a class="link" href="https://bbs.archlinux.org/viewtopic.php?id=305878" target="_blank" rel="noopener"
+&gt;Arch Linux 论坛&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;可能的解决方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;确保系统完全更新：&lt;code&gt;sudo pacman -Syu&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;检查是否是 AUR 版本的问题，尝试官方源版本&lt;/li&gt;
+&lt;li&gt;查看 coredump：&lt;code&gt;coredumpctl debug&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="5-进阶配置"&gt;5. 进阶配置
+&lt;/h2&gt;&lt;h3 id="51-捕获过滤器语法"&gt;5.1 捕获过滤器语法
+&lt;/h3&gt;&lt;p&gt;Wireshark 使用 BPF (Berkeley Packet Filter) 语法：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 只捕获 HTTP 流量&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tcp port &lt;span style="color:#ae81ff"&gt;80&lt;/span&gt; or tcp port &lt;span style="color:#ae81ff"&gt;443&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 排除特定 IP&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;not host 192.168.1.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 只捕获特定协议&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;udp or tcp
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="52-常用-tshark-命令"&gt;5.2 常用 tshark 命令
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 实时捕获并显示&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tshark -i eth0
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 捕获指定数量包后退出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tshark -i eth0 -c &lt;span style="color:#ae81ff"&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 保存到文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tshark -i eth0 -w capture.pcap
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 只显示特定协议&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tshark -i eth0 -Y &lt;span style="color:#e6db74"&gt;&amp;#34;http&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="6-总结与建议"&gt;6. 总结与建议
+&lt;/h2&gt;&lt;h3 id="核心要点"&gt;核心要点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;选择合适的包&lt;/strong&gt;：桌面用户用 &lt;code&gt;wireshark-qt&lt;/code&gt;，服务器用 &lt;code&gt;wireshark-cli&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;权限配置&lt;/strong&gt;：将用户加入 &lt;code&gt;wireshark&lt;/code&gt; 组，不要以 root 运行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全意识&lt;/strong&gt;：捕获网络流量涉及隐私法律问题，确保合规使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="实际应用建议"&gt;实际应用建议
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习 BPF 过滤器语法以提高效率&lt;/li&gt;
+&lt;li&gt;熟悉常见协议（TCP/IP, HTTP, DNS）的数据包结构&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;termshark&lt;/code&gt; 作为终端 UI 替代方案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;推荐资源&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;官方文档 &lt;a class="link" href="https://www.wireshark.org/docs/" target="_blank" rel="noopener"
+&gt;Wireshark User&amp;rsquo;s Guide&lt;/a&gt; 是学习的最佳起点。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="7-参考链接"&gt;7. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.wireshark.org/" target="_blank" rel="noopener"
+&gt;Wireshark 官方网站&lt;/a&gt; — 官方首页&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://wiki.archlinux.org/title/Wireshark" target="_blank" rel="noopener"
+&gt;Wireshark - ArchWiki&lt;/a&gt; — Arch Linux 官方 Wiki&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://archlinux.org/packages/extra/x86_64/wireshark-qt/" target="_blank" rel="noopener"
+&gt;wireshark-qt 包详情&lt;/a&gt; — Arch 官方仓库&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://archlinux.org/packages/extra/x86_64/wireshark-cli/" target="_blank" rel="noopener"
+&gt;wireshark-cli 包详情&lt;/a&gt; — Arch 官方仓库&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://gitlab.com/wireshark/wireshark/-/wikis/CaptureSetup/CapturePrivileges" target="_blank" rel="noopener"
+&gt;Wireshark 权限配置文档&lt;/a&gt; — 官方权限设置指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://bbs.archlinux.org/viewtopic.php?id=305878" target="_blank" rel="noopener"
+&gt;Arch Linux 论坛 - Wireshark 问题讨论&lt;/a&gt; — 社区问题解决方案&lt;/li&gt;
+&lt;/ol&gt;</description></item></channel></rss>

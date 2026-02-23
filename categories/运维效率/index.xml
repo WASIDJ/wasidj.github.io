@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>运维效率 on Ryou's Blog</title><link>https://www.jeffkafka.top/categories/%E8%BF%90%E7%BB%B4%E6%95%88%E7%8E%87/</link><description>Recent content in 运维效率 on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 21 Feb 2026 15:41:08 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/categories/%E8%BF%90%E7%BB%B4%E6%95%88%E7%8E%87/index.xml" rel="self" type="application/rss+xml"/><item><title>tmux 使用教程</title><link>https://www.jeffkafka.top/post/tmux-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</link><pubDate>Fri, 30 Jan 2026 14:44:27 +0800</pubDate><guid>https://www.jeffkafka.top/post/tmux-%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</guid><description>&lt;img src="https://w.wallhaven.cc/full/vp/wallhaven-vpz9r5.jpg" alt="Featured image of post tmux 使用教程" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&lt;strong&gt;作案动机&lt;/strong&gt;：希望使用终端更加高效，特别是在云端算力平台训练模型时保持会话持久化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任务：
+&lt;ol&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 熟悉基本概念&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 配置顺手快捷键&lt;/li&gt;
+&lt;li&gt;&lt;input checked="" disabled="" type="checkbox"&gt; 美化显示&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;h3 id="什么是-tmux"&gt;什么是 tmux？
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;tmux&lt;/strong&gt;（Terminal Multiplexer，终端复用器）是一款开源的终端复用工具，它允许用户在单个终端窗口中运行多个独立的终端会话，并且在 SSH 连接断开后仍能保持会话持续运行。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://github.com/tmux/tmux" target="_blank" rel="noopener"
+&gt;Tmux 官方 GitHub 仓库&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;当你通过 SSH 连接到远程服务器时，是否曾遇到以下困境：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;正在进行深度学习模型训练，SSH 连接突然断开，几个小时的工作付诸东流&lt;/li&gt;
+&lt;li&gt;需要同时监控多个终端：训练日志、GPU 状态、代码调试&lt;/li&gt;
+&lt;li&gt;希望在离开电脑后回来还能继续之前的工作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;tmux 正是为解决这些问题而设计的。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;本地终端&amp;#34;] --&amp;gt; |&amp;#34;SSH 连接&amp;#34;| B[&amp;#34;远程服务器&amp;#34;]
+B --&amp;gt; C{&amp;#34;tmux Session&amp;#34;}
+C --&amp;gt; |&amp;#34;断开连接&amp;#34;| D[&amp;#34;Session 继续运行&amp;#34;]
+C --&amp;gt; |&amp;#34;重新连接&amp;#34;| E[&amp;#34;恢复工作状态&amp;#34;]
+D --&amp;gt; E
+F[&amp;#34;训练任务&amp;#34;] --&amp;gt; |&amp;#34;在 session 中&amp;#34;| C
+G[&amp;#34;监控面板&amp;#34;] --&amp;gt; |&amp;#34;在 session 中&amp;#34;| C
+&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;概念参考：&lt;a class="link" href="https://man.openbsd.org/tmux.1" target="_blank" rel="noopener"
+&gt;Tmux 官方文档&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;p&gt;tmux 的架构由三个核心层次组成：&lt;strong&gt;Session（会话）&lt;/strong&gt;、&lt;strong&gt;Window（窗口）&lt;/strong&gt; 和 &lt;strong&gt;Pane（面板）&lt;/strong&gt;。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart TD
+subgraph Session[&amp;#34;Session（会话）&amp;#34;]
+subgraph Window1[&amp;#34;Window 1: 训练&amp;#34;]
+Pane1[&amp;#34;Pane: 训练进程&amp;#34;]
+Pane2[&amp;#34;Pane: 日志监控&amp;#34;]
+end
+subgraph Window2[&amp;#34;Window 2: 开发&amp;#34;]
+Pane3[&amp;#34;Pane: 代码编辑&amp;#34;]
+Pane4[&amp;#34;Pane: Python REPL&amp;#34;]
+end
+subgraph Window3[&amp;#34;Window 3: 系统&amp;#34;]
+Pane5[&amp;#34;Pane: GPU 监控&amp;#34;]
+end
+end
+&lt;/pre&gt;
+&lt;h3 id="21-session会话"&gt;2.1 Session（会话）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Session&lt;/strong&gt; 是 tmux 的最顶层容器，代表一个独立的工作环境。你可以为一个项目创建一个 session，例如 &lt;code&gt;ml-training&lt;/code&gt;，所有的 window 都属于这个 session。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;持久化&lt;/strong&gt;：即使 SSH 连接断开，session 仍会在服务器上保持运行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可切换&lt;/strong&gt;：可以同时运行多个 session，通过 &lt;code&gt;tmux attach&lt;/code&gt; 重新连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="22-window窗口"&gt;2.2 Window（窗口）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Window&lt;/strong&gt; 相当于浏览器中的标签页，一个 session 可以包含多个 window。每个 window 占据整个屏幕，可以通过快捷键在不同 window 间切换。&lt;/p&gt;
+&lt;h3 id="23-pane面板"&gt;2.3 Pane（面板）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Pane&lt;/strong&gt; 是 tmux 最强大的功能之一——它允许你在一个 window 内分割出多个终端区域。你可以水平或垂直分割，实现「一边训练模型，一边查看日志，一边编写代码」的工作流。&lt;/p&gt;
+&lt;h3 id="24-prefix-key前缀键"&gt;2.4 Prefix Key（前缀键）
+&lt;/h3&gt;&lt;p&gt;tmux 的所有快捷键都需要以前缀键开头，默认为 &lt;code&gt;Ctrl+b&lt;/code&gt;（简写为 &lt;code&gt;C-b&lt;/code&gt;）。这意味着如果你想执行某个快捷键操作，需要先按下 &lt;code&gt;C-b&lt;/code&gt;，松开后再按对应的功能键。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="3-云端算力平台训练场景"&gt;3. 云端算力平台训练场景
+&lt;/h2&gt;&lt;h3 id="31-为什么深度学习训练需要-tmux"&gt;3.1 为什么深度学习训练需要 tmux？
+&lt;/h3&gt;&lt;p&gt;在云端算力平台（如 RunPod、Lambda Labs、Paperspace、Vast.ai 等）训练模型时，会遇到以下挑战：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;挑战&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;th&gt;tmux 解决方案&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;SSH 断开&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;网络不稳定导致训练中断&lt;/td&gt;
+&lt;td&gt;Session 持久化，进程不中断&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;长时间训练&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;模型训练可能需要数小时甚至数天&lt;/td&gt;
+&lt;td&gt;后台持续运行，无需保持连接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;多任务并行&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;同时运行多个实验/预处理&lt;/td&gt;
+&lt;td&gt;多 window/pane 分屏管理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;资源监控&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;需要实时查看 GPU/CPU 状态&lt;/td&gt;
+&lt;td&gt;分屏显示，一目了然&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://docs.runpod.io/tips-and-tricks/tmux" target="_blank" rel="noopener"
+&gt;RunPod 官方文档 - Using TMUX for persistent sessions&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="32-典型训练工作流"&gt;3.2 典型训练工作流
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart LR
+A[&amp;#34;SSH 连接到 GPU 服务器&amp;#34;] --&amp;gt; B[&amp;#34;创建 tmux session&amp;#34;]
+B --&amp;gt; C[&amp;#34;分割 Pane 布局&amp;#34;]
+C --&amp;gt; D1[&amp;#34;Pane 1: 训练命令&amp;#34;]
+C --&amp;gt; D2[&amp;#34;Pane 2: 日志监控&amp;lt;br&amp;gt;tail -f training.log&amp;#34;]
+C --&amp;gt; D3[&amp;#34;Pane 3: GPU 监控&amp;lt;br&amp;gt;nvidia-smi -l 1&amp;#34;]
+D1 --&amp;gt; E[&amp;#34;detach 退出&amp;#34;]
+E --&amp;gt; F[&amp;#34;关闭 SSH&amp;#34;]
+F --&amp;gt; G[&amp;#34;训练继续进行&amp;#34;]
+G --&amp;gt; H[&amp;#34;稍后重新 SSH 连接&amp;#34;]
+H --&amp;gt; I[&amp;#34;tmux attach 恢复&amp;#34;]
+&lt;/pre&gt;
+&lt;h3 id="33-runpod-官方推荐配置"&gt;3.3 RunPod 官方推荐配置
+&lt;/h3&gt;&lt;p&gt;根据 RunPod 官方文档，tmux 是管理远程训练任务的首选工具：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://docs.runpod.io/tips-and-tricks/tmux" target="_blank" rel="noopener"
+&gt;RunPod Documentation - Persistent sessions with TMUX&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装 tmux&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;apt-get update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y tmux
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建训练 session&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux new -s training
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 在 session 中运行训练&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python train.py --model resnet50 --epochs &lt;span style="color:#ae81ff"&gt;100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 按 C-b d 分离 session（detach）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 训练继续在后台运行&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 稍后恢复 session&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux attach -t training
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="4-快速入门命令"&gt;4. 快速入门命令
+&lt;/h2&gt;&lt;h3 id="41-安装-tmux"&gt;4.1 安装 tmux
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Ubuntu / Debian&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt update &lt;span style="color:#f92672"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo apt install tmux
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# macOS&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brew install tmux
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# CentOS / RHEL&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo yum install tmux
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-基础命令一览"&gt;4.2 基础命令一览
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;操作&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;创建新 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux new -s &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;创建并进入名为 &lt;code&gt;&amp;lt;name&amp;gt;&lt;/code&gt; 的 session&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;列出所有 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux ls&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;显示当前服务器上的 session&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;进入 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux a -t &amp;lt;name&amp;gt;&lt;/code&gt; 或 &lt;code&gt;tmux attach -t &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重新连接到指定 session&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;分离 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;（在 session 内）&lt;/td&gt;
+&lt;td&gt;退出但保持 session 运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;杀死 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux kill-session -t &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;终止指定 session&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;重命名 session&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C-b $&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;在 session 内重命名当前 session&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="5-快捷键完全指南"&gt;5. 快捷键完全指南
+&lt;/h2&gt;&lt;h3 id="51-前缀键与基本操作"&gt;5.1 前缀键与基本操作
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;默认前缀键&lt;/strong&gt;：&lt;code&gt;Ctrl+b&lt;/code&gt;（&lt;code&gt;C-b&lt;/code&gt;）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://grafdavid.com/cheatsheets/tmux/" target="_blank" rel="noopener"
+&gt;Tmux Cheat Sheet - David Graf&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;功能&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;分离当前 session&lt;/td&gt;
+&lt;td&gt;退出但保持运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b $&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重命名当前 session&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b s&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出并切换 session&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b :&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;进入 tmux 命令行&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="52-window窗口操作"&gt;5.2 Window（窗口）操作
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;功能&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b c&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;创建新 window&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b ,&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重命名当前 window&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b n&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到下一个 window&lt;/td&gt;
+&lt;td&gt;next&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b p&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到上一个 window&lt;/td&gt;
+&lt;td&gt;previous&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b 0-9&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到指定编号的 window&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b l&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到上一个 active 的 window&lt;/td&gt;
+&lt;td&gt;last&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b w&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有 window&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;amp;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;关闭当前 window&lt;/td&gt;
+&lt;td&gt;确认后杀死&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="53-pane面板操作"&gt;5.3 Pane（面板）操作
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;功能&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b %&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;垂直分割&lt;/td&gt;
+&lt;td&gt;左侧/右侧&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b &amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;水平分割&lt;/td&gt;
+&lt;td&gt;上方/下方&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b o&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;在 pane 间切换&lt;/td&gt;
+&lt;td&gt;按顺序循环&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b 方向键&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到指定方向的 pane&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b ;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换到上一个 active 的 pane&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b x&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;关闭当前 pane&lt;/td&gt;
+&lt;td&gt;确认后杀死&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b z&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;放大/还原当前 pane&lt;/td&gt;
+&lt;td&gt;zoom 模式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b 空格&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;切换 pane 布局&lt;/td&gt;
+&lt;td&gt;平铺/堆叠等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b {&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;与左 pane 交换位置&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b }&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;与右 pane 交换位置&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b M-方向键&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;调整 pane 大小&lt;/td&gt;
+&lt;td&gt;Meta + 方向键&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="54-复制模式"&gt;5.4 复制模式
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;功能&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b [&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;进入复制模式&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;v&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;开始选择&lt;/td&gt;
+&lt;td&gt;（在复制模式内）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;y&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;复制选中的内容&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;q&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;退出复制模式&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;C-b ]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;粘贴&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="6-高效配置与快捷键自定义"&gt;6. 高效配置与快捷键自定义
+&lt;/h2&gt;&lt;h3 id="61-推荐配置-tmuxconf"&gt;6.1 推荐配置 ~/.tmux.conf
+&lt;/h3&gt;&lt;p&gt;以下是一个经过优化的 tmux 配置，将前缀键改为 &lt;code&gt;C-a&lt;/code&gt;（更符合人体工程学），并添加了许多实用功能：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ~/.tmux.conf&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ========== 基础设置 ==========&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 将前缀键从 C-b 改为 C-a&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g prefix C-a
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;unbind C-b
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind C-a send-prefix
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 启用鼠标支持&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g mouse on
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 设置 escape 时间（快速响应）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -sg escape-time &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 启动 UTF-8 支持&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g utf8 on
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-utf8 on
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ========== 窗口与面板索引 ==========&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 窗口从 1 开始编号&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g base-index &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g pane-base-index &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ========== 状态栏 ==========&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 刷新状态栏频率（秒）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-interval &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 状态栏位置（顶部/底部）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-position bottom
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 窗口活动状态通知&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g monitor-activity on
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g visual-activity on
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ========== 快捷键绑定 ==========&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 重新加载配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind r source-file ~/.tmux.conf &lt;span style="color:#ae81ff"&gt;\;&lt;/span&gt; display &lt;span style="color:#e6db74"&gt;&amp;#34;Config reloaded!&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# | 垂直分割（更好记）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind | split-window -h
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# - 水平分割&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind - split-window -v
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# HJKL 面板导航（Vim 风格）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind h &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt;-pane -L
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind j &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt;-pane -D
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind k &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt;-pane -U
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind l &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt;-pane -R
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 调整面板大小&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r H resize-pane -L &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r J resize-pane -D &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r K resize-pane -U &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r L resize-pane -R &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 窗口快速切换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r n next-window
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bind -r p previous-window
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ========== 美化设置 ==========&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 状态栏颜色&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-bg colour234
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-fg colour255
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 窗口标题栏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-bg colour234
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-fg colour249
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-current-bg colour235
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-current-fg colour228
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-activity-bg colour235
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;setw -g window-status-activity-fg colour228
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 面板边框颜色&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g pane-border-fg colour235
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g pane-border-bg colour234
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g pane-active-border-fg colour228
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g pane-active-border-bg colour234
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 消息提示&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g message-bg colour235
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g message-fg colour228
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g display-time &lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="62-配置加载与生效"&gt;6.2 配置加载与生效
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建配置文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;touch ~/.tmux.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;vim ~/.tmux.conf &lt;span style="color:#75715e"&gt;# 粘贴上面的配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 在 tmux 内重新加载配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;C-b r
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或者在命令行重新加载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux source-file ~/.tmux.conf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://willhbr.net/2024/03/06/tmux-conf-with-commentary/" target="_blank" rel="noopener"
+&gt;Tmux.conf with commentary - Will Richardson&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="63-插件推荐tpm"&gt;6.3 插件推荐（TPM）
+&lt;/h3&gt;&lt;p&gt;使用 &lt;a class="link" href="https://github.com/tmux-plugins/tpm" target="_blank" rel="noopener"
+&gt;Tmux Plugin Manager (TPM)&lt;/a&gt; 管理插件：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装 TPM&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 在 ~/.tmux.conf 末尾添加：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @plugin &lt;span style="color:#e6db74"&gt;&amp;#39;tmux-plugins/tpm&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @plugin &lt;span style="color:#e6db74"&gt;&amp;#39;tmux-plugins/tmux-sensible&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @plugin &lt;span style="color:#e6db74"&gt;&amp;#39;tmux-plugins/tmux-resurrect&amp;#39;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 保存恢复 session&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @plugin &lt;span style="color:#e6db74"&gt;&amp;#39;tmux-plugins/tmux-continuum&amp;#39;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 自动保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 在 tmux 内按 C-b I 安装插件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="7-主题美化方案"&gt;7. 主题美化方案
+&lt;/h2&gt;&lt;h3 id="71-dracula-主题"&gt;7.1 Dracula 主题
+&lt;/h3&gt;&lt;p&gt;Dracula 是最受欢迎的 tmux 深色主题之一，提供丰富的状态信息显示：&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart LR
+subgraph StatusBar[&amp;#34;状态栏&amp;#34;]
+S1[&amp;#34;Session 名称&amp;#34;]
+S2[&amp;#34;窗口列表&amp;#34;]
+S3[&amp;#34;时间/日期&amp;#34;]
+end
+subgraph RightStatus[&amp;#34;右侧信息&amp;#34;]
+R1[&amp;#34;GPU 状态&amp;#34;]
+R2[&amp;#34;CPU 使用率&amp;#34;]
+R3[&amp;#34;内存&amp;#34;]
+R4[&amp;#34;电池&amp;#34;]
+end
+&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://github.com/dracula/tmux" target="_blank" rel="noopener"
+&gt;Dracula tmux - GitHub&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;安装方式：&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 方式一：通过 TPM 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 在 ~/.tmux.conf 添加：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @plugin &lt;span style="color:#e6db74"&gt;&amp;#39;dracula/tmux&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 方式二：手动安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/dracula/tmux.git ~/.dracula-tmux
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后在 &lt;code&gt;~/.tmux.conf&lt;/code&gt; 末尾添加：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Dracula 主题配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;source-file ~/.dracula-tmux/dracula.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 可选：启用 GPU 监控&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @dracula-show-powerline true
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @dracula-show-gpu true
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g @dracula-show-cpu true
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="72-powerline-风格"&gt;7.2 Powerline 风格
+&lt;/h3&gt;&lt;p&gt;Powerline 状态栏是经典的终端美化方案：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 使用 gpakosz 的 Oh My Tmux&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ln -s -f ~/.tmux/.tmux.conf ~/.tmux.conf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这个配置自带：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;电池状态&lt;/li&gt;
+&lt;li&gt;日期时间&lt;/li&gt;
+&lt;li&gt;GPU 使用率&lt;/li&gt;
+&lt;li&gt;SSH 会话信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="73-状态栏自定义示例"&gt;7.3 状态栏自定义示例
+&lt;/h3&gt;&lt;p&gt;如果你想手动配置状态栏信息：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 左侧：窗口列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-left &lt;span style="color:#e6db74"&gt;&amp;#34;#[fg=colour235,bg=colour228] #S #[fg=colour228,bg=colour234] &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 中间：窗口编号 + 名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g window-status-format &lt;span style="color:#e6db74"&gt;&amp;#34; #I: #W &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g window-status-current-format &lt;span style="color:#e6db74"&gt;&amp;#34;#[fg=colour234,bg=colour228] #I: #W #[fg=colour228,bg=colour235] &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 右侧：时间&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;set -g status-right &lt;span style="color:#e6db74"&gt;&amp;#34;#[fg=colour235,bg=colour234] %Y-%m-%d %H:%M &amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="8-高级使用技巧"&gt;8. 高级使用技巧
+&lt;/h2&gt;&lt;h3 id="81-训练任务工作流示例"&gt;8.1 训练任务工作流示例
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ============================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 场景：在 RunPod 上训练 LLaMA 模型&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ============================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 1: SSH 连接到 RunPod&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ssh user@runpod-host
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 2: 创建专用 session&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux new -s llm-training
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 3: 分割布局 (3:1 比例)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# C-b | 垂直分割&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# C-b % 垂直分割&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 调整：C-b M-h/j/k/l&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Pane 1 (70%): 主训练进程&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python train.py &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --model_name_or_path meta-llama/Llama-2-7b-hf &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --dataset your_dataset &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --output_dir ./outputs &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --num_train_epochs &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --per_device_train_batch_size &lt;span style="color:#ae81ff"&gt;4&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; --gradient_accumulation_steps &lt;span style="color:#ae81ff"&gt;8&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Pane 2 (15%): 实时日志监控&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tail -f outputs/training.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Pane 3 (15%): GPU 监控&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;watch -n &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; nvidia-smi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 4: 分离 session&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 按 C-b d&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 5: 关闭本地 SSH，训练继续&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Step 6: 稍后恢复查看&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux attach -t llm-training
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="82-多实验并行管理"&gt;8.2 多实验并行管理
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建多个 session，每个实验一个&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux new -s exp-001 &lt;span style="color:#75715e"&gt;# 实验 1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux new -s exp-002 &lt;span style="color:#75715e"&gt;# 实验 2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux new -s exp-003 &lt;span style="color:#75715e"&gt;# 实验 3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 列出所有实验&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux ls
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 快速切换&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tmux a -t exp-001
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="83-黄金法则always-use-tmux"&gt;8.3 黄金法则：Always Use tmux
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;来源：&lt;a class="link" href="https://agentfactory.panaversity.org/docs/Agent-Workflow-Primitives/linux-mastery/persistent-sessions-tmux" target="_blank" rel="noopener"
+&gt;Persistent Sessions with tmux - Agent Factory&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在远程服务器上执行任何重要任务时，请遵循以下原则：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;永远&lt;/strong&gt;在 tmux session 中运行长时间任务&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;永远&lt;/strong&gt;在开始工作前创建 session&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;永远&lt;/strong&gt;在离开前执行 detach（&lt;code&gt;C-b d&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;永远&lt;/strong&gt;定期检查 session 状态（&lt;code&gt;tmux ls&lt;/code&gt;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="9-常见问题与解决方案"&gt;9. 常见问题与解决方案
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;问题&lt;/th&gt;
+&lt;th&gt;原因&lt;/th&gt;
+&lt;th&gt;解决方案&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;鼠标选择不工作&lt;/td&gt;
+&lt;td&gt;鼠标支持未启用&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;set -g mouse on&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;快捷键不生效&lt;/td&gt;
+&lt;td&gt;配置文件未加载&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;tmux source-file ~/.tmux.conf&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中文显示乱码&lt;/td&gt;
+&lt;td&gt;UTF-8 编码问题&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;set -g utf8 on&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;状态栏不更新&lt;/td&gt;
+&lt;td&gt;刷新间隔太长&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;set -g status-interval 1&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;训练进程消失&lt;/td&gt;
+&lt;td&gt;未使用 tmux&lt;/td&gt;
+&lt;td&gt;始终在 session 中运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;无法创建 session&lt;/td&gt;
+&lt;td&gt;权限问题&lt;/td&gt;
+&lt;td&gt;检查 &lt;code&gt;/tmp&lt;/code&gt; 目录权限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="10-资源汇总"&gt;10. 资源汇总
+&lt;/h2&gt;&lt;h3 id="101-官方与权威资源"&gt;10.1 官方与权威资源
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/tmux/tmux" target="_blank" rel="noopener"
+&gt;Tmux 官方 GitHub 仓库&lt;/a&gt; — 源码与最新动态&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://man.openbsd.org/tmux.1" target="_blank" rel="noopener"
+&gt;Tmux 官方手册&lt;/a&gt; — 完整命令参考&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://tmuxcheatsheet.com/" target="_blank" rel="noopener"
+&gt;Tmux Cheat Sheet&lt;/a&gt; — 快捷键速查&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="102-教程与博客"&gt;10.2 教程与博客
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://towardsdatascience.com/a-beginners-guide-to-tmux-a-multitasking-superpower-for-your-terminal/" target="_blank" rel="noopener"
+&gt;A beginner&amp;rsquo;s guide to Tmux - Towards Data Science&lt;/a&gt; — 2026年2月&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.starmorph.com/blog/tmux-terminal-multiplexer-guide" target="_blank" rel="noopener"
+&gt;Tmux Terminal Multiplexer Guide - StarMorph&lt;/a&gt; — 2026年2月&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.runpod.io/tips-and-tricks/tmux" target="_blank" rel="noopener"
+&gt;RunPod Documentation - Using TMUX&lt;/a&gt; — 官方云平台指南&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="103-配置与主题"&gt;10.3 配置与主题
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/dracula/tmux" target="_blank" rel="noopener"
+&gt;Dracula tmux&lt;/a&gt; — 最流行的深色主题&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/gpakosz/.tmux" target="_blank" rel="noopener"
+&gt;Oh My Tmux - gpakosz&lt;/a&gt; — 开箱即用的美观配置&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://gist.github.com/nicolasochem/06476623d657329e514a" target="_blank" rel="noopener"
+&gt;The best tmux configuration - GitHub Gist&lt;/a&gt; — 社区推荐&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="参考链接"&gt;参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/tmux/tmux" target="_blank" rel="noopener"
+&gt;Tmux 官方 GitHub&lt;/a&gt; — 官方仓库&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://tmuxcheatsheet.com/" target="_blank" rel="noopener"
+&gt;Tmux Cheat Sheet&lt;/a&gt; — 快捷键速查表&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.runpod.io/tips-and-tricks/tmux" target="_blank" rel="noopener"
+&gt;RunPod TMUX 文档&lt;/a&gt; — 云平台使用场景&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://agentfactory.panaversity.org/docs/Agent-Workflow-Primitives/linux-mastery/persistent-sessions-tmux" target="_blank" rel="noopener"
+&gt;Persistent Sessions with tmux&lt;/a&gt; — 训练场景指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://willhbr.net/2024/03/06/tmux-conf-with-commentary/" target="_blank" rel="noopener"
+&gt;Tmux.conf with commentary&lt;/a&gt; — 配置详解&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/dracula/tmux" target="_blank" rel="noopener"
+&gt;Dracula tmux Theme&lt;/a&gt; — 主题项目&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://tmuxai.dev/tmux-getting-started/" target="_blank" rel="noopener"
+&gt;Beginner&amp;rsquo;s guide to Tmux - tmuxai.dev&lt;/a&gt; — 入门指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://linuxhandbook.com/tmux/" target="_blank" rel="noopener"
+&gt;Linux Handbook - Tmux Tutorial&lt;/a&gt; — 基础教程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;更新日志&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;ul&gt;
+&lt;li&gt;2026-02-21: 完善云端训练场景、快捷键配置、美化方案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

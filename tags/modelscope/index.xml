@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ModelScope on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/modelscope/</link><description>Recent content in ModelScope on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 23 Feb 2026 14:47:02 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/modelscope/index.xml" rel="self" type="application/rss+xml"/><item><title>如何拓展 LaTeX 数据集</title><link>https://www.jeffkafka.top/post/%E5%A6%82%E4%BD%95%E6%8B%93%E5%B1%95-latex%E6%95%B0%E6%8D%AE%E9%9B%86/</link><pubDate>Mon, 23 Feb 2026 14:47:02 +0800</pubDate><guid>https://www.jeffkafka.top/post/%E5%A6%82%E4%BD%95%E6%8B%93%E5%B1%95-latex%E6%95%B0%E6%8D%AE%E9%9B%86/</guid><description>&lt;img src="https://w.wallhaven.cc/full/8g/wallhaven-8gewl1.jpg" alt="Featured image of post 如何拓展 LaTeX 数据集" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;用户正在构建一个&lt;strong&gt;图像转 LaTeX&lt;/strong&gt;的数据集，用于微调模型。已有合格的数据格式，包含 &lt;code&gt;messages&lt;/code&gt; (user/assistant 对话)、&lt;code&gt;images&lt;/code&gt; (图片路径) 字段。本文将介绍多种获取 LaTeX 公式数据源的途径，包括 Hugging Face 和 ModelScope。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id="如何拓展-latex-数据集"&gt;如何拓展 LaTeX 数据集
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;LaTeX 公式数据集&lt;/strong&gt;是用于训练&lt;strong&gt;图像到 LaTeX (Image-to-LaTeX)&lt;/strong&gt; 模型的核心资源。这类数据集通常包含：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LaTeX 公式的渲染图像（PNG/SVG）&lt;/li&gt;
+&lt;li&gt;对应的 LaTeX 源代码作为标签&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;典型的应用场景包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数学公式 OCR（光学字符识别）&lt;/li&gt;
+&lt;li&gt;手写公式识别&lt;/li&gt;
+&lt;li&gt;学术论文公式提取&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;参考：&lt;a class="link" href="https://paperswithcode.com/dataset/im2latex-100k" target="_blank" rel="noopener"
+&gt;Papers with Code - im2latex-100k&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[LaTeX 公式数据源] --&amp;gt; B[渲染引擎]
+A --&amp;gt; C[图像采集]
+B --&amp;gt; D[PNG/SVG 图像]
+C --&amp;gt; D
+D --&amp;gt; E[数据清洗]
+E --&amp;gt; F[格式化标注]
+F --&amp;gt; G[训练数据集]
+B1[arXiv 论文] --&amp;gt; A
+B2[Wikipedia] --&amp;gt; A
+B3[数学教材] --&amp;gt; A
+B4[合成数据] --&amp;gt; A
+&lt;/pre&gt;
+&lt;p&gt;数据集的核心处理流程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据采集&lt;/strong&gt; - 从 arXiv、Wikipedia 等来源提取 LaTeX 公式&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;图像渲染&lt;/strong&gt; - 使用 LaTeX 引擎将公式渲染为图像&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;质量过滤&lt;/strong&gt; - 去除无效/损坏的样本&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;格式转换&lt;/strong&gt; - 转换为目标训练格式（如用户提供的 JSON 格式）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="3-主流数据集资源"&gt;3. 主流数据集资源
+&lt;/h2&gt;&lt;h3 id="31-hugging-face-数据集"&gt;3.1 Hugging Face 数据集
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据集&lt;/th&gt;
+&lt;th&gt;规模&lt;/th&gt;
+&lt;th&gt;特点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://huggingface.co/datasets/OleehyO/latex-formulas" target="_blank" rel="noopener"
+&gt;OleehyO/latex-formulas&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;552k 清洗 / 1M 原始&lt;/td&gt;
+&lt;td&gt;来自 arXiv，含图像+LaTeX&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://huggingface.co/datasets/AlFrauch/im2latex" target="_blank" rel="noopener"
+&gt;AlFrauch/im2latex&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;1.59M&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;最大规模公开数据集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://huggingface.co/datasets/stanford-crfm/image2struct-latex-v1" target="_blank" rel="noopener"
+&gt;stanford-crfm/image2struct-latex-v1&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;1.8k&lt;/td&gt;
+&lt;td&gt;含多类别（公式/表格/图表）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;推荐&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&lt;strong&gt;AlFrauch/im2latex&lt;/strong&gt; 是目前规模最大的公开数据集，包含 159 万条图像-公式对，适合大规模预训练。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="32-zenodo-存档"&gt;3.2 Zenodo 存档
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据集&lt;/th&gt;
+&lt;th&gt;规模&lt;/th&gt;
+&lt;th&gt;来源&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://zenodo.org/records/56198" target="_blank" rel="noopener"
+&gt;im2latex-100k&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;~100k&lt;/td&gt;
+&lt;td&gt;Cornell KDD CUP 原始数据&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://zenodo.org/records/7738969" target="_blank" rel="noopener"
+&gt;im2latex 230k&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;230k&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;来自 arXiv，2023年更新&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;im2latex 230k 数据集由 JavaScript 和 Python 工具生成，公式来自 arXiv 论文&lt;/li&gt;
+&lt;li&gt;图像分辨率：72dpi，PNG 格式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="33-专业数据集"&gt;3.3 专业数据集
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据集&lt;/th&gt;
+&lt;th&gt;规模&lt;/th&gt;
+&lt;th&gt;特点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;MathWriting&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;230k 手写 + 400k 合成&lt;/td&gt;
+&lt;td&gt;Google 发布，手写公式识别&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;MathBridge&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;大规模&lt;/td&gt;
+&lt;td&gt;语音数学表达式→LaTeX&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;MER-17M&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;17.7M&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;2025年12月最新，多行公式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/microsoft/ArxivFormula" target="_blank" rel="noopener"
+&gt;Microsoft ArxivFormula&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;td&gt;GitHub 官方数据集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;注意&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;MathWriting 主要是&lt;strong&gt;手写&lt;/strong&gt;公式，如果你的任务是&lt;strong&gt;印刷体&lt;/strong&gt;公式识别，请优先使用上述印刷数据集。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="4-数据获取与转换方法"&gt;4. 数据获取与转换方法
+&lt;/h2&gt;&lt;h3 id="41-使用-hugging-face-datasets-库"&gt;4.1 使用 Hugging Face datasets 库
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; datasets &lt;span style="color:#f92672"&gt;import&lt;/span&gt; load_dataset
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载清洗后的公式数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset &lt;span style="color:#f92672"&gt;=&lt;/span&gt; load_dataset(&lt;span style="color:#e6db74"&gt;&amp;#34;OleehyO/latex-formulas&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;cleaned_formulas&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(dataset[&lt;span style="color:#e6db74"&gt;&amp;#34;train&amp;#34;&lt;/span&gt;][&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 输出: {&amp;#34;image&amp;#34;: &amp;lt;PIL.Image&amp;gt;, &amp;#34;latex_formula&amp;#34;: &amp;#34;...&amp;#34;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载大规模数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset_large &lt;span style="color:#f92672"&gt;=&lt;/span&gt; load_dataset(&lt;span style="color:#e6db74"&gt;&amp;#34;AlFrauch/im2latex&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-使用-modelscope-msdataset"&gt;4.2 使用 ModelScope MsDataset
+&lt;/h3&gt;&lt;p&gt;ModelScope（魔搭社区）也提供了丰富的数据集资源，可以使用 &lt;code&gt;MsDataset&lt;/code&gt; 加载：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; modelscope.msdatasets &lt;span style="color:#f92672"&gt;import&lt;/span&gt; MsDataset
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载在线数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset &lt;span style="color:#f92672"&gt;=&lt;/span&gt; MsDataset&lt;span style="color:#f92672"&gt;.&lt;/span&gt;load(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Wente47/M2E&amp;#39;&lt;/span&gt;, &lt;span style="color:#75715e"&gt;# 数据集名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subset_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; split&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(dataset[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定缓存目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset &lt;span style="color:#f92672"&gt;=&lt;/span&gt; MsDataset&lt;span style="color:#f92672"&gt;.&lt;/span&gt;load(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;Wente47/M2E&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subset_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; split&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cache_dir&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;./data&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;ModelScope 优势&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;ul&gt;
+&lt;li&gt;国内访问速度快&lt;/li&gt;
+&lt;li&gt;镜像源稳定&lt;/li&gt;
+&lt;li&gt;支持离线加载本地数据集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="43-modelscope-latex-相关数据集"&gt;4.3 ModelScope LaTeX 相关数据集
+&lt;/h3&gt;&lt;p&gt;ModelScope 上也有 LaTeX 公式数据集可用：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;数据集&lt;/th&gt;
+&lt;th&gt;规模&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://modelscope.cn/datasets/Wente47/M2E" target="_blank" rel="noopener"
+&gt;Wente47/M2E&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;~10万&lt;/td&gt;
+&lt;td&gt;多行手写数学公式数据集&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;其他数学数据集&lt;/td&gt;
+&lt;td&gt;多种&lt;/td&gt;
+&lt;td&gt;可搜索 &lt;code&gt;latex&lt;/code&gt; 或 &lt;code&gt;formula&lt;/code&gt; 关键词&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="搜索-modelscope-数据集"&gt;搜索 ModelScope 数据集
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 搜索 LaTeX 相关数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; modelscope.hub.api &lt;span style="color:#f92672"&gt;import&lt;/span&gt; HubApi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;api &lt;span style="color:#f92672"&gt;=&lt;/span&gt; HubApi()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 搜索包含 latex 关键字的数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;results &lt;span style="color:#f92672"&gt;=&lt;/span&gt; api&lt;span style="color:#f92672"&gt;.&lt;/span&gt;search_dataset(model_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;latex&amp;#39;&lt;/span&gt;, fuzzy&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; r &lt;span style="color:#f92672"&gt;in&lt;/span&gt; results:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(r[&lt;span style="color:#e6db74"&gt;&amp;#39;Name&amp;#39;&lt;/span&gt;], r[&lt;span style="color:#e6db74"&gt;&amp;#39;DatasetId&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="44-转换为目标格式"&gt;4.4 转换为目标格式
+&lt;/h3&gt;&lt;p&gt;将下载的数据转换为用户所需的 JSONL 格式（图片保存到同目录下的 train 文件夹）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; datasets &lt;span style="color:#f92672"&gt;import&lt;/span&gt; load_dataset
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ============== 配置 ==============&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;DATASET_NAME &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;OleehyO/latex-formulas&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 数据集名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;SUBSET &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;cleaned_formulas&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 子集名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;MAX_SAMPLES &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;10000&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 最大样本数（设为 None 下载全部）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;OUTPUT_DIR &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;./latex_dataset&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 输出目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;TRAIN_DIR &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(OUTPUT_DIR, &lt;span style="color:#e6db74"&gt;&amp;#34;train&amp;#34;&lt;/span&gt;) &lt;span style="color:#75715e"&gt;# 图片保存目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;makedirs(TRAIN_DIR, exist_ok&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;&amp;#34;正在加载数据集...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset &lt;span style="color:#f92672"&gt;=&lt;/span&gt; load_dataset(DATASET_NAME, SUBSET, split&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;train&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;数据集总大小: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(dataset)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 转换并保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;converted_data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; i, item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; enumerate(dataset):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; MAX_SAMPLES &lt;span style="color:#f92672"&gt;and&lt;/span&gt; i &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; MAX_SAMPLES:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;break&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 获取图像并保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item[&lt;span style="color:#e6db74"&gt;&amp;#34;image&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image_filename &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;formula_&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;i&lt;span style="color:#e6db74"&gt;:&lt;/span&gt;&lt;span style="color:#e6db74"&gt;05d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;.png&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image_path &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(TRAIN_DIR, image_filename)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image&lt;span style="color:#f92672"&gt;.&lt;/span&gt;save(image_path)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 获取 LaTeX 文本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; latex_text &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item[&lt;span style="color:#e6db74"&gt;&amp;#34;latex_formula&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 构建目标格式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; converted_data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;append({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;: [
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;image&amp;gt;请根据图片中的公式生成对应的 latex 公式文本&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;assistant&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: latex_text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ],
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;images&amp;#34;&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;train/&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;image_filename&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;] &lt;span style="color:#75715e"&gt;# 相对路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (i &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;) &lt;span style="color:#f92672"&gt;%&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1000&lt;/span&gt; &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;已处理 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;i &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; 条数据...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 保存为 JSONL 格式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;output_jsonl &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(OUTPUT_DIR, &lt;span style="color:#e6db74"&gt;&amp;#34;data.jsonl&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(output_jsonl, &lt;span style="color:#e6db74"&gt;&amp;#34;w&amp;#34;&lt;/span&gt;, encoding&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; converted_data:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; f&lt;span style="color:#f92672"&gt;.&lt;/span&gt;write(json&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dumps(item, ensure_ascii&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;) &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;完成！生成了 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(converted_data)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; 条数据&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;图片目录: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;TRAIN_DIR&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;JSONL文件: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;output_jsonl&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="输出目录结构"&gt;输出目录结构
+&lt;/h4&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;latex_dataset/
+├── train/
+│ ├── formula_00000.png
+│ ├── formula_00001.png
+│ ├── ...
+│ └── formula_09999.png
+└── data.jsonl
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id="jsonl-文件内容示例"&gt;JSONL 文件内容示例
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-json" data-lang="json"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{&lt;span style="color:#f92672"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;: [{&lt;span style="color:#f92672"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;image&amp;gt;请根据图片中的公式生成对应的 latex 公式文本&amp;#34;&lt;/span&gt;}, {&lt;span style="color:#f92672"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;assistant&amp;#34;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;\\frac{a}{b}&amp;#34;&lt;/span&gt;}], &lt;span style="color:#f92672"&gt;&amp;#34;images&amp;#34;&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;&amp;#34;train/formula_00000.png&amp;#34;&lt;/span&gt;]}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{&lt;span style="color:#f92672"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;: [{&lt;span style="color:#f92672"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;image&amp;gt;请根据图片中的公式生成对应的 latex 公式文本&amp;#34;&lt;/span&gt;}, {&lt;span style="color:#f92672"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;assistant&amp;#34;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;\\sqrt{x^2 + y^2}&amp;#34;&lt;/span&gt;}], &lt;span style="color:#f92672"&gt;&amp;#34;images&amp;#34;&lt;/span&gt;: [&lt;span style="color:#e6db74"&gt;&amp;#34;train/formula_00001.png&amp;#34;&lt;/span&gt;]}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="使用-modelscope-数据集转换"&gt;使用 ModelScope 数据集转换
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; modelscope.msdatasets &lt;span style="color:#f92672"&gt;import&lt;/span&gt; MsDataset
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载 M2E 数据集&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataset &lt;span style="color:#f92672"&gt;=&lt;/span&gt; MsDataset&lt;span style="color:#f92672"&gt;.&lt;/span&gt;load(&lt;span style="color:#e6db74"&gt;&amp;#39;Wente47/M2E&amp;#39;&lt;/span&gt;, subset_name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;, split&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;converted_data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; i, item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; enumerate(dataset):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; i &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;10000&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;break&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 获取图像数据&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item[&lt;span style="color:#e6db74"&gt;&amp;#39;image&amp;#39;&lt;/span&gt;] &lt;span style="color:#75715e"&gt;# 根据实际字段调整&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; latex_text &lt;span style="color:#f92672"&gt;=&lt;/span&gt; item[&lt;span style="color:#e6db74"&gt;&amp;#39;latex&amp;#39;&lt;/span&gt;] &lt;span style="color:#75715e"&gt;# 根据实际字段调整&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 保存图像&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image_path &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;images/formula_&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;i&lt;span style="color:#e6db74"&gt;:&lt;/span&gt;&lt;span style="color:#e6db74"&gt;05d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;.png&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;makedirs(&lt;span style="color:#e6db74"&gt;&amp;#34;images&amp;#34;&lt;/span&gt;, exist_ok&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; image&lt;span style="color:#f92672"&gt;.&lt;/span&gt;save(image_path)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; converted_data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;append({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;: [
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;lt;image&amp;gt;请根据图片中的公式生成对应的 latex 公式文本&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;assistant&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: latex_text
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ],
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;images&amp;#34;&lt;/span&gt;: [image_path]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 保存&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;with&lt;/span&gt; open(&lt;span style="color:#e6db74"&gt;&amp;#34;latex_dataset.jsonl&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;w&amp;#34;&lt;/span&gt;, encoding&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; f:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; converted_data:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; f&lt;span style="color:#f92672"&gt;.&lt;/span&gt;write(json&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dumps(item, ensure_ascii&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;) &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\n&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="45-自生成数据进阶"&gt;4.5 自生成数据（进阶）
+&lt;/h3&gt;&lt;p&gt;如果你需要特定领域的公式，可以自己编写脚本生成：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 示例：生成简单数学公式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;formulas &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;r&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;\frac&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{a}{b}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;r&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;\sqrt{x^2 + y^2}&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;r&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;\sum_{i=1}^&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{n}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; i^2&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;r&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;\int_&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{0}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;^{\infty} e^{-x} dx&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;r&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;\begin&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{pmatrix}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; a &amp;amp; b &lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\\&lt;/span&gt;&lt;span style="color:#e6db74"&gt; c &amp;amp; d \end&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{pmatrix}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 使用 matplotlib 或 pdflatex 渲染&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 参考：https://github.com/lukas-blecher/LaTeX-OCR&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="5-数据质量与多样性建议"&gt;5. 数据质量与多样性建议
+&lt;/h2&gt;&lt;h3 id="51-公式类型覆盖"&gt;5.1 公式类型覆盖
+&lt;/h3&gt;&lt;p&gt;为确保模型泛化能力，建议涵盖以下公式类型：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类别&lt;/th&gt;
+&lt;th&gt;示例&lt;/th&gt;
+&lt;th&gt;占比建议&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;基础算术&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;a + b = c&lt;/code&gt;, &lt;code&gt;x^2&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;20%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;分式/根号&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\frac{a}{b}&lt;/code&gt;, &lt;code&gt;\sqrt{x}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;15%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;求和/积分&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\sum&lt;/code&gt;, &lt;code&gt;\int&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;15%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;矩阵&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\begin{matrix}...\end{matrix}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;10%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;希腊字母&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;\alpha&lt;/code&gt;, &lt;code&gt;\beta&lt;/code&gt;, &lt;code&gt;\gamma&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;10%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;复杂公式&lt;/td&gt;
+&lt;td&gt;多行嵌套公式&lt;/td&gt;
+&lt;td&gt;30%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="52-图像多样性"&gt;5.2 图像多样性
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;字体&lt;/strong&gt;：Computer Modern（默认）、Latin Modern、AMS 字体&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;字号&lt;/strong&gt;：12pt、14pt、16pt&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;背景&lt;/strong&gt;：白色、浅灰色，透明&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;格式&lt;/strong&gt;：PNG（推荐）、SVG&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="6-实用工具推荐"&gt;6. 实用工具推荐
+&lt;/h2&gt;&lt;h3 id="61-数据生成工具"&gt;6.1 数据生成工具
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;GitHub&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;im2latex-dataset&lt;/td&gt;
+&lt;td&gt;处理原始数据集&lt;/td&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/Miffyli/im2latex-dataset" target="_blank" rel="noopener"
+&gt;Miffyli/im2latex-dataset&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LaTeX-OCR&lt;/td&gt;
+&lt;td&gt;开源公式识别&lt;/td&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/lukas-blecher/LaTeX-OCR" target="_blank" rel="noopener"
+&gt;lukas-blecher/LaTeX-OCR&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Texify&lt;/td&gt;
+&lt;td&gt;数学 OCR 模型&lt;/td&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/VikParuchuri/texify" target="_blank" rel="noopener"
+&gt;VikParuchuri/texify&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="62-在线资源"&gt;6.2 在线资源
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Mathpix&lt;/strong&gt; - 付费 API，最精准的公式识别 &lt;a class="link" href="https://mathpix.com/" target="_blank" rel="noopener"
+&gt;mathpix.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Overleaf&lt;/strong&gt; - 在线 LaTeX 编辑器，可用于测试公式渲染&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="7-专业总结与应用建议"&gt;7. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="主要结论"&gt;主要结论
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;首选数据集&lt;/strong&gt;：&lt;code&gt;AlFrauch/im2latex&lt;/code&gt;（1.59M 条）或 &lt;code&gt;OleehyO/latex-formulas&lt;/code&gt;（552k 条），可直接下载使用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;手写公式&lt;/strong&gt;：&lt;code&gt;MathWriting&lt;/code&gt; 数据集（230k 人写 + 400k 合成）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最新大规模数据&lt;/strong&gt;：MER-17M（17.7M 条，2025年12月发布）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="实施建议"&gt;实施建议
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;初期&lt;/strong&gt;：使用 &lt;code&gt;OleehyO/latex-formulas&lt;/code&gt; 清洗版本（552k），格式规范，易于处理&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中期&lt;/strong&gt;：扩展到 &lt;code&gt;AlFrauch/im2latex&lt;/code&gt; 全量（1.59M），提升模型容量&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;专业领域&lt;/strong&gt;：考虑从 arXiv 自行抓取特定学科论文（物理、数学、计算机）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="数据转换流程图"&gt;数据转换流程图
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart LR
+A[Hugging Face / Zenodo] --&amp;gt; B[load_dataset]
+B --&amp;gt; C[遍历数据]
+C --&amp;gt; D[保存图像]
+C --&amp;gt; E[提取 LaTeX]
+D --&amp;gt; F[JSON 格式化]
+E --&amp;gt; F
+F --&amp;gt; G[微调训练]
+&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id="8-参考链接"&gt;8. 参考链接
+&lt;/h2&gt;&lt;h3 id="hugging-face-数据集"&gt;Hugging Face 数据集
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/datasets/OleehyO/latex-formulas" target="_blank" rel="noopener"
+&gt;OleehyO/latex-formulas - Hugging Face&lt;/a&gt; — 552k 清洗公式数据集&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://huggingface.co/datasets/AlFrauch/im2latex" target="_blank" rel="noopener"
+&gt;AlFrauch/im2latex - Hugging Face&lt;/a&gt; — 159万条大规模数据集&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://zenodo.org/records/7738969" target="_blank" rel="noopener"
+&gt;im2latex 230k - Zenodo&lt;/a&gt; — arXiv 来源的 230k 数据集&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://arxiv.org/abs/2404.10690" target="_blank" rel="noopener"
+&gt;MathWriting - arXiv:2404.10690&lt;/a&gt; — Google 手写公式数据集&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="modelscope-数据集"&gt;ModelScope 数据集
+&lt;/h3&gt;&lt;ol start="5"&gt;
+&lt;li&gt;&lt;a class="link" href="https://modelscope.cn/datasets/Wente47/M2E" target="_blank" rel="noopener"
+&gt;M2E 多行手写数学公式数据集 - ModelScope&lt;/a&gt; — 10万条多行手写公式&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.modelscope.cn/docs/%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97" target="_blank" rel="noopener"
+&gt;ModelScope 数据集使用指南&lt;/a&gt; — 官方文档&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="工具与项目"&gt;工具与项目
+&lt;/h3&gt;&lt;ol start="7"&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.emergentmind.com/topics/mer-17m" target="_blank" rel="noopener"
+&gt;MER-17M - 2025&lt;/a&gt; — 1770万对大规模数据集&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/microsoft/ArxivFormula" target="_blank" rel="noopener"
+&gt;Microsoft ArxivFormula - GitHub&lt;/a&gt; — 官方 arXiv 公式数据集&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/lukas-blecher/LaTeX-OCR" target="_blank" rel="noopener"
+&gt;LaTeX-OCR - GitHub&lt;/a&gt; — 开源公式识别项目&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/VikParuchuri/texify" target="_blank" rel="noopener"
+&gt;Texify - GitHub&lt;/a&gt; — 数学 OCR 模型&lt;/li&gt;
+&lt;/ol&gt;</description></item></channel></rss>
