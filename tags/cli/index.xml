@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CLI on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/cli/</link><description>Recent content in CLI on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Mar 2026 18:00:00 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>ObsidianCLI 入门指南</title><link>https://www.jeffkafka.top/post/obsidiancli-%E5%85%A5%E9%97%A8/</link><pubDate>Sun, 01 Mar 2026 18:00:00 +0800</pubDate><guid>https://www.jeffkafka.top/post/obsidiancli-%E5%85%A5%E9%97%A8/</guid><description>&lt;img src="https://w.wallhaven.cc/full/yq/wallhaven-yq5ywl.jpg" alt="Featured image of post ObsidianCLI 入门指南" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;2026年2月，Obsidian 正式发布了官方命令行界面 (CLI)，这是自 Obsidian 1.12 版本以来的重大更新。官方 CLI 提供了超过 100 个命令，可以从终端控制 Obsidian 的几乎所有功能。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id="obsidiancli-入门指南"&gt;ObsidianCLI 入门指南
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;Obsidian CLI 是 Obsidian 官方推出的命令行工具，于 &lt;strong&gt;2026年2月10日&lt;/strong&gt; 随着 Obsidian 1.12 桌面版预览发布。它允许用户通过终端程序、脚本或外部工具来控制 Obsidian 金库，实现笔记的读取、创建、搜索、管理等操作。&lt;/p&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;官方宣布&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&amp;ldquo;Anything you can do in Obsidian, you can do from the command line.&amp;rdquo;
+— Obsidian Official (@obsdmd) February 11, 2026&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="与社区-cli-的区别"&gt;与社区 CLI 的区别
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;官方 Obsidian CLI&lt;/th&gt;
+&lt;th&gt;社区 CLI (如 NotesMD)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;运行环境&lt;/td&gt;
+&lt;td&gt;需要 Obsidian 运行&lt;/td&gt;
+&lt;td&gt;可独立运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;功能范围&lt;/td&gt;
+&lt;td&gt;完整 Obsidian 功能&lt;/td&gt;
+&lt;td&gt;基础文件操作&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;发布来源&lt;/td&gt;
+&lt;td&gt;Obsidian 官方&lt;/td&gt;
+&lt;td&gt;GitHub 社区&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;版本&lt;/td&gt;
+&lt;td&gt;v1.12+&lt;/td&gt;
+&lt;td&gt;v0.3.x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;Obsidian CLI&amp;#34;] --&amp;gt; B[&amp;#34;启用方式&amp;#34;]
+A --&amp;gt; C[&amp;#34;命令类别&amp;#34;]
+A --&amp;gt; D[&amp;#34;使用场景&amp;#34;]
+B --&amp;gt; B1[&amp;#34;设置 → General → CLI&amp;#34;]
+B --&amp;gt; B2[&amp;#34;运行 obsidian 命令&amp;#34;]
+C --&amp;gt; C1[&amp;#34;文件操作&amp;#34;]
+C --&amp;gt; C2[&amp;#34;搜索查询&amp;#34;]
+C --&amp;gt; C3[&amp;#34;日常笔记&amp;#34;]
+C --&amp;gt; C4[&amp;#34;插件管理&amp;#34;]
+C --&amp;gt; C5[&amp;#34;同步发布&amp;#34;]
+D --&amp;gt; D1[&amp;#34;脚本自动化&amp;#34;]
+D --&amp;gt; D2[&amp;#34;AI 集成&amp;#34;]
+D --&amp;gt; D3[&amp;#34;批量处理&amp;#34;]
+D --&amp;gt; D4[&amp;#34;开发者工作流&amp;#34;]
+&lt;/pre&gt;
+&lt;h2 id="3-技术深度分析"&gt;3. 技术深度分析
+&lt;/h2&gt;&lt;h3 id="31-安装与配置"&gt;3.1 安装与配置
+&lt;/h3&gt;&lt;h4 id="第一步更新到-obsidian-112"&gt;第一步：更新到 Obsidian 1.12+
+&lt;/h4&gt;&lt;p&gt;从 &lt;a class="link" href="https://obsidian.md/download" target="_blank" rel="noopener"
+&gt;Obsidian 官网&lt;/a&gt; 下载并安装最新版本。&lt;/p&gt;
+&lt;h4 id="第二步启用-cli"&gt;第二步：启用 CLI
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;打开 Obsidian 设置&lt;/li&gt;
+&lt;li&gt;导航到 &lt;strong&gt;General → Command Line Interface&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;启用 CLI 功能&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 验证安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --version
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 查看帮助&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --help
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第三步基本命令结构"&gt;第三步：基本命令结构
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian &amp;lt;command&amp;gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;subcommand&lt;span style="color:#f92672"&gt;]&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;options&lt;span style="color:#f92672"&gt;]&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;arguments&lt;span style="color:#f92672"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="32-核心命令一览"&gt;3.2 核心命令一览
+&lt;/h3&gt;&lt;h4 id="文件操作"&gt;文件操作
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian files list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file read &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取文件内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian files write &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;写入文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file create &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;创建新文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file move &amp;lt;src&amp;gt; &amp;lt;dest&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;移动文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file delete &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;删除文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="日常笔记"&gt;日常笔记
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;打开今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:path&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;获取今日笔记路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:read&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取今日笔记内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:append &amp;lt;text&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;追加内容到今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:prepend &amp;lt;text&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;前置内容到今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="搜索功能"&gt;搜索功能
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;搜索笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search:context &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;带上下文的搜索&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search:open &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;在 Obsidian 中打开搜索结果&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="属性管理"&gt;属性管理
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian properties&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian property:set &amp;lt;file&amp;gt; &amp;lt;key&amp;gt; &amp;lt;value&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;设置属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian property:read &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取文件属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="标签操作"&gt;标签操作
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian tags&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有标签&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian tag &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看特定标签的笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="模板功能"&gt;模板功能
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian templates&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有模板&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian template:read &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取模板内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian template:insert &amp;lt;name&amp;gt; [path]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;插入模板到指定位置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="插件管理"&gt;插件管理
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugins&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugins:enabled&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出已启用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:enable &amp;lt;id&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;启用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:disable &amp;lt;id&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;禁用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:reload&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重新加载插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="同步与发布"&gt;同步与发布
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian sync:status&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看同步状态&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian sync:history&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看同步历史&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian publish:site&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看发布站点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian publish:list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出已发布文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="链接查询"&gt;链接查询
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian backlinks &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件的后向链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian links &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件的前向链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian unresolved&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出未解析的链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian orphans&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出孤立文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="文件历史"&gt;文件历史
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian diff &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件差异&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件历史&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history:list &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出历史版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history:restore &amp;lt;file&amp;gt; &amp;lt;version&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;恢复历史版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="33-高级用法"&gt;3.3 高级用法
+&lt;/h3&gt;&lt;h4 id="vault-目标指定"&gt;Vault 目标指定
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定 vault&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --vault &lt;span style="color:#e6db74"&gt;&amp;#34;My Vault&amp;#34;&lt;/span&gt; files list
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定 vault 路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --vault-path /path/to/vault files list
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="文件目标指定"&gt;文件目标指定
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian file read --file &lt;span style="color:#e6db74"&gt;&amp;#34;path/to/note.md&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="输出选项"&gt;输出选项
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# JSON 格式输出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian files list --json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 纯文本输出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian files list --plain
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="管道与脚本结合"&gt;管道与脚本结合
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 读取今日笔记并提取待办&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian daily:read | grep -A &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;## Tasks&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建新笔记并写入内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;# New Note&amp;#34;&lt;/span&gt; | obsidian files write &lt;span style="color:#e6db74"&gt;&amp;#34;Notes/new.md&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="4-工具对比与实践指南"&gt;4. 工具对比与实践指南
+&lt;/h2&gt;&lt;h3 id="41-官方-cli-vs-社区-cli"&gt;4.1 官方 CLI vs 社区 CLI
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart LR
+subgraph 官方CLI
+O1[&amp;#34;完整功能&amp;#34;] --&amp;gt; O2[&amp;#34;需要 Obsidian 运行&amp;#34;]
+O2 --&amp;gt; O3[&amp;#34;官方支持&amp;#34;]
+end
+subgraph 社区CLI
+C1[&amp;#34;基础功能&amp;#34;] --&amp;gt; C2[&amp;#34;独立运行&amp;#34;]
+C2 --&amp;gt; C3[&amp;#34;社区维护&amp;#34;]
+end
+官方CLI ~~~ 社区CLI
+&lt;/pre&gt;
+&lt;h3 id="42-常见社区-cli-工具"&gt;4.2 常见社区 CLI 工具
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;语言&lt;/th&gt;
+&lt;th&gt;Stars&lt;/th&gt;
+&lt;th&gt;特点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/Yakitrak/obsidian-cli" target="_blank" rel="noopener"
+&gt;NotesMD CLI&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Go&lt;/td&gt;
+&lt;td&gt;1119&lt;/td&gt;
+&lt;td&gt;社区最流行，可独立运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/Bip901/obsidian-cli" target="_blank" rel="noopener"
+&gt;Bip901/obsidian-cli&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Python&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;Vault 管理、模板创建&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/H4ZM47/petra-obsidian-cli" target="_blank" rel="noopener"
+&gt;Petra&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;TypeScript&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;CLI + MCP 插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="43-实践示例"&gt;4.3 实践示例
+&lt;/h3&gt;&lt;h4 id="日常自动化"&gt;日常自动化
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 每日晨间自动化脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. 打开今日笔记&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian daily
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 2. 追加昨日回顾&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;yesterday&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date -d &lt;span style="color:#e6db74"&gt;&amp;#34;yesterday&amp;#34;&lt;/span&gt; +%Y-%m-%d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;## Yesterday&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;obsidian daily:path --plain&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 3. 搜索未完成的任务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian search &lt;span style="color:#e6db74"&gt;&amp;#34;todo&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="ai-集成"&gt;AI 集成
+&lt;/h4&gt;&lt;p&gt;结合 Claude Code 等 AI 工具使用时，需要注意 CLI 的一些静默失败问题：&lt;/p&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;已知问题&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Obsidian CLI 1.12 存在约 13 种静默失败场景，命令返回空数据但退出码为 0。使用 AI 集成时建议添加额外的验证逻辑。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="5-最新进展与趋势"&gt;5. 最新进展与趋势
+&lt;/h2&gt;&lt;h3 id="2026年2月重大更新"&gt;2026年2月重大更新
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2026.02.27&lt;/strong&gt; - Obsidian 1.12 桌面版正式发布，CLI 功能转为公开&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;2026.02.10&lt;/strong&gt; - Obsidian 1.12.0 预览版发布，CLI 首次亮相&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="相关工具生态"&gt;相关工具生态
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Obsidian CLI REST&lt;/strong&gt; - 将 CLI 命令转换为 HTTP API 和 MCP 服务器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub: &lt;a class="link" href="https://github.com/dsebastien/obsidian-cli-rest" target="_blank" rel="noopener"
+&gt;dsebastien/obsidian-cli-rest&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;支持 AI 助手通过 REST API 控制 Obsidian&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw 集成&lt;/strong&gt; - AI Agent 自动化工作流&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持语音笔记、结构化查询、版本历史&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;LobeHub Skills&lt;/strong&gt; - AI Agent 的 Obsidian CLI 技能集&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="6-专业总结与应用建议"&gt;6. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="核心要点"&gt;核心要点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;官方 CLI 优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能完整，覆盖 Obsidian 几乎所有操作&lt;/li&gt;
+&lt;li&gt;官方支持，持续更新&lt;/li&gt;
+&lt;li&gt;与 Obsidian 深度集成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;适用场景&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;终端爱好者日常工作流&lt;/li&gt;
+&lt;li&gt;脚本自动化（备份、批量处理）&lt;/li&gt;
+&lt;li&gt;AI Agent 集成&lt;/li&gt;
+&lt;li&gt;开发者工作流&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要 Obsidian 桌面应用运行&lt;/li&gt;
+&lt;li&gt;首次使用需在设置中启用&lt;/li&gt;
+&lt;li&gt;Windows 用户可能需要额外配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="实际应用建议"&gt;实际应用建议
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;入门&lt;/strong&gt;: 先启用 CLI，尝试 &lt;code&gt;obsidian daily&lt;/code&gt; 和 &lt;code&gt;obsidian search&lt;/code&gt; 命令&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;进阶&lt;/strong&gt;: 结合脚本实现自动化工作流&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深入&lt;/strong&gt;: 探索与 AI Agent 的集成可能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="7-参考链接"&gt;7. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://help.obsidian.md/cli" target="_blank" rel="noopener"
+&gt;Obsidian CLI 官方帮助&lt;/a&gt; — 官方文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://obsidian.md/changelog/2026-02-27-desktop-v1.12.4/" target="_blank" rel="noopener"
+&gt;Obsidian 1.12 更新日志&lt;/a&gt; — 版本更新说明&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://zenn.dev/sora_biz/articles/obsidian-cli-setup-guide" target="_blank" rel="noopener"
+&gt;The Complete Obsidian CLI Setup Guide&lt;/a&gt; — Windows 安装指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.howtogeek.com/obsidian-desktop-apps-now-include-a-command-line-interface/" target="_blank" rel="noopener"
+&gt;Obsidian&amp;rsquo;s desktop apps now include a command line interface&lt;/a&gt; — HowToGeek 介绍&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/Yakitrak/obsidian-cli" target="_blank" rel="noopener"
+&gt;NotesMD CLI&lt;/a&gt; — 社区流行 CLI 工具&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/dsebastien/obsidian-cli-rest" target="_blank" rel="noopener"
+&gt;Obsidian CLI REST&lt;/a&gt; — MCP 服务器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本文最后更新于 2026年3月&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>

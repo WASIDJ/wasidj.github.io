@@ -1,4 +1,940 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 04 Feb 2026 22:20:20 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>Formatter 字段实现指南</title><link>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Obsidian on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/obsidian/</link><description>Recent content in Obsidian on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Mar 2026 18:28:27 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/obsidian/index.xml" rel="self" type="application/rss+xml"/><item><title>Obsidian Bases 数据库使用指南</title><link>https://www.jeffkafka.top/post/obsidian%E4%B8%ADbases%E4%BD%BF%E7%94%A8/</link><pubDate>Sun, 01 Mar 2026 18:30:00 +0800</pubDate><guid>https://www.jeffkafka.top/post/obsidian%E4%B8%ADbases%E4%BD%BF%E7%94%A8/</guid><description>&lt;img src="https://w.wallhaven.cc/full/po/wallhaven-polerm.jpg" alt="Featured image of post Obsidian Bases 数据库使用指南" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Obsidian Bases 是自 1.9 版本引入的核心插件，让笔记可以像数据库一样被整理、筛选和可视化。本文将通过具体案例，带你掌握这一强大功能。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id="obsidian-bases-数据库使用指南"&gt;Obsidian Bases 数据库使用指南
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;h3 id="什么是-obsidian-bases"&gt;什么是 Obsidian Bases？
+&lt;/h3&gt;&lt;p&gt;Obsidian Bases 是 Obsidian 官方推出的原生数据库功能，于 &lt;strong&gt;2025年5月&lt;/strong&gt; 随着 Obsidian 1.9 版本正式发布。它能够将你的笔记转换为强大的数据库视图，支持表格、卡片等多种展示形式。&lt;/p&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;官方定位&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Bases 可以将笔记整理成数据清单，可用于项目管理、阅读清单、旅行计划，甚至做自己的收藏系统。
+— Obsidian 官方&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="bases-vs-dataview"&gt;Bases vs Dataview
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;Bases (官方)&lt;/th&gt;
+&lt;th&gt;Dataview (社区插件)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;平台支持&lt;/td&gt;
+&lt;td&gt;全平台 (手机/平板/电脑)&lt;/td&gt;
+&lt;td&gt;手机端支持有限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;安装方式&lt;/td&gt;
+&lt;td&gt;核心插件，开箱即用&lt;/td&gt;
+&lt;td&gt;需额外安装&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;学习门槛&lt;/td&gt;
+&lt;td&gt;图形界面，点点按钮&lt;/td&gt;
+&lt;td&gt;需要学习 SQL 语法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;稳定性&lt;/td&gt;
+&lt;td&gt;新有保障&lt;/td&gt;
+&lt;td&gt;依赖插件作者 官方维护，更更新&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="admonition info"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/&gt;&lt;/svg&gt;
+&lt;span&gt;版本要求&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Obsidian 版本需要 &lt;strong&gt;1.9.10&lt;/strong&gt; 或更高才能使用 Bases 功能。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;Obsidian Bases&amp;#34;] --&amp;gt; B[&amp;#34;核心组件&amp;#34;]
+A --&amp;gt; C[&amp;#34;视图类型&amp;#34;]
+A --&amp;gt; D[&amp;#34;数据来源&amp;#34;]
+B --&amp;gt; B1[&amp;#34;Filters 筛选器&amp;#34;]
+B --&amp;gt; B2[&amp;#34;Sort 排序&amp;#34;]
+B --&amp;gt; B3[&amp;#34;Formulas 公式&amp;#34;]
+B --&amp;gt; B4[&amp;#34;Properties 属性&amp;#34;]
+C --&amp;gt; C1[&amp;#34;Table 表格视图&amp;#34;]
+C --&amp;gt; C2[&amp;#34;Cards 卡片视图&amp;#34;]
+C --&amp;gt; C3[&amp;#34;List 列表视图&amp;#34;]
+D --&amp;gt; D1[&amp;#34;笔记的 Properties&amp;#34;]
+D --&amp;gt; D2[&amp;#34;文件元数据&amp;#34;]
+&lt;/pre&gt;
+&lt;h2 id="3-技术深度分析"&gt;3. 技术深度分析
+&lt;/h2&gt;&lt;h3 id="31-启用-bases"&gt;3.1 启用 Bases
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;打开 &lt;strong&gt;设置 → 核心插件&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;找到 &lt;strong&gt;Bases&lt;/strong&gt; 并启用&lt;/li&gt;
+&lt;li&gt;同时建议启用 &lt;strong&gt;Properties&lt;/strong&gt; 插件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="32-创建第一个-base"&gt;3.2 创建第一个 Base
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;方法一：命令面板&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;按下 &lt;code&gt;Ctrl + P&lt;/code&gt; (Windows/Linux) 或 &lt;code&gt;Cmd + P&lt;/code&gt; (macOS)&lt;/li&gt;
+&lt;li&gt;搜索 &amp;ldquo;Create new base&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;命名并创建 &lt;code&gt;.base&lt;/code&gt; 文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;方法二：右键菜单&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在文件资源管理器中右键&lt;/li&gt;
+&lt;li&gt;选择 &amp;ldquo;新建 Base&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="33-base-文件结构"&gt;3.3 Base 文件结构
+&lt;/h3&gt;&lt;p&gt;每个 &lt;code&gt;.base&lt;/code&gt; 文件包含四大区域：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 🔍 全局筛选器 - 应用于所有视图&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;project&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 🧮 自定义公式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;formulas&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;完成度&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;(current / total * 100).toFixed(1) + &amp;#39;%&amp;#39;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 🏷️ 属性显示设置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;properties&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;status&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;displayName&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;项目状态&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 📊 视图配置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;我的视图&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="4-具体案例"&gt;4. 具体案例
+&lt;/h2&gt;&lt;h3 id="案例一任务待办管理系统-todo"&gt;案例一：任务待办管理系统 (Todo)
+&lt;/h3&gt;&lt;p&gt;这是最受欢迎的 Bases 用例之一。&lt;/p&gt;
+&lt;h4 id="步骤-1创建任务笔记模板"&gt;步骤 1：创建任务笔记模板
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;title&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;date&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-03-01&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tags&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;task&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;status: todo # 选项&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;todo, in-progress, done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;priority: high # 选项&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;low, medium, high&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;due&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;project&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 任务内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 备注&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="步骤-2创建-base-视图"&gt;步骤 2：创建 Base 视图
+&lt;/h4&gt;&lt;p&gt;创建 &lt;code&gt;任务管理.base&lt;/code&gt; 文件：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;所有任务&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;columns&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;title&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;status&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;priority&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;due&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;project&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;task&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;sorts&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;due&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;direction&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;asc&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;今日待办&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;task&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;todo&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;卡片视图&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;cards&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;task&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status != &amp;#34;done&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="效果展示"&gt;效果展示
+&lt;/h4&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;| 任务名称 | 状态 | 优先级 | 截止日期 | 项目 |
+|---------|------|--------|---------|------|
+| 完成调研报告 | todo | high | 2026-03-05 | 项目A |
+| 代码审查 | in-progress | medium | 2026-03-03 | 项目B |
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="案例二阅读清单管理"&gt;案例二：阅读清单管理
+&lt;/h3&gt;&lt;h4 id="笔记属性设置"&gt;笔记属性设置
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;title&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;date&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-03-01&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tags&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;book&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;book &lt;/span&gt; &lt;span style="color:#75715e"&gt;# book, article, blog&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;status&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;reading &lt;/span&gt; &lt;span style="color:#75715e"&gt;# to-read, reading, completed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;rating&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;genre&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;author&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;startDate&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;endDate&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;notes&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 读后感&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="base-配置"&gt;Base 配置
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;阅读进度&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;book&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status != &amp;#34;completed&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;columns&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;title&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;author&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;status&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;rating&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;已完成&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;cards&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.hasTag(&amp;#34;book&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;completed&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;sorts&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;rating&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;direction&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;desc&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="案例三项目进度追踪"&gt;案例三：项目进度追踪
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;title&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;date&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;2026-03-01&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;tags&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;project&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;project&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;status&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;active &lt;/span&gt; &lt;span style="color:#75715e"&gt;# planning, active, on-hold, completed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;progress&lt;/span&gt;: &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 0-100&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;startDate&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;endDate&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;owner&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;budget&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 项目目标&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 里程碑&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 风险&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 项目管理.base&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;仪表盘&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;formulas&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;总进度&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;avg(progress)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;进行中&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;length(filter(status, s =&amp;gt; s = &amp;#34;active&amp;#34;))&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;columns&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;project&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;status&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;formula&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;progress&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;endDate&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;owner&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;风险预警&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;cards&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;active&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;progress &amp;lt; 30&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="案例四图片画廊"&gt;案例四：图片画廊
+&lt;/h3&gt;&lt;p&gt;利用 Bases 快速创建图片收藏展示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;截图画廊&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;cards&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.extension = &amp;#34;png&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.createdDate &amp;gt; date(&amp;#34;2026-01-01&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;columns&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.name&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.createdDate&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.size&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="案例五最近笔记动态"&gt;案例五：最近笔记动态
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;views&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;name&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;最近笔记&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;type&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;table&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;file.mtime &amp;gt; date(&amp;#34;now() - 7d&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;sorts&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.mtime&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;direction&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;desc&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;columns&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.name&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.mtime&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;property&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;file.folder&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="5-高级功能"&gt;5. 高级功能
+&lt;/h2&gt;&lt;h3 id="51-公式系统"&gt;5.1 公式系统
+&lt;/h3&gt;&lt;p&gt;Bases 支持强大的公式计算：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;formulas&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 计算年龄&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;年龄&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;year(today()) - year(birthDate)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 任务状态颜色&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;状态标签&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;if(status = &amp;#34;done&amp;#34;, &amp;#34;✅&amp;#34;, if(status = &amp;#34;todo&amp;#34;, &amp;#34;📋&amp;#34;, &amp;#34;🔄&amp;#34;))&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 进度百分比&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;完成率&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;(current / total * 100).toFixed(0) + &amp;#34;&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;%&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 日期差&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;剩余天数&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;dayDiff(deadline, today())&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="52-筛选逻辑"&gt;5.2 筛选逻辑
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;AND 逻辑 (全部满足)&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;active&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;priority = &amp;#34;high&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;OR 逻辑 (满足其一)&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;or&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;urgent&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;priority = &amp;#34;high&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;嵌套逻辑&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;filters&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;and&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;status = &amp;#34;active&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#f92672"&gt;or&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;priority = &amp;#34;high&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;due &amp;lt; date(&amp;#34;now() + 3d&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="53-嵌入-base-到笔记"&gt;5.3 嵌入 Base 到笔记
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 我的任务
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;![[任务管理.base#所有任务]]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;## 今日待办
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;![[任务管理.base#今日待办]]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="6-实践技巧"&gt;6. 实践技巧
+&lt;/h2&gt;&lt;h3 id="视图引用"&gt;视图引用
+&lt;/h3&gt;&lt;p&gt;在笔记中引用特定视图：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;![[任务管理.base#今日待办]]
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="动态链接"&gt;动态链接
+&lt;/h3&gt;&lt;p&gt;结合 Templater 插件创建新笔记时自动填充属性：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;%*&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;project&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;file&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;title&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;date&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;tp&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;date&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;now&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;YYYY-MM-DD&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;-%&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;---&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;project&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;%&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;project&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;date&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;%&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;date&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;status&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;todo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;---&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="性能优化"&gt;性能优化
+&lt;/h3&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;注意事项&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;ul&gt;
+&lt;li&gt;Base 默认展示全库数据，记得添加筛选条件&lt;/li&gt;
+&lt;li&gt;大量笔记时避免使用过于复杂的公式&lt;/li&gt;
+&lt;li&gt;定期清理无用属性，保持数据结构清晰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="7-专业总结与应用建议"&gt;7. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="适用场景"&gt;适用场景
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;th&gt;推荐视图&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;任务管理&lt;/td&gt;
+&lt;td&gt;表格 + 卡片&lt;/td&gt;
+&lt;td&gt;状态、优先级一目了然&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;阅读清单&lt;/td&gt;
+&lt;td&gt;卡片&lt;/td&gt;
+&lt;td&gt;封面展示更直观&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;项目追踪&lt;/td&gt;
+&lt;td&gt;表格&lt;/td&gt;
+&lt;td&gt;进度、日期清晰&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;素材收藏&lt;/td&gt;
+&lt;td&gt;画廊&lt;/td&gt;
+&lt;td&gt;图片预览体验好&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="核心要点"&gt;核心要点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;先规划属性&lt;/strong&gt;: 明确需要跟踪哪些信息&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;合理使用筛选&lt;/strong&gt;: 避免全库扫描导致卡顿&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;视图分工明确&lt;/strong&gt;: 不同视图服务不同目的&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;公式简化&lt;/strong&gt;: 复杂计算放在数据来源笔记中&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="迁移建议"&gt;迁移建议
+&lt;/h3&gt;&lt;p&gt;从 Dataview 迁移到 Bases：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将 Dataview 查询转换为 Base 筛选条件&lt;/li&gt;
+&lt;li&gt;用视图替代不同的查询需求&lt;/li&gt;
+&lt;li&gt;利用图形界面替代代码查询&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="8-参考链接"&gt;8. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://help.obsidian.md/bases" target="_blank" rel="noopener"
+&gt;Obsidian Bases 官方文档&lt;/a&gt; — 官方帮助文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sspai.com/post/104365" target="_blank" rel="noopener"
+&gt;Obsidian 数据库入门教程&lt;/a&gt; — 少数派 Todo 系统教程&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://alfredo-know.com/obsidian-bases-entry-guide/" target="_blank" rel="noopener"
+&gt;Bases 基础入门完整教學&lt;/a&gt; — 繁体中文指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://alfredo-know.com/obsidian-bases-advanced-guide/" target="_blank" rel="noopener"
+&gt;Bases 高级语法与智能应用&lt;/a&gt; — 进阶技巧&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://forum-zh.obsidian.md/t/topic/53092" target="_blank" rel="noopener"
+&gt;Bases 用例：项目状态追踪&lt;/a&gt; — 社区案例&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://practicalpkm.com/moving-to-obsidian-bases-from-dataview/" target="_blank" rel="noopener"
+&gt;从 Dataview 迁移到 Bases&lt;/a&gt; — 迁移指南&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本文最后更新于 2026年3月&lt;/em&gt;&lt;/p&gt;</description></item><item><title>ObsidianCLI 入门指南</title><link>https://www.jeffkafka.top/post/obsidiancli-%E5%85%A5%E9%97%A8/</link><pubDate>Sun, 01 Mar 2026 18:00:00 +0800</pubDate><guid>https://www.jeffkafka.top/post/obsidiancli-%E5%85%A5%E9%97%A8/</guid><description>&lt;img src="https://w.wallhaven.cc/full/yq/wallhaven-yq5ywl.jpg" alt="Featured image of post ObsidianCLI 入门指南" /&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;前情提要&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;2026年2月，Obsidian 正式发布了官方命令行界面 (CLI)，这是自 Obsidian 1.12 版本以来的重大更新。官方 CLI 提供了超过 100 个命令，可以从终端控制 Obsidian 的几乎所有功能。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id="obsidiancli-入门指南"&gt;ObsidianCLI 入门指南
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;Obsidian CLI 是 Obsidian 官方推出的命令行工具，于 &lt;strong&gt;2026年2月10日&lt;/strong&gt; 随着 Obsidian 1.12 桌面版预览发布。它允许用户通过终端程序、脚本或外部工具来控制 Obsidian 金库，实现笔记的读取、创建、搜索、管理等操作。&lt;/p&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;官方宣布&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&amp;ldquo;Anything you can do in Obsidian, you can do from the command line.&amp;rdquo;
+— Obsidian Official (@obsdmd) February 11, 2026&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="与社区-cli-的区别"&gt;与社区 CLI 的区别
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;官方 Obsidian CLI&lt;/th&gt;
+&lt;th&gt;社区 CLI (如 NotesMD)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;运行环境&lt;/td&gt;
+&lt;td&gt;需要 Obsidian 运行&lt;/td&gt;
+&lt;td&gt;可独立运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;功能范围&lt;/td&gt;
+&lt;td&gt;完整 Obsidian 功能&lt;/td&gt;
+&lt;td&gt;基础文件操作&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;发布来源&lt;/td&gt;
+&lt;td&gt;Obsidian 官方&lt;/td&gt;
+&lt;td&gt;GitHub 社区&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;版本&lt;/td&gt;
+&lt;td&gt;v1.12+&lt;/td&gt;
+&lt;td&gt;v0.3.x&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;Obsidian CLI&amp;#34;] --&amp;gt; B[&amp;#34;启用方式&amp;#34;]
+A --&amp;gt; C[&amp;#34;命令类别&amp;#34;]
+A --&amp;gt; D[&amp;#34;使用场景&amp;#34;]
+B --&amp;gt; B1[&amp;#34;设置 → General → CLI&amp;#34;]
+B --&amp;gt; B2[&amp;#34;运行 obsidian 命令&amp;#34;]
+C --&amp;gt; C1[&amp;#34;文件操作&amp;#34;]
+C --&amp;gt; C2[&amp;#34;搜索查询&amp;#34;]
+C --&amp;gt; C3[&amp;#34;日常笔记&amp;#34;]
+C --&amp;gt; C4[&amp;#34;插件管理&amp;#34;]
+C --&amp;gt; C5[&amp;#34;同步发布&amp;#34;]
+D --&amp;gt; D1[&amp;#34;脚本自动化&amp;#34;]
+D --&amp;gt; D2[&amp;#34;AI 集成&amp;#34;]
+D --&amp;gt; D3[&amp;#34;批量处理&amp;#34;]
+D --&amp;gt; D4[&amp;#34;开发者工作流&amp;#34;]
+&lt;/pre&gt;
+&lt;h2 id="3-技术深度分析"&gt;3. 技术深度分析
+&lt;/h2&gt;&lt;h3 id="31-安装与配置"&gt;3.1 安装与配置
+&lt;/h3&gt;&lt;h4 id="第一步更新到-obsidian-112"&gt;第一步：更新到 Obsidian 1.12+
+&lt;/h4&gt;&lt;p&gt;从 &lt;a class="link" href="https://obsidian.md/download" target="_blank" rel="noopener"
+&gt;Obsidian 官网&lt;/a&gt; 下载并安装最新版本。&lt;/p&gt;
+&lt;h4 id="第二步启用-cli"&gt;第二步：启用 CLI
+&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;打开 Obsidian 设置&lt;/li&gt;
+&lt;li&gt;导航到 &lt;strong&gt;General → Command Line Interface&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;启用 CLI 功能&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 验证安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --version
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 查看帮助&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --help
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第三步基本命令结构"&gt;第三步：基本命令结构
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian &amp;lt;command&amp;gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;subcommand&lt;span style="color:#f92672"&gt;]&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;options&lt;span style="color:#f92672"&gt;]&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;arguments&lt;span style="color:#f92672"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="32-核心命令一览"&gt;3.2 核心命令一览
+&lt;/h3&gt;&lt;h4 id="文件操作"&gt;文件操作
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian files list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file read &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取文件内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian files write &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;写入文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file create &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;创建新文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file move &amp;lt;src&amp;gt; &amp;lt;dest&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;移动文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian file delete &amp;lt;path&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;删除文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="日常笔记"&gt;日常笔记
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;打开今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:path&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;获取今日笔记路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:read&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取今日笔记内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:append &amp;lt;text&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;追加内容到今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian daily:prepend &amp;lt;text&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;前置内容到今日笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="搜索功能"&gt;搜索功能
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;搜索笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search:context &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;带上下文的搜索&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian search:open &amp;lt;query&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;在 Obsidian 中打开搜索结果&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="属性管理"&gt;属性管理
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian properties&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian property:set &amp;lt;file&amp;gt; &amp;lt;key&amp;gt; &amp;lt;value&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;设置属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian property:read &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取文件属性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="标签操作"&gt;标签操作
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian tags&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有标签&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian tag &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看特定标签的笔记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="模板功能"&gt;模板功能
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian templates&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有模板&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian template:read &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;读取模板内容&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian template:insert &amp;lt;name&amp;gt; [path]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;插入模板到指定位置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="插件管理"&gt;插件管理
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugins&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出所有插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugins:enabled&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出已启用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:enable &amp;lt;id&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;启用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:disable &amp;lt;id&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;禁用插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian plugin:reload&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重新加载插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="同步与发布"&gt;同步与发布
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian sync:status&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看同步状态&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian sync:history&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看同步历史&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian publish:site&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看发布站点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian publish:list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出已发布文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="链接查询"&gt;链接查询
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian backlinks &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件的后向链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian links &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件的前向链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian unresolved&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出未解析的链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian orphans&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出孤立文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id="文件历史"&gt;文件历史
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian diff &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件差异&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看文件历史&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history:list &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;列出历史版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;obsidian history:restore &amp;lt;file&amp;gt; &amp;lt;version&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;恢复历史版本&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="33-高级用法"&gt;3.3 高级用法
+&lt;/h3&gt;&lt;h4 id="vault-目标指定"&gt;Vault 目标指定
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定 vault&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --vault &lt;span style="color:#e6db74"&gt;&amp;#34;My Vault&amp;#34;&lt;/span&gt; files list
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定 vault 路径&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian --vault-path /path/to/vault files list
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="文件目标指定"&gt;文件目标指定
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 指定文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian file read --file &lt;span style="color:#e6db74"&gt;&amp;#34;path/to/note.md&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="输出选项"&gt;输出选项
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# JSON 格式输出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian files list --json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 纯文本输出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian files list --plain
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="管道与脚本结合"&gt;管道与脚本结合
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 读取今日笔记并提取待办&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian daily:read | grep -A &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;## Tasks&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建新笔记并写入内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;# New Note&amp;#34;&lt;/span&gt; | obsidian files write &lt;span style="color:#e6db74"&gt;&amp;#34;Notes/new.md&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="4-工具对比与实践指南"&gt;4. 工具对比与实践指南
+&lt;/h2&gt;&lt;h3 id="41-官方-cli-vs-社区-cli"&gt;4.1 官方 CLI vs 社区 CLI
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart LR
+subgraph 官方CLI
+O1[&amp;#34;完整功能&amp;#34;] --&amp;gt; O2[&amp;#34;需要 Obsidian 运行&amp;#34;]
+O2 --&amp;gt; O3[&amp;#34;官方支持&amp;#34;]
+end
+subgraph 社区CLI
+C1[&amp;#34;基础功能&amp;#34;] --&amp;gt; C2[&amp;#34;独立运行&amp;#34;]
+C2 --&amp;gt; C3[&amp;#34;社区维护&amp;#34;]
+end
+官方CLI ~~~ 社区CLI
+&lt;/pre&gt;
+&lt;h3 id="42-常见社区-cli-工具"&gt;4.2 常见社区 CLI 工具
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;语言&lt;/th&gt;
+&lt;th&gt;Stars&lt;/th&gt;
+&lt;th&gt;特点&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/Yakitrak/obsidian-cli" target="_blank" rel="noopener"
+&gt;NotesMD CLI&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Go&lt;/td&gt;
+&lt;td&gt;1119&lt;/td&gt;
+&lt;td&gt;社区最流行，可独立运行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/Bip901/obsidian-cli" target="_blank" rel="noopener"
+&gt;Bip901/obsidian-cli&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Python&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;Vault 管理、模板创建&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a class="link" href="https://github.com/H4ZM47/petra-obsidian-cli" target="_blank" rel="noopener"
+&gt;Petra&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;TypeScript&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;CLI + MCP 插件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="43-实践示例"&gt;4.3 实践示例
+&lt;/h3&gt;&lt;h4 id="日常自动化"&gt;日常自动化
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 每日晨间自动化脚本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. 打开今日笔记&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian daily
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 2. 追加昨日回顾&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;yesterday&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;date -d &lt;span style="color:#e6db74"&gt;&amp;#34;yesterday&amp;#34;&lt;/span&gt; +%Y-%m-%d&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo &lt;span style="color:#e6db74"&gt;&amp;#34;## Yesterday&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;obsidian daily:path --plain&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 3. 搜索未完成的任务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;obsidian search &lt;span style="color:#e6db74"&gt;&amp;#34;todo&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="ai-集成"&gt;AI 集成
+&lt;/h4&gt;&lt;p&gt;结合 Claude Code 等 AI 工具使用时，需要注意 CLI 的一些静默失败问题：&lt;/p&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;已知问题&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Obsidian CLI 1.12 存在约 13 种静默失败场景，命令返回空数据但退出码为 0。使用 AI 集成时建议添加额外的验证逻辑。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="5-最新进展与趋势"&gt;5. 最新进展与趋势
+&lt;/h2&gt;&lt;h3 id="2026年2月重大更新"&gt;2026年2月重大更新
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;2026.02.27&lt;/strong&gt; - Obsidian 1.12 桌面版正式发布，CLI 功能转为公开&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;2026.02.10&lt;/strong&gt; - Obsidian 1.12.0 预览版发布，CLI 首次亮相&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="相关工具生态"&gt;相关工具生态
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Obsidian CLI REST&lt;/strong&gt; - 将 CLI 命令转换为 HTTP API 和 MCP 服务器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub: &lt;a class="link" href="https://github.com/dsebastien/obsidian-cli-rest" target="_blank" rel="noopener"
+&gt;dsebastien/obsidian-cli-rest&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;支持 AI 助手通过 REST API 控制 Obsidian&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OpenClaw 集成&lt;/strong&gt; - AI Agent 自动化工作流&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持语音笔记、结构化查询、版本历史&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;LobeHub Skills&lt;/strong&gt; - AI Agent 的 Obsidian CLI 技能集&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="6-专业总结与应用建议"&gt;6. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="核心要点"&gt;核心要点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;官方 CLI 优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能完整，覆盖 Obsidian 几乎所有操作&lt;/li&gt;
+&lt;li&gt;官方支持，持续更新&lt;/li&gt;
+&lt;li&gt;与 Obsidian 深度集成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;适用场景&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;终端爱好者日常工作流&lt;/li&gt;
+&lt;li&gt;脚本自动化（备份、批量处理）&lt;/li&gt;
+&lt;li&gt;AI Agent 集成&lt;/li&gt;
+&lt;li&gt;开发者工作流&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;注意事项&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要 Obsidian 桌面应用运行&lt;/li&gt;
+&lt;li&gt;首次使用需在设置中启用&lt;/li&gt;
+&lt;li&gt;Windows 用户可能需要额外配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="实际应用建议"&gt;实际应用建议
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;入门&lt;/strong&gt;: 先启用 CLI，尝试 &lt;code&gt;obsidian daily&lt;/code&gt; 和 &lt;code&gt;obsidian search&lt;/code&gt; 命令&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;进阶&lt;/strong&gt;: 结合脚本实现自动化工作流&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深入&lt;/strong&gt;: 探索与 AI Agent 的集成可能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="7-参考链接"&gt;7. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://help.obsidian.md/cli" target="_blank" rel="noopener"
+&gt;Obsidian CLI 官方帮助&lt;/a&gt; — 官方文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://obsidian.md/changelog/2026-02-27-desktop-v1.12.4/" target="_blank" rel="noopener"
+&gt;Obsidian 1.12 更新日志&lt;/a&gt; — 版本更新说明&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://zenn.dev/sora_biz/articles/obsidian-cli-setup-guide" target="_blank" rel="noopener"
+&gt;The Complete Obsidian CLI Setup Guide&lt;/a&gt; — Windows 安装指南&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.howtogeek.com/obsidian-desktop-apps-now-include-a-command-line-interface/" target="_blank" rel="noopener"
+&gt;Obsidian&amp;rsquo;s desktop apps now include a command line interface&lt;/a&gt; — HowToGeek 介绍&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/Yakitrak/obsidian-cli" target="_blank" rel="noopener"
+&gt;NotesMD CLI&lt;/a&gt; — 社区流行 CLI 工具&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/dsebastien/obsidian-cli-rest" target="_blank" rel="noopener"
+&gt;Obsidian CLI REST&lt;/a&gt; — MCP 服务器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本文最后更新于 2026年3月&lt;/em&gt;&lt;/p&gt;</description></item><item><title>Formatter 字段实现指南</title><link>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</link><pubDate>Thu, 22 Jan 2026 00:00:00 +0000</pubDate><guid>https://www.jeffkafka.top/post/formatter-%E5%AD%97%E6%AE%B5%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/</guid><description>&lt;h1 id="formatter-字段实现指南"&gt;Formatter 字段实现指南
 &lt;/h1&gt;&lt;h2 id="-概述"&gt;📋 概述
 &lt;/h2&gt;&lt;p&gt;本指南展示如何在 Obsidian 模板中添加动态的 formatter 字段，包括：&lt;/p&gt;
 &lt;ul&gt;

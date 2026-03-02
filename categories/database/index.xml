@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Database on Ryou's Blog</title><link>https://www.jeffkafka.top/categories/database/</link><description>Recent content in Database on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 02 Mar 2026 12:28:53 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/categories/database/index.xml" rel="self" type="application/rss+xml"/><item><title>Convex 入门指南</title><link>https://www.jeffkafka.top/post/convex%E5%85%A5%E9%97%A8/</link><pubDate>Mon, 02 Mar 2026 12:26:17 +0800</pubDate><guid>https://www.jeffkafka.top/post/convex%E5%85%A5%E9%97%A8/</guid><description>&lt;img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800" alt="Featured image of post Convex 入门指南" /&gt;&lt;h1 id="convex-入门指南"&gt;Convex 入门指南
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;h3 id="什么是-convex"&gt;什么是 Convex？
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Convex&lt;/strong&gt; 是一个开源的&lt;strong&gt;反应式数据库（Reactive Database）&lt;/strong&gt;，为现代 Web 应用提供完整的后端服务。它由前 Dropbox 工程师 James Cowling 于 2022 年创立，旨在解决传统后端开发中的复杂性问题&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;
+&lt;p&gt;Convex 的核心哲学是：&lt;strong&gt;像使用 React 一样使用数据库&lt;/strong&gt;。正如 React 组件响应状态变化而自动重新渲染，Convex 查询（Queries）响应数据库变化而自动更新。&lt;/p&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;关键概念&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Convex = Database + Server Functions + Realtime Sync + Auth + File Storage + Scheduling — 全栈应用所需的一切&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="与传统-baas-的对比"&gt;与传统 BaaS 的对比
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;Convex&lt;/th&gt;
+&lt;th&gt;Firebase&lt;/th&gt;
+&lt;th&gt;Supabase&lt;/th&gt;
+&lt;th&gt;Neon/Postgres&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;数据模型&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;文档型&lt;/td&gt;
+&lt;td&gt;文档型&lt;/td&gt;
+&lt;td&gt;关系型&lt;/td&gt;
+&lt;td&gt;关系型&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;查询语言&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;TypeScript&lt;/td&gt;
+&lt;td&gt;NoSQL 查询&lt;/td&gt;
+&lt;td&gt;SQL&lt;/td&gt;
+&lt;td&gt;SQL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;实时同步&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;原生&lt;/td&gt;
+&lt;td&gt;原生&lt;/td&gt;
+&lt;td&gt;需配置&lt;/td&gt;
+&lt;td&gt;需配置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;类型安全&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;完整&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;AI 集成&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;原生 Agent&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;部署模式&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;云端/自托管&lt;/td&gt;
+&lt;td&gt;云端&lt;/td&gt;
+&lt;td&gt;云端/自托管&lt;/td&gt;
+&lt;td&gt;自托管&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;h3 id="21-反应式查询-reactive-queries"&gt;2.1 反应式查询 (Reactive Queries)
+&lt;/h3&gt;&lt;p&gt;Convex 的查询是 &lt;strong&gt;TypeScript 函数&lt;/strong&gt;，直接在数据库引擎中执行。当底层数据变化时，所有订阅该查询的客户端会自动更新。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义一个查询函数
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;getMessages&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;() },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;withIndex&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;by_channel&amp;#34;&lt;/span&gt;, (&lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;eq&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;channelId&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;collect&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当有新消息插入时，所有监听该查询的 React 组件会自动重新渲染 — 无需手动调用 &lt;code&gt;refetch()&lt;/code&gt; 或管理缓存失效。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart TD
+A[数据库变化] --&amp;gt; B{Convex Engine}
+B --&amp;gt; C[触发相关查询]
+C --&amp;gt; D[WebSocket 推送]
+D --&amp;gt; E[React 组件自动更新]
+F[客户端订阅] --&amp;gt;|1.注册监听| B
+G[新数据渲染] --&amp;gt;|2.自动完成| E
+&lt;/pre&gt;
+&lt;h3 id="22-变更函数-mutations"&gt;2.2 变更函数 (Mutations)
+&lt;/h3&gt;&lt;p&gt;Mutation 是修改数据库的函数，与查询不同，Mutation 可以包含业务逻辑和事务。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;sendMessage&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;mutation&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;authorId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;insert&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;args.channelId&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;args.content&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;authorId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;args.authorId&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;createdAt&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;Date.now&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="23-架构概览"&gt;2.3 架构概览
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart TB
+subgraph &amp;#34;客户端&amp;#34;
+A[React/Vue/Svelte]
+B[Convex Client]
+A --&amp;gt;|订阅实时数据| B
+end
+subgraph &amp;#34;Convex Cloud&amp;#34;
+C[Query Engine]
+D[Mutation Engine]
+E[Auth Service]
+F[File Storage]
+G[Scheduler]
+H[(PostgreSQL)]
+B --&amp;gt;|HTTPS/WebSocket| C
+B --&amp;gt;|HTTPS| D
+B --&amp;gt;|OAuth| E
+B --&amp;gt;|文件上传| F
+D --&amp;gt; H
+C --&amp;gt; H
+end
+I[AI Agents] --&amp;gt;|调用 Functions| C
+I --&amp;gt;|触发 Mutations| D
+&lt;/pre&gt;
+&lt;hr&gt;
+&lt;h2 id="3-技术深度分析"&gt;3. 技术深度分析
+&lt;/h2&gt;&lt;h3 id="31-查询系统"&gt;3.1 查询系统
+&lt;/h3&gt;&lt;p&gt;Convex 的查询系统有以下几个关键特性：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;索引支持&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 定义索引
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;messagesByChannel&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;index&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;, [&lt;span style="color:#e6db74"&gt;&amp;#34;channelId&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;createdAt&amp;#34;&lt;/span&gt;]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 在查询中使用
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;withIndex&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;by_channel&amp;#34;&lt;/span&gt;, (&lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;eq&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;channelId&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;order&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;desc&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;take&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;50&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;派生状态&lt;/strong&gt;
+查询可以从其他查询派生，无需额外存储：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;getChannelWithMessages&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;() },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;channel&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;.&lt;span style="color:#66d9ef"&gt;get&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;messages&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;withIndex&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;by_channel&amp;#34;&lt;/span&gt;, (&lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;eq&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;channelId&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;collect&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;channel&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="32-认证系统"&gt;3.2 认证系统
+&lt;/h3&gt;&lt;p&gt;Convex 内置完整的认证解决方案：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 使用内置 Auth
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;Auth&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;@convex-dev/auth&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 登录
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;logIn&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;mutation&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;email&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(), &lt;span style="color:#a6e22e"&gt;password&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;() },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;auth&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;signInCredentials&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;email&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;password&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 获取当前用户
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;getCurrentUser&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;query&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;identity&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;auth&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;getUserIdentity&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (&lt;span style="color:#f92672"&gt;!&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;identity&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;null&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;db&lt;/span&gt;.&lt;span style="color:#66d9ef"&gt;get&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;identity&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;tokenIdentifier&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;支持 OAuth 提供商（GitHub, Google, Apple 等）以及密码认证。&lt;/p&gt;
+&lt;h3 id="33-ai-集成"&gt;3.3 AI 集成
+&lt;/h3&gt;&lt;p&gt;Convex 在 AI 时代具有独特优势：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Agent 记忆&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;Agent&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;@convex-dev/agents&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 创建带记忆的 AI Agent
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;agent&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;new&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Agent&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;model&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;claude-3-5-sonnet&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;memory&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;, &lt;span style="color:#75715e"&gt;// 自动保存对话历史
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Workflow 组件&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;Workflow&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;@convex-dev/workflow&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 耐用工作流 - 断点续传
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;processAIRequest&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;workflow&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, { &lt;span style="color:#a6e22e"&gt;userId&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;prompt&lt;/span&gt; }) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 第一步：验证输入
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;validated&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;runMutation&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;validators&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;validate&lt;/span&gt;, { &lt;span style="color:#a6e22e"&gt;prompt&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 第二步：调用 AI
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;result&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;runTask&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;callAI&lt;/span&gt;, { &lt;span style="color:#a6e22e"&gt;prompt&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;validated&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 第三步：保存结果
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;runMutation&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;saveResult&lt;/span&gt;, { &lt;span style="color:#a6e22e"&gt;userId&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;result&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;result&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="34-文件存储"&gt;3.4 文件存储
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;uploadFile&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;mutation&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;storageId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.id&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;_storage&amp;#34;&lt;/span&gt;) },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;handler&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;file&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;storage&lt;/span&gt;.&lt;span style="color:#66d9ef"&gt;get&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;storageId&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 处理文件...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="4-工具对比与实践指南"&gt;4. 工具对比与实践指南
+&lt;/h2&gt;&lt;h3 id="41-快速开始"&gt;4.1 快速开始
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 1. 创建新项目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm create convex@latest my-app
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 2. 进入目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd my-app
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 3. 启动开发服务器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm run dev
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 4. 在 Convex Dashboard 中查看&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npx convex dashboard
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-定义-schema"&gt;4.2 定义 Schema
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// convex/schema.ts
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;defineSchema&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;defineTable&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;convex/server&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;v&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;convex/values&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;defineSchema&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;users&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;defineTable&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;email&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;image&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.optional&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;v&lt;/span&gt;.&lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;()),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }).&lt;span style="color:#a6e22e"&gt;index&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;email&amp;#34;&lt;/span&gt;, [&lt;span style="color:#e6db74"&gt;&amp;#34;email&amp;#34;&lt;/span&gt;]),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;defineTable&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.id&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;channels&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;authorId&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.id&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;users&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;createdAt&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.number&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }).&lt;span style="color:#a6e22e"&gt;index&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;by_channel&amp;#34;&lt;/span&gt;, [&lt;span style="color:#e6db74"&gt;&amp;#34;channelId&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;createdAt&amp;#34;&lt;/span&gt;]),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;channels&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;defineTable&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.string&lt;/span&gt;(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;description&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;v.optional&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;v&lt;/span&gt;.&lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;()),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="43-前端集成-react"&gt;4.3 前端集成 (React)
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-tsx" data-lang="tsx"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// App.tsx
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;useQuery&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;useMutation&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;convex/react&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;function&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ChatChannel&lt;/span&gt;({ &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt; }) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 自动订阅实时数据
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;useQuery&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;getMessages&amp;#34;&lt;/span&gt;, { &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;sendMessage&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;useMutation&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;sendMessage&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;handleSend&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;sendMessage&lt;/span&gt;({ &lt;span style="color:#a6e22e"&gt;channelId&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;authorId&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;currentUser&amp;#34;&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &amp;lt;&lt;span style="color:#f92672"&gt;div&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; {&lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;&lt;span style="color:#f92672"&gt;?&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;map&lt;/span&gt;((&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &amp;lt;&lt;span style="color:#f92672"&gt;Message&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;key&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;{&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;_id&lt;/span&gt;} &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;{&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;} /&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ))}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &amp;lt;&lt;span style="color:#f92672"&gt;Input&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;onSend&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;{&lt;span style="color:#a6e22e"&gt;handleSend&lt;/span&gt;} /&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &amp;lt;/&lt;span style="color:#f92672"&gt;div&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; );
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="44-convex-vs-其他方案"&gt;4.4 Convex vs 其他方案
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;th&gt;推荐方案&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;快速构建 MVP&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Convex&lt;/strong&gt; - 全栈一步到位&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;需要复杂 SQL 查询&lt;/td&gt;
+&lt;td&gt;Supabase / Neon&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;已有 React 项目迁移&lt;/td&gt;
+&lt;td&gt;Convex&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;团队熟悉 Firebase&lt;/td&gt;
+&lt;td&gt;Convex (更现代的替代)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;需要完全自托管&lt;/td&gt;
+&lt;td&gt;Supabase / 自托管 Postgres&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AI Agent 应用&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Convex&lt;/strong&gt; - 原生支持&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="5-最新进展与趋势-2025-2026"&gt;5. 最新进展与趋势 (2025-2026)
+&lt;/h2&gt;&lt;h3 id="51-convex-2025-重大更新"&gt;5.1 Convex 2025 重大更新
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;[2025/06]&lt;/strong&gt; Convex Workflow 发布 — 耐用函数，支持断点续传和自动重试&lt;sup id="fnref:2"&gt;&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;[2025/04]&lt;/strong&gt; AI Agents 组件发布 — 内置记忆和工具调用能力&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;[2025/03]&lt;/strong&gt; Chef 发布 — AI 通过自然语言生成完整应用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;[2025/01]&lt;/strong&gt; 自托管正式发布 — 可在 AWS/GCP/Azure 上运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="52-社区热点"&gt;5.2 社区热点
+&lt;/h3&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;Stack 博客热点&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/tables-convex-modules-rest-apis" target="_blank" rel="noopener"
+&gt;Building a 70-Module Convex Backend&lt;/a&gt; — 70+ 模块服务 Web、移动和 REST API&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/build-streaming-chat-app-with-persistent-text-streaming-component" target="_blank" rel="noopener"
+&gt;How to Build Streaming Chat Apps&lt;/a&gt; — 流式聊天应用构建&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/authorization" target="_blank" rel="noopener"
+&gt;Authorization In Practice&lt;/a&gt; — 完整授权实践指南&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id="6-专业总结与应用建议"&gt;6. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="61-何时使用-convex"&gt;6.1 何时使用 Convex
+&lt;/h3&gt;&lt;p&gt;✅ &lt;strong&gt;适合使用 Convex：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;快速构建 Web/移动应用&lt;/li&gt;
+&lt;li&gt;需要实时协作功能（如聊天、文档编辑）&lt;/li&gt;
+&lt;li&gt;TypeScript 全栈项目&lt;/li&gt;
+&lt;li&gt;AI Agent 应用开发&lt;/li&gt;
+&lt;li&gt;不想管理后端基础设施&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;❌ &lt;strong&gt;不适合：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;需要复杂 SQL 查询和聚合&lt;/li&gt;
+&lt;li&gt;已有大量现有数据库&lt;/li&gt;
+&lt;li&gt;严格的合规要求需要完全自托管&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="62-学习资源"&gt;6.2 学习资源
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;资源&lt;/th&gt;
+&lt;th&gt;链接&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;官方文档&lt;/td&gt;
+&lt;td&gt;docs.convex.dev&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;视频教程&lt;/td&gt;
+&lt;td&gt;Stack YouTube 频道&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;社区&lt;/td&gt;
+&lt;td&gt;convex.dev/community&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub&lt;/td&gt;
+&lt;td&gt;github.com/get-convex&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AI 构建工具&lt;/td&gt;
+&lt;td&gt;chef.convex.dev&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="7-参考链接"&gt;7. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.convex.dev/" target="_blank" rel="noopener"
+&gt;Convex 官方文档&lt;/a&gt; — 权威文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/" target="_blank" rel="noopener"
+&gt;Convex 官方博客 Stack&lt;/a&gt; — 深度文章和教程&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/convex-vs-firebase" target="_blank" rel="noopener"
+&gt;Convex vs Firebase 对比&lt;/a&gt; — 详细对比分析&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/get-convex" target="_blank" rel="noopener"
+&gt;Convex GitHub&lt;/a&gt; — 开源仓库&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.convex.dev/pricing" target="_blank" rel="noopener"
+&gt;Convex 定价&lt;/a&gt; — 免费版和付费版&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://stack.convex.dev/marketing-journey" target="_blank" rel="noopener"
+&gt;Convex 2024 回顾&lt;/a&gt; — 产品发展历程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="footnotes" role="doc-endnotes"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;Convex 由 James Cowling 创立，曾在 Dropbox 工作，专注于分布式系统&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink"&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:2"&gt;
+&lt;p&gt;Convex Workflow 提供耐用执行保证，即使服务器重启也能完成&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink"&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description></item></channel></rss>
