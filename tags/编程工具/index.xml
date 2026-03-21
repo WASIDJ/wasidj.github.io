@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程工具 on Ryou's Blog</title><link>https://www.jeffkafka.top/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/</link><description>Recent content in 编程工具 on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 21 Mar 2026 17:30:00 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>PiCode入门</title><link>https://www.jeffkafka.top/post/picode%E5%85%A5%E9%97%A8/</link><pubDate>Sat, 21 Mar 2026 16:16:24 +0800</pubDate><guid>https://www.jeffkafka.top/post/picode%E5%85%A5%E9%97%A8/</guid><description>&lt;img src="https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/docs/images/doom-extension.png" alt="Featured image of post PiCode入门" /&gt;&lt;h1 id="pi-code-入门极简主义编程助手的设计哲学与实践"&gt;Pi Code 入门：极简主义编程助手的设计哲学与实践
+&lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
+&lt;/h2&gt;&lt;p&gt;在 2025 年，AI 编程助手领域经历了从自动补全到自主代理（Agent）的范式转变。&lt;a class="link" href="https://claude.ai/code" target="_blank" rel="noopener"
+&gt;Claude Code&lt;/a&gt;、&lt;a class="link" href="https://github.com/openai/codex" target="_blank" rel="noopener"
+&gt;OpenAI Codex&lt;/a&gt;、&lt;a class="link" href="https://cursor.com" target="_blank" rel="noopener"
+&gt;Cursor&lt;/a&gt; 等工具迅速占领市场，但它们的复杂性也在不断增加——动辄数十个工具、上万 token 的系统提示、以及难以理解的内部机制。&lt;/p&gt;
+&lt;p&gt;正是在这种背景下，&lt;a class="link" href="https://mariozechner.at/" target="_blank" rel="noopener"
+&gt;Mario Zechner&lt;/a&gt;（著名跨平台游戏框架 &lt;a class="link" href="https://libgdx.com/" target="_blank" rel="noopener"
+&gt;libGDX&lt;/a&gt; 的创始人，GitHub 2.3 万星）因对 Claude Code 日益膨胀的功能感到沮丧，决定构建一个截然不同的工具：&lt;a class="link" href="https://github.com/badlogic/pi-mono" target="_blank" rel="noopener"
+&gt;&lt;strong&gt;Pi&lt;/strong&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;div class="admonition info"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/&gt;&lt;/svg&gt;
+&lt;span&gt;Pi 是什么？&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Pi 是一个极简终端编程助手（Coding Agent Harness），仅提供 4 个核心工具（read、write、edit、bash），系统提示不到 1000 个 token。它采用了&amp;quot;如果你不需要它，就不构建它&amp;quot;的设计哲学，通过 TypeScript 扩展系统实现高度可定制化。Pi 也是 &lt;a class="link" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener"
+&gt;OpenClaw&lt;/a&gt;（14.5 万+ GitHub 星星）的核心引擎。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;项目官网：&lt;a class="link" href="https://pi.dev" target="_blank" rel="noopener"
+&gt;pi.dev&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;GitHub 仓库：&lt;a class="link" href="https://github.com/badlogic/pi-mono" target="_blank" rel="noopener"
+&gt;badlogic/pi-mono&lt;/a&gt;（2.6 万星）&lt;/li&gt;
+&lt;li&gt;创建者博客：&lt;a class="link" href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/" target="_blank" rel="noopener"
+&gt;What I learned building an opinionated and minimal coding agent&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="2-核心概念解释"&gt;2. 核心概念解释
+&lt;/h2&gt;&lt;h3 id="21-四工具哲学"&gt;2.1 &amp;ldquo;四工具哲学&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;Pi 的核心理念可以用一句话概括：&lt;strong&gt;&amp;ldquo;Bash is all you need&amp;rdquo;&lt;/strong&gt;。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;Pi 核心工具&amp;#34;] --&amp;gt; B[&amp;#34;read&amp;lt;br&amp;gt;读取文件&amp;#34;]
+A --&amp;gt; C[&amp;#34;write&amp;lt;br&amp;gt;写入文件&amp;#34;]
+A --&amp;gt; D[&amp;#34;edit&amp;lt;br&amp;gt;编辑文件&amp;#34;]
+A --&amp;gt; E[&amp;#34;bash&amp;lt;br&amp;gt;执行命令&amp;#34;]
+E --&amp;gt; F{&amp;#34;需要更多功能？&amp;#34;}
+F --&amp;gt; |是| G[&amp;#34;通过 bash 调用 CLI 工具&amp;#34;]
+F --&amp;gt; |否| H[&amp;#34;直接完成任务&amp;#34;]
+G --&amp;gt; I[&amp;#34;渐进式加载&amp;lt;br&amp;gt;按需读取 README&amp;#34;]
+style A fill:#f9f,stroke:#333,stroke-width:2px
+style E fill:#bbf,stroke:#333,stroke-width:2px
+&lt;/pre&gt;
+&lt;p&gt;Mario 的论点是：所有前沿模型都经过了大量的 RL 训练，因此它们&lt;strong&gt;天生理解什么是编程助手&lt;/strong&gt;。模型知道 &lt;code&gt;bash&lt;/code&gt; 是什么，知道文件系统如何工作。添加专门的工具（如&amp;quot;搜索文件&amp;quot;工具）只会浪费宝贵的上下文窗口空间。&lt;/p&gt;
+&lt;h3 id="22-与其他-agent-的对比"&gt;2.2 与其他 Agent 的对比
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;Pi&lt;/th&gt;
+&lt;th&gt;Claude Code&lt;/th&gt;
+&lt;th&gt;Cursor&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;工具数量&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;4 个&lt;/td&gt;
+&lt;td&gt;20+ 个&lt;/td&gt;
+&lt;td&gt;集成式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;系统提示大小&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&amp;lt;1000 tokens&lt;/td&gt;
+&lt;td&gt;~10000 tokens&lt;/td&gt;
+&lt;td&gt;不透明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;开源&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ MIT&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;td&gt;❌&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;多模型支持&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;15+ 提供商&lt;/td&gt;
+&lt;td&gt;仅 Anthropic&lt;/td&gt;
+&lt;td&gt;多模型&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;可扩展性&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;TypeScript 扩展&lt;/td&gt;
+&lt;td&gt;有限&lt;/td&gt;
+&lt;td&gt;插件系统&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;背景进程&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;tmux&lt;/td&gt;
+&lt;td&gt;内置&lt;/td&gt;
+&lt;td&gt;内置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;子代理&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;自行构建&lt;/td&gt;
+&lt;td&gt;内置&lt;/td&gt;
+&lt;td&gt;内置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;关键洞察&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Pi 的设计哲学不是&amp;quot;功能不好&amp;quot;，而是**&amp;ldquo;没有可观测性的功能是技术债务&amp;rdquo;**。每个隐藏的状态都会增加信任成本。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="3-技术深度分析"&gt;3. 技术深度分析
+&lt;/h2&gt;&lt;h3 id="31-monorepo-架构"&gt;3.1 Monorepo 架构
+&lt;/h3&gt;&lt;p&gt;Pi 采用 TypeScript monorepo 结构，包含 8 个包，分为三个层次：&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart TB
+subgraph &amp;#34;应用层&amp;#34;
+CLI[&amp;#34;pi-coding-agent&amp;lt;br&amp;gt;CLI 应用&amp;#34;]
+MOM[&amp;#34;pi-mom&amp;lt;br&amp;gt;Slack 机器人&amp;#34;]
+end
+subgraph &amp;#34;核心层&amp;#34;
+AGENT[&amp;#34;pi-agent-core&amp;lt;br&amp;gt;Agent 运行时&amp;#34;]
+TUI[&amp;#34;pi-tui&amp;lt;br&amp;gt;终端 UI&amp;#34;]
+WEB[&amp;#34;pi-web-ui&amp;lt;br&amp;gt;Web 组件&amp;#34;]
+end
+subgraph &amp;#34;基础设施层&amp;#34;
+AI[&amp;#34;pi-ai&amp;lt;br&amp;gt;统一 LLM API&amp;#34;]
+PODS[&amp;#34;pi-pods&amp;lt;br&amp;gt;vLLM 部署&amp;#34;]
+end
+CLI --&amp;gt; AGENT
+CLI --&amp;gt; TUI
+MOM --&amp;gt; AGENT
+AGENT --&amp;gt; AI
+style AI fill:#e1f5fe,stroke:#333
+style AGENT fill:#f3e5f5,stroke:#333
+style CLI fill:#fff3e0,stroke:#333
+&lt;/pre&gt;
+&lt;h4 id="包功能说明"&gt;包功能说明
+&lt;/h4&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;包名&lt;/th&gt;
+&lt;th&gt;功能&lt;/th&gt;
+&lt;th&gt;关键特性&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-ai&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;统一多提供商 LLM API&lt;/td&gt;
+&lt;td&gt;支持 OpenAI、Anthropic、Google 等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-agent-core&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Agent 运行时&lt;/td&gt;
+&lt;td&gt;工具调用、状态管理、事件流&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-coding-agent&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;交互式编码 Agent CLI&lt;/td&gt;
+&lt;td&gt;会话管理、扩展系统、主题&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-mom&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Slack 机器人&lt;/td&gt;
+&lt;td&gt;委托消息给 Pi&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-tui&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;终端 UI 库&lt;/td&gt;
+&lt;td&gt;差异渲染、无闪烁更新&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-web-ui&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Web 组件&lt;/td&gt;
+&lt;td&gt;AI 聊天界面&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@mariozechner/pi-pods&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;GPU Pod 管理 CLI&lt;/td&gt;
+&lt;td&gt;vLLM 部署&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="32-统一-llm-apipi-ai"&gt;3.2 统一 LLM API（pi-ai）
+&lt;/h3&gt;&lt;p&gt;pi-ai 的核心创新在于统一了 4 种主要的 LLM API 协议：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI Completions API&lt;/strong&gt; — 被绝大多数提供商使用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenAI Responses API&lt;/strong&gt; — OpenAI 新版 API&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Anthropic Messages API&lt;/strong&gt; — Claude 系列&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Google Generative AI API&lt;/strong&gt; — Gemini 系列&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="admonition warning"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
+&lt;span&gt;提供商兼容性挑战&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;不同提供商对&amp;quot;相同&amp;quot;API 的实现差异巨大：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cerebras、xAI、Mistral 不支持 &lt;code&gt;store&lt;/code&gt; 字段&lt;/li&gt;
+&lt;li&gt;Mistral 使用 &lt;code&gt;max_tokens&lt;/code&gt; 而非 &lt;code&gt;max_completion_tokens&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Grok 模型不支持 &lt;code&gt;reasoning_effort&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;推理内容返回在不同字段（&lt;code&gt;reasoning_content&lt;/code&gt; vs &lt;code&gt;reasoning&lt;/code&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id="上下文跨提供商传递"&gt;上下文跨提供商传递
+&lt;/h4&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;getModel&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;complete&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;Context&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;@mariozechner/pi-ai&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 从 Claude 开始
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;claude&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;getModel&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;anthropic&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;claude-sonnet-4-5&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;Context&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; [] };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;push&lt;/span&gt;({ &lt;span style="color:#a6e22e"&gt;role&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;user&amp;#39;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;25 * 18 等于多少？&amp;#39;&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;claudeResponse&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;complete&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;claude&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;thinkingEnabled&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;});
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;push&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;claudeResponse&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 切换到 GPT - 它会看到 Claude 的思考过程作为 &amp;lt;thinking&amp;gt; 标签
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;gpt&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;getModel&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;openai&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;gpt-5.1-codex&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;messages&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;push&lt;/span&gt;({ &lt;span style="color:#a6e22e"&gt;role&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;user&amp;#39;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;content&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;这个答案对吗？&amp;#39;&lt;/span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;gptResponse&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;await&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;complete&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;gpt&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;context&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="33-工具输出的双重结构"&gt;3.3 工具输出的双重结构
+&lt;/h3&gt;&lt;p&gt;Pi 的工具系统创新性地将输出分为两部分：给 LLM 的文本和给 UI 的结构化数据。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;import&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;Type&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;AgentTool&lt;/span&gt; } &lt;span style="color:#66d9ef"&gt;from&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;@mariozechner/pi-ai&amp;#39;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;weatherTool&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;AgentTool&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;get_weather&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;description&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;获取城市天气&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;parameters&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;Type.Object&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;city&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;Type.String&lt;/span&gt;({ &lt;span style="color:#a6e22e"&gt;minLength&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;1&lt;/span&gt; }),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;execute&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;toolCallId&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;temp&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Math.&lt;span style="color:#a6e22e"&gt;round&lt;/span&gt;(Math.&lt;span style="color:#a6e22e"&gt;random&lt;/span&gt;() &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 给 LLM 的文本
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;output&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;`&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;city&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; 温度: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;temp&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;°C`&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 给 UI 的结构化数据
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;details&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;temp&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;city&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;args.city&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="34-会话管理与分支"&gt;3.4 会话管理与分支
+&lt;/h3&gt;&lt;p&gt;Pi 的会话采用树状结构存储为 JSONL 文件，支持原地分支而无需创建新文件。&lt;/p&gt;
+&lt;pre class="mermaid"&gt;
+flowchart LR
+A[&amp;#34;会话开始&amp;#34;] --&amp;gt; B[&amp;#34;消息 1&amp;#34;]
+B --&amp;gt; C[&amp;#34;消息 2&amp;#34;]
+C --&amp;gt; D[&amp;#34;分支 A&amp;#34;]
+C --&amp;gt; E[&amp;#34;分支 B&amp;#34;]
+D --&amp;gt; F[&amp;#34;消息 3A&amp;#34;]
+E --&amp;gt; G[&amp;#34;消息 3B&amp;#34;]
+style C fill:#fff3e0,stroke:#333
+style D fill:#e8f5e9,stroke:#333
+style E fill:#e3f2fd,stroke:#333
+&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/tree&lt;/code&gt;&lt;/strong&gt; — 导航会话树，从任意历史点继续&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/fork&lt;/code&gt;&lt;/strong&gt; — 创建新会话文件&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;/compact&lt;/code&gt;&lt;/strong&gt; — 手动压缩上下文&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="4-工具对比实践指南"&gt;4. 工具对比/实践指南
+&lt;/h2&gt;&lt;h3 id="41-快速开始"&gt;4.1 快速开始
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;npm install -g @mariozechner/pi-coding-agent
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 配置 API Key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;export ANTHROPIC_API_KEY&lt;span style="color:#f92672"&gt;=&lt;/span&gt;sk-ant-...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 启动&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或使用 OAuth 登录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pi
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;/login
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="42-四种运行模式"&gt;4.2 四种运行模式
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;模式&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;交互式&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;pi&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;完整 TUI 体验&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;打印/JSON&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;pi -p &amp;quot;查询&amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;脚本集成&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;RPC&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;pi --mode rpc&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;进程集成（JSONL 协议）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;SDK&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;代码嵌入&lt;/td&gt;
+&lt;td&gt;自定义应用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="43-扩展系统示例"&gt;4.3 扩展系统示例
+&lt;/h3&gt;&lt;p&gt;Pi 的扩展系统允许你构建任何功能：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-typescript" data-lang="typescript"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;export&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;default&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;function&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;pi&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;ExtensionAPI&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 注册自定义工具
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;pi&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;registerTool&lt;/span&gt;({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;deploy&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;description&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;部署应用到生产环境&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;execute&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;args&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 部署逻辑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; { &lt;span style="color:#a6e22e"&gt;output&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;部署成功&amp;#34;&lt;/span&gt; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 注册命令
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;pi&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;registerCommand&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;stats&amp;#34;&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;description&lt;/span&gt;&lt;span style="color:#f92672"&gt;:&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;显示代码统计&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;execute&lt;/span&gt;: &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; () &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 统计逻辑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;// 事件监听
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;pi&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;on&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;tool_call&amp;#34;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;async&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;event&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;ctx&lt;/span&gt;) &lt;span style="color:#f92672"&gt;=&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;console&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;`工具调用: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;event&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;name&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;`&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="44-可能的扩展"&gt;4.4 可能的扩展
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;子代理系统（通过 tmux 或自定义实现）&lt;/li&gt;
+&lt;li&gt;计划模式（写入文件或扩展实现）&lt;/li&gt;
+&lt;li&gt;权限门控（自定义确认流程）&lt;/li&gt;
+&lt;li&gt;SSH 和沙箱执行&lt;/li&gt;
+&lt;li&gt;MCP 服务器集成&lt;/li&gt;
+&lt;li&gt;游戏等待界面（是的，&lt;a class="link" href="https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/examples/extensions/doom-overlay/" target="_blank" rel="noopener"
+&gt;Doom 可以运行&lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="admonition example"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"&gt;&lt;path d="M192 96a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-8 384l0-128 16 0 0 128c0 17.7 14.3 32 32 32s32-14.3 32-32l0-288 56 0 64 0 16 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-16 0 0-64 192 0 0 192-192 0 0-32-64 0 0 48c0 26.5 21.5 48 48 48l224 0c26.5 0 48-21.5 48-48l0-224c0-26.5-21.5-48-48-48L368 0c-26.5 0-48 21.5-48 48l0 80-76.9 0-65.9 0c-33.7 0-64.9 17.7-82.3 46.6l-58.3 97c-9.1 15.1-4.2 34.8 10.9 43.9s34.8 4.2 43.9-10.9L120 256.9 120 480c0 17.7 14.3 32 32 32s32-14.3 32-32z"/&gt;&lt;/svg&gt;
+&lt;span&gt;实际案例&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener"
+&gt;OpenClaw&lt;/a&gt; 使用 Pi 作为核心引擎，添加了浏览器控制（Chrome DevTools Protocol）、语音（ElevenLabs）、多平台消息路由等能力。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="5-最新进展趋势"&gt;5. 最新进展/趋势
+&lt;/h2&gt;&lt;h3 id="51-社区反响"&gt;5.1 社区反响
+&lt;/h3&gt;&lt;p&gt;Pi 在开发者社区获得了广泛关注：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;GitHub Stars&lt;/strong&gt;：2.6 万+（截至 2026 年 3 月）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OpenClaw 采用&lt;/strong&gt;：14.5 万+ 星星的项目选择 Pi 作为核心引擎&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;社区扩展&lt;/strong&gt;：50+ 示例扩展，活跃的 Discord 社区&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="52-用户评价"&gt;5.2 用户评价
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;通过使用 Pi，我比使用任何其他工具都更了解上下文管理、系统提示和 LLM 的极限。&amp;rdquo; —— &lt;a class="link" href="https://www.danielkoller.me/en/blog/why-pi-is-my-new-coding-agent-of-choice" target="_blank" rel="noopener"
+&gt;Daniel Koller&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Pi 教会了我适当的上下文管理是多么关键。&amp;rdquo; —— &lt;a class="link" href="https://rywalker.com/research/pi" target="_blank" rel="noopener"
+&gt;Ry Walker Research&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="53-基准测试"&gt;5.3 基准测试
+&lt;/h3&gt;&lt;p&gt;根据 &lt;a class="link" href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/" target="_blank" rel="noopener"
+&gt;Mario 的博客文章&lt;/a&gt;，尽管系统提示和工具集极小，Pi 在基准测试中与重量级工具持平甚至更优。核心论点不是&amp;quot;功能不好&amp;quot;，而是**&amp;ldquo;没有可观测性的功能是债务&amp;rdquo;**。&lt;/p&gt;
+&lt;h3 id="54-设计哲学的深层思考"&gt;5.4 设计哲学的深层思考
+&lt;/h3&gt;&lt;pre class="mermaid"&gt;
+flowchart TD
+A[&amp;#34;Pi 设计哲学&amp;#34;] --&amp;gt; B[&amp;#34;YOLO 模式&amp;#34;]
+A --&amp;gt; C[&amp;#34;无内置待办&amp;#34;]
+A --&amp;gt; D[&amp;#34;无计划模式&amp;#34;]
+A --&amp;gt; E[&amp;#34;无 MCP 支持&amp;#34;]
+A --&amp;gt; F[&amp;#34;无后台 bash&amp;#34;]
+A --&amp;gt; G[&amp;#34;无子代理&amp;#34;]
+B --&amp;gt; H[&amp;#34;容器化安全&amp;#34;]
+C --&amp;gt; I[&amp;#34;TODO.md 文件&amp;#34;]
+D --&amp;gt; J[&amp;#34;PLAN.md 文件&amp;#34;]
+E --&amp;gt; K[&amp;#34;CLI 工具 + README&amp;#34;]
+F --&amp;gt; L[&amp;#34;tmux&amp;#34;]
+G --&amp;gt; M[&amp;#34;自行 spawn&amp;#34;]
+style A fill:#ffcdd2,stroke:#333,stroke-width:2px
+style H fill:#c8e6c9,stroke:#333
+style I fill:#c8e6c9,stroke:#333
+style J fill:#c8e6c9,stroke:#333
+style K fill:#c8e6c9,stroke:#333
+style L fill:#c8e6c9,stroke:#333
+style M fill:#c8e6c9,stroke:#333
+&lt;/pre&gt;
+&lt;p&gt;每项&amp;quot;不做什么&amp;quot;都有明确的替代方案：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;安全&lt;/strong&gt; → 在容器中运行，而非虚假的安全护栏&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;任务追踪&lt;/strong&gt; → 使用外部文件，而非隐藏状态&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;扩展性&lt;/strong&gt; → 通过 bash 调用 CLI 工具，而非消耗 token 的 MCP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="6-专业总结与应用建议"&gt;6. 专业总结与应用建议
+&lt;/h2&gt;&lt;h3 id="61-结论要点"&gt;6.1 结论要点
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;极简核心&lt;/strong&gt;：4 个工具 + 不到 1000 token 的系统提示，证明了&amp;quot;少即是多&amp;quot;的 Agent 设计理念&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可观测性优先&lt;/strong&gt;：每个操作都透明可见，没有黑盒子&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;渐进式披露&lt;/strong&gt;：按需加载文档，而非一次性注入所有工具描述&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;会话可移植性&lt;/strong&gt;：支持跨提供商切换模型，会话可序列化和分支&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;扩展而非内置&lt;/strong&gt;：提供原语而非功能，让用户构建自己的工作流&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="62-实际应用建议"&gt;6.2 实际应用建议
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;使用场景&lt;/th&gt;
+&lt;th&gt;推荐理由&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Agent 开发学习&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;代码库清晰，架构简单，是学习 Agent 内部机制的理想选择&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;多模型工作流&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;15+ 提供商支持，可随时切换模型获取不同视角&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;自定义工作流&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;TypeScript 扩展系统允许深度定制&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;终端重度用户&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;原生 tmux 集成，完整的终端可观测性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;OpenClaw 生态&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;作为 OpenClaw 的核心引擎，可构建个人 AI 助手&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="admonition tip"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"&gt;&lt;path d="M272 384c9.6-31.9 29.5-59.1 49.2-86.2c0 0 0 0 0 0c5.2-7.1 10.4-14.2 15.4-21.4c19.8-28.5 31.4-63 31.4-100.3C368 78.8 289.2 0 192 0S16 78.8 16 176c0 37.3 11.6 71.9 31.4 100.3c5 7.2 10.2 14.3 15.4 21.4c0 0 0 0 0 0c19.8 27.1 39.7 54.4 49.2 86.2l160 0zM192 512c44.2 0 80-35.8 80-80l0-16-160 0 0 16c0 44.2 35.8 80 80 80zM112 176c0 8.8-7.2 16-16 16s-16-7.2-16-16c0-61.9 50.1-112 112-112c8.8 0 16 7.2 16 16s-7.2 16-16 16c-44.2 0-80 35.8-80 80z"/&gt;&lt;/svg&gt;
+&lt;span&gt;入门建议&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;如果你习惯 Claude Code 的&amp;quot;开箱即用&amp;quot;体验，Pi 可能需要一些配置。但如果你想要理解 Agent 的工作原理、掌控你的工作流细节，并愿意动手调整，Pi 是目前市场上最令人兴奋的选择。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="63-适用人群"&gt;6.3 适用人群
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;✅ 正在构建 Agent 的开发者&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;✅ 终端工具重度用户&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;✅ 需要多模型灵活性的团队&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;✅ 希望深入理解 LLM Agent 工作原理的人&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;❌ 追求开箱即用、不愿配置的用户&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;❌ 需要图形界面的用户&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;❌ 对终端操作不熟悉的初学者&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="7-参考链接"&gt;7. 参考链接
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/badlogic/pi-mono" target="_blank" rel="noopener"
+&gt;Pi GitHub 仓库&lt;/a&gt; — 官方代码库，MIT 许可&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://pi.dev" target="_blank" rel="noopener"
+&gt;pi.dev 官网&lt;/a&gt; — 项目主页与快速开始&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mariozechner.at/posts/2025-11-30-pi-coding-agent/" target="_blank" rel="noopener"
+&gt;What I learned building an opinionated and minimal coding agent&lt;/a&gt; — Mario Zechner 的设计哲学深度解析&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener"
+&gt;OpenClaw&lt;/a&gt; — 使用 Pi 作为核心引擎的个人 AI 助手&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.danielkoller.me/en/blog/why-pi-is-my-new-coding-agent-of-choice" target="_blank" rel="noopener"
+&gt;Goodbye Claude Code. Why pi Is My New Coding Agent Pick&lt;/a&gt; — 用户体验分享&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://shivamagarwal7.medium.com/agentic-ai-pi-anatomy-of-a-minimal-coding-agent-powering-openclaw-5ecd4dd6b440" target="_blank" rel="noopener"
+&gt;Pi — Anatomy of a minimal coding agent powering OpenClaw&lt;/a&gt; — 架构深度分析&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.innobu.com/en/articles/pi-coding-agent-minimalism" target="_blank" rel="noopener"
+&gt;Pi Coding Agent: The Architecture of Agent-Based Minimalism&lt;/a&gt; — 技术分析&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://mariozechner.at/" target="_blank" rel="noopener"
+&gt;Mario Zechner 的博客&lt;/a&gt; — 创建者的个人博客&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://shittycodingagent.ai" target="_blank" rel="noopener"
+&gt;shittycodingagent.ai&lt;/a&gt; — 是的，这是 Pi 的官方域名（真的）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;div class="admonition note"&gt;
+&lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"&gt;&lt;path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"/&gt;&lt;/svg&gt;
+&lt;span&gt;编者注&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class="admonition-content"&gt;
+&lt;p&gt;Pi 代表了 AI Agent 领域的一种重要趋势：从&amp;quot;功能堆砌&amp;quot;转向&amp;quot;原语构建&amp;quot;。它的成功证明了，在 LLM 能力不断增强的今天，Agent 框架的核心价值不在于预设多少功能，而在于提供多大的可组合性和可观测性。对于想要深入理解 AI 编程助手工作原理的开发者来说，Pi 是一个绝佳的学习对象。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
