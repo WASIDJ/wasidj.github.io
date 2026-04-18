@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 30 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>FIDO介绍与其DIY</title><link>https://www.jeffkafka.top/post/fido%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%85%B6diy/</link><pubDate>Mon, 30 Mar 2026 22:38:41 +0800</pubDate><guid>https://www.jeffkafka.top/post/fido%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%85%B6diy/</guid><description>&lt;img src="https://w.wallhaven.cc/full/6l/wallhaven-6l5emq.png" alt="Featured image of post FIDO介绍与其DIY" /&gt;&lt;h1 id="fido介绍与其diy"&gt;FIDO介绍与其DIY
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ryou's Blog</title><link>https://www.jeffkafka.top/</link><description>Recent content on Ryou's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 16 Apr 2026 11:58:01 +0800</lastBuildDate><atom:link href="https://www.jeffkafka.top/index.xml" rel="self" type="application/rss+xml"/><item><title>接下来的博客更新</title><link>https://www.jeffkafka.top/post/%E6%8E%A5%E4%B8%8B%E6%9D%A5%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%96%B0/</link><pubDate>Thu, 16 Apr 2026 11:58:01 +0800</pubDate><guid>https://www.jeffkafka.top/post/%E6%8E%A5%E4%B8%8B%E6%9D%A5%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%96%B0/</guid><description>&lt;img src="https://w.wallhaven.cc/full/zp/wallhaven-zpoxyj.png" alt="Featured image of post 接下来的博客更新" /&gt;&lt;h2 id="确定的问题"&gt;确定的问题：
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;添加project 展示页&lt;/li&gt;
+&lt;li&gt;添加 阅读页&lt;/li&gt;
+&lt;li&gt;更换 博客框架（至少选择一个前端框架，灵活一点，比如 obsidian的数字花园，底线obsidian中预览的效果必须满足 )支持jikz&lt;/li&gt;
+&lt;li&gt;LLM provenance Simon 是一个方案 Ted Nelson的Xanadu是另一个方案 （Engelbart 系统（NLS） 一些早期参考）LLM时代缺失的一环 # Semantic Web（语义层） C2PA（认证层）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="没确定的问题"&gt;没确定的问题
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;</description></item><item><title>FIDO介绍与其DIY</title><link>https://www.jeffkafka.top/post/fido%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%85%B6diy/</link><pubDate>Mon, 30 Mar 2026 22:38:41 +0800</pubDate><guid>https://www.jeffkafka.top/post/fido%E4%BB%8B%E7%BB%8D%E4%B8%8E%E5%85%B6diy/</guid><description>&lt;img src="https://w.wallhaven.cc/full/6l/wallhaven-6l5emq.png" alt="Featured image of post FIDO介绍与其DIY" /&gt;&lt;h1 id="fido介绍与其diy"&gt;FIDO介绍与其DIY
 &lt;/h1&gt;&lt;h2 id="1-背景与定义"&gt;1. 背景与定义
 &lt;/h2&gt;&lt;h3 id="什么是fido"&gt;什么是FIDO？
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;FIDO&lt;/strong&gt;（Fast Identity Online，快速身份在线）是由 &lt;a class="link" href="https://fidoalliance.org/" target="_blank" rel="noopener"
