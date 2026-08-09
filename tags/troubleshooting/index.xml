@@ -27,10 +27,10 @@
  &gt;Gemini Live 官方帮助&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id="2-为什么要同时检查两个应用包"&gt;2. 为什么要同时检查两个应用包
 &lt;/h2&gt;&lt;p&gt;通过 ADB 查看安装包：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;pm list packages | grep -E &amp;#34;com.google.android.apps.bard|googlequicksearchbox&amp;#34;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;pm list packages | grep -E &amp;#34;com.google.android.apps.bard|googlequicksearchbox&amp;#34;&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可以看到两个相关包：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;com.google.android.apps.bard
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;com.google.android.googlequicksearchbox
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;com.google.android.apps.bard
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;com.google.android.googlequicksearchbox
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;它们的职责并不相同：&lt;/p&gt;
 &lt;pre class="mermaid" style="visibility:hidden"&gt;flowchart LR
  A[Gemini 应用入口&lt;br/&gt;com.google.android.apps.bard]
@@ -46,17 +46,17 @@
 &lt;p&gt;因此，只给独立 Gemini 应用关闭省电限制可能不够，还必须检查 Google App。&lt;/p&gt;
 &lt;h2 id="3-确认-google-是默认数字助理"&gt;3. 确认 Google 是默认数字助理
 &lt;/h2&gt;&lt;p&gt;先检查当前默认助理：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell settings get secure assistant
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell settings get secure voice_interaction_service
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell cmd role get-role-holders android.app.role.ASSISTANT
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings get secure assistant
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings get secure voice_interaction_service
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell cmd role get-role-holders android.app.role.ASSISTANT
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;正常情况下应指向：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;com.google.android.googlequicksearchbox/com.google.android.voiceinteraction.GsaVoiceInteractionService
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;com.google.android.googlequicksearchbox/com.google.android.voiceinteraction.GsaVoiceInteractionService
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果不是，可先在系统设置中打开：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 默认应用 → 数字助理应用 → Google
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;设置 → 应用 → 默认应用 → 数字助理应用 → Google
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="4-检查麦克风通知与后台状态"&gt;4. 检查麦克风、通知与后台状态
 &lt;/h2&gt;&lt;p&gt;查看 Google App 的关键权限：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;dumpsys package com.google.android.googlequicksearchbox \
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; | grep -E &amp;#34;RECORD_AUDIO|POST_NOTIFICATIONS|FOREGROUND_SERVICE_MICROPHONE|WAKE_LOCK&amp;#34;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;dumpsys package com.google.android.googlequicksearchbox \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt; | grep -E &amp;#34;RECORD_AUDIO|POST_NOTIFICATIONS|FOREGROUND_SERVICE_MICROPHONE|WAKE_LOCK&amp;#34;&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;至少要确认：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;RECORD_AUDIO&lt;/code&gt; 已授权；&lt;/li&gt;
@@ -65,19 +65,19 @@
 &lt;li&gt;&lt;code&gt;WAKE_LOCK&lt;/code&gt; 可用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;再检查 Android AppOps：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell appops get com.google.android.googlequicksearchbox RECORD_AUDIO
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell appops get com.google.android.googlequicksearchbox RUN_ANY_IN_BACKGROUND
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell appops get com.google.android.googlequicksearchbox START_FOREGROUND
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell appops get com.google.android.googlequicksearchbox RECORD_AUDIO
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell appops get com.google.android.googlequicksearchbox RUN_ANY_IN_BACKGROUND
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell appops get com.google.android.googlequicksearchbox START_FOREGROUND
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;正常结果应为 &lt;code&gt;allow&lt;/code&gt;，其中麦克风可能显示为仅前台可启动，但 Gemini Live 启动后会转为前台服务。&lt;/p&gt;
 &lt;h2 id="5-检查专用的-gemini-live-通知渠道"&gt;5. 检查专用的 Gemini Live 通知渠道
 &lt;/h2&gt;&lt;p&gt;锁屏继续对话不是只靠麦克风权限实现的。Gemini Live 会创建一个专用通知渠道：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;dumpsys notification --noredact \
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; | grep -i -B3 -A8 &amp;#34;Gemini Live&amp;#34;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;dumpsys notification --noredact \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt; | grep -i -B3 -A8 &amp;#34;Gemini Live&amp;#34;&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在本次排查中，渠道 ID 为：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;convmode_notification_channel_id
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;convmode_notification_channel_id
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;渠道名称为“使用 Gemini Live”，并且 &lt;code&gt;mImportance=4&lt;/code&gt;、&lt;code&gt;mDeleted=false&lt;/code&gt;，说明通知处于启用状态。&lt;/p&gt;
 &lt;p&gt;也可以直接在手机中检查：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 通知与状态栏 → 应用通知 → Google → 使用 Gemini Live
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;设置 → 通知与状态栏 → 应用通知 → Google → 使用 Gemini Live
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
  &lt;div class="admonition warning"&gt;
  &lt;div class="admonition-header"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"&gt;&lt;path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/&gt;&lt;/svg&gt;
@@ -88,46 +88,46 @@
  &lt;/div&gt;
  &lt;/div&gt;&lt;h2 id="6-开启-gemini-锁屏使用"&gt;6. 开启 Gemini 锁屏使用
 &lt;/h2&gt;&lt;p&gt;在 Gemini 中进入：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Gemini → 账号和设置 → 设置 → 在锁屏状态下使用 Gemini
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Gemini → 账号和设置 → 设置 → 在锁屏状态下使用 Gemini
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;开启：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;在不解锁设备的情况下使用 Gemini
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;在不解锁设备的情况下使用 Gemini
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该开关控制的是已经启动的 Live 会话能否在锁屏后继续。如果关闭它，按下电源键后 Live 会进入暂停状态。&lt;/p&gt;
 &lt;p&gt;需要注意：这个开关不会赋予 Gemini 读取所有隐私内容的权限。涉及 Gmail 等个人内容时，Gemini 仍可能要求先解锁设备。&lt;/p&gt;
 &lt;h2 id="7-避免-hyperos-杀掉后台会话"&gt;7. 避免 HyperOS 杀掉后台会话
 &lt;/h2&gt;&lt;p&gt;先查看应用是否已经在 Doze 白名单：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;dumpsys deviceidle whitelist \
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; | grep -E &amp;#34;com.google.android.apps.bard|com.google.android.googlequicksearchbox&amp;#34;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;dumpsys deviceidle whitelist \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt; | grep -E &amp;#34;com.google.android.apps.bard|com.google.android.googlequicksearchbox&amp;#34;&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果没有，可以通过 ADB 添加：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell dumpsys deviceidle whitelist +com.google.android.googlequicksearchbox
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell dumpsys deviceidle whitelist +com.google.android.apps.bard
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell dumpsys deviceidle whitelist +com.google.android.googlequicksearchbox
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell dumpsys deviceidle whitelist +com.google.android.apps.bard
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后允许 Gemini 入口在后台运行，并取消休眠状态：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell cmd appops set com.google.android.apps.bard RUN_IN_BACKGROUND allow
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell cmd appops set com.google.android.apps.bard RUN_ANY_IN_BACKGROUND allow
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell am set-inactive --user &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt; com.google.android.apps.bard false
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell cmd appops &lt;span class="nb"&gt;set&lt;/span&gt; com.google.android.apps.bard RUN_IN_BACKGROUND allow
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell cmd appops &lt;span class="nb"&gt;set&lt;/span&gt; com.google.android.apps.bard RUN_ANY_IN_BACKGROUND allow
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell am set-inactive --user &lt;span class="m"&gt;0&lt;/span&gt; com.google.android.apps.bard &lt;span class="nb"&gt;false&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;还可以在 HyperOS 图形界面中设置：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;设置 → 应用 → 应用管理 → Google / Gemini → 省电策略 → 无限制
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;设置 → 应用 → 应用管理 → Google / Gemini → 省电策略 → 无限制
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这一步是针对 HyperOS 激进后台管理的补充措施。真正的必要条件仍然是：进入 Live、开启 Live 通知、允许锁屏使用 Gemini。&lt;/p&gt;
 &lt;h2 id="8-如何判断是否真的成功"&gt;8. 如何判断是否真的成功
 &lt;/h2&gt;&lt;p&gt;最直观的判断不是看 Gemini 是否还在最近任务中，而是看通知和麦克风状态：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;启动 Live
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;通知栏出现“使用 Gemini Live”
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;按电源键熄屏
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ↓
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;耳机或手机仍能听到回答，也能继续说话打断
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;启动 Live
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;通知栏出现“使用 Gemini Live”
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;按电源键熄屏
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ↓
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;耳机或手机仍能听到回答，也能继续说话打断
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果熄屏前没有出现“使用 Gemini Live”通知，通常意味着启动的是普通麦克风模式，而不是 Live。&lt;/p&gt;
 &lt;p&gt;可以用 ADB 辅助确认进程仍存在：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;ps -A | grep com.google.android.googlequicksearchbox&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell &lt;span style="color:#e6db74"&gt;&amp;#39;dumpsys activity services com.google.android.googlequicksearchbox \
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; | grep -Ei &amp;#34;foreground|startForeground|convmode|live&amp;#34;&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;ps -A | grep com.google.android.googlequicksearchbox&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s1"&gt;&amp;#39;dumpsys activity services com.google.android.googlequicksearchbox \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s1"&gt; | grep -Ei &amp;#34;foreground|startForeground|convmode|live&amp;#34;&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="9-回滚-adb-白名单"&gt;9. 回滚 ADB 白名单
 &lt;/h2&gt;&lt;p&gt;如果以后不希望 Google 或 Gemini 获得 Doze 豁免，可以删除白名单：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell dumpsys deviceidle whitelist -com.google.android.googlequicksearchbox
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell dumpsys deviceidle whitelist -com.google.android.apps.bard
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell dumpsys deviceidle whitelist -com.google.android.googlequicksearchbox
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell dumpsys deviceidle whitelist -com.google.android.apps.bard
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;恢复 Gemini 入口的 AppOps 默认值：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell cmd appops set com.google.android.apps.bard RUN_IN_BACKGROUND default
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;adb shell cmd appops set com.google.android.apps.bard RUN_ANY_IN_BACKGROUND default
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell cmd appops &lt;span class="nb"&gt;set&lt;/span&gt; com.google.android.apps.bard RUN_IN_BACKGROUND default
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell cmd appops &lt;span class="nb"&gt;set&lt;/span&gt; com.google.android.apps.bard RUN_ANY_IN_BACKGROUND default
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这些操作不需要 root，不会清除 Gemini 数据，也不会修改系统分区。&lt;/p&gt;
 &lt;h2 id="10-容易混淆的边界"&gt;10. 容易混淆的边界
 &lt;/h2&gt;&lt;h3 id="普通朗读回答不会持续"&gt;普通“朗读回答”不会持续

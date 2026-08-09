@@ -156,12 +156,12 @@
  2026 : 纯教程内容几乎归零
  : 判断力/经验类内容价值凸显&lt;/pre&gt;&lt;p&gt;这是否意味着不要写技术内容？不。&lt;/p&gt;
 &lt;p&gt;这意味着技术内容的写法需要改变：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;❌ 旧写法：列出所有 git 命令
-✅ 新写法：为什么选择这个方案、踩了什么坑、实际效果如何
-
-❌ 旧写法：翻译协议规范
-✅ 新写法：密码认证的根本问题是什么、DIY 方案的取舍、对安全的理解
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;同样的主题，不同的切入角度，产生完全不同价值的内容。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;❌ 旧写法：列出所有 git 命令
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;✅ 新写法：为什么选择这个方案、踩了什么坑、实际效果如何
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;❌ 旧写法：翻译协议规范
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;✅ 新写法：密码认证的根本问题是什么、DIY 方案的取舍、对安全的理解
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;同样的主题，不同的切入角度，产生完全不同价值的内容。&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="六创作即判断"&gt;六、创作即判断
 &lt;/h2&gt;&lt;p&gt;回到最初的问题：在 LLM Agent 时代，博客应该创造什么？&lt;/p&gt;
