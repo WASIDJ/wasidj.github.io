@@ -8,40 +8,40 @@
 示例: 2026-01-22-hugo-pagination-debugging.md
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id="命名规则"&gt;命名规则
 &lt;/h3&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;规则&lt;/th&gt;
-&lt;th&gt;示例&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;使用日期前缀&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;2026-01-22&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;ISO 8601 格式&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;使用 slug 格式&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;hugo-pagination&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;小写字母，连字符分隔&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;避免特殊字符&lt;/td&gt;
-&lt;td&gt;❌ &lt;code&gt;hugo@bugs!&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;仅允许 a-z, 0-9, -&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;避免空格&lt;/td&gt;
-&lt;td&gt;❌ &lt;code&gt;hugo pagination&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;使用连字符代替&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;避免中文字符&lt;/td&gt;
-&lt;td&gt;❌ &lt;code&gt;雨后的故事.md&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;使用英文 slug&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;规则&lt;/th&gt;
+					&lt;th&gt;示例&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;使用日期前缀&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;2026-01-22&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;ISO 8601 格式&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;使用 slug 格式&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;hugo-pagination&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;小写字母，连字符分隔&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;避免特殊字符&lt;/td&gt;
+					&lt;td&gt;❌ &lt;code&gt;hugo@bugs!&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;仅允许 a-z, 0-9, -&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;避免空格&lt;/td&gt;
+					&lt;td&gt;❌ &lt;code&gt;hugo pagination&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;使用连字符代替&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;避免中文字符&lt;/td&gt;
+					&lt;td&gt;❌ &lt;code&gt;雨后的故事.md&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;使用英文 slug&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h3 id="文件位置"&gt;文件位置
 &lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;content/
@@ -50,59 +50,59 @@
 │ ├── 2026-01-20-formatter-fields.md
 │ └── ...
 └── draft/
-├── 2026-01-25-draft-article.md
-└── ...
+ ├── 2026-01-25-draft-article.md
+ └── ...
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="-分类体系categories"&gt;🏷️ 分类体系（Categories）
 &lt;/h2&gt;&lt;h3 id="一级分类"&gt;一级分类
 &lt;/h3&gt;&lt;p&gt;定义 5-7 个核心分类，避免过多：&lt;/p&gt;
 &lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;分类&lt;/th&gt;
-&lt;th&gt;代码&lt;/th&gt;
-&lt;th&gt;用途&lt;/th&gt;
-&lt;th&gt;示例&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;技术&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;tech&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;技术教程、原理讲解&lt;/td&gt;
-&lt;td&gt;Hugo、Obsidian、JavaScript&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;工具&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;tools&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;工具使用、配置、集成&lt;/td&gt;
-&lt;td&gt;Templater、Database、Docker&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;思考&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;thoughts&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;随笔、感悟、观点&lt;/td&gt;
-&lt;td&gt;博客运营、学习方法&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;分享&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;sharing&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;资源分享、推荐&lt;/td&gt;
-&lt;td&gt;工具推荐、文章推荐&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;项目&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;projects&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;项目总结、Case Study&lt;/td&gt;
-&lt;td&gt;个人项目、开源贡献&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;生活&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;life&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;日常、旅行、故事&lt;/td&gt;
-&lt;td&gt;日记、游记&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;分类&lt;/th&gt;
+					&lt;th&gt;代码&lt;/th&gt;
+					&lt;th&gt;用途&lt;/th&gt;
+					&lt;th&gt;示例&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;技术&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;tech&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;技术教程、原理讲解&lt;/td&gt;
+					&lt;td&gt;Hugo、Obsidian、JavaScript&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;工具&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;tools&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;工具使用、配置、集成&lt;/td&gt;
+					&lt;td&gt;Templater、Database、Docker&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;思考&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;thoughts&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;随笔、感悟、观点&lt;/td&gt;
+					&lt;td&gt;博客运营、学习方法&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;分享&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sharing&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;资源分享、推荐&lt;/td&gt;
+					&lt;td&gt;工具推荐、文章推荐&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;项目&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;projects&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;项目总结、Case Study&lt;/td&gt;
+					&lt;td&gt;个人项目、开源贡献&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;生活&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;life&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;日常、旅行、故事&lt;/td&gt;
+					&lt;td&gt;日记、游记&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h3 id="分类规则"&gt;分类规则
 &lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# ✅ 正确用法&lt;/span&gt;
@@ -122,6 +122,7 @@
 2. 互斥的 2. 可多个
 3. 结构化 3. 流动的
 4. 5-7 个 4. 20-50+ 个
+
 示例:
 分类: 技术
 标签: hugo, pagination, debugging, seo
@@ -201,7 +202,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;python&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;css&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;docker&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 主题&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;web-development&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;backend&lt;/span&gt;
@@ -209,18 +210,18 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;devops&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;automation&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;seo&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 格式&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;tutorial&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;guide&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;case-study&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;review&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 难度&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;beginner&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;intermediate&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;advanced&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; 
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 其他&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;tips&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; - &lt;span style="color:#ae81ff"&gt;tools&lt;/span&gt;
@@ -269,76 +270,76 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;---
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="字段说明"&gt;字段说明
 &lt;/h3&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;字段&lt;/th&gt;
-&lt;th&gt;类型&lt;/th&gt;
-&lt;th&gt;必需&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;title&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;文章标题&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Date&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;发布日期&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;author&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;作者&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;categories&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Array&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;分类（1-2 个）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;tags&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Array&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;标签（3-10 个）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;description&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;✅&lt;/td&gt;
-&lt;td&gt;简短描述（&amp;lt;160 字符）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;draft&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Boolean&lt;/td&gt;
-&lt;td&gt;❌&lt;/td&gt;
-&lt;td&gt;草稿状态&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;image&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;URL&lt;/td&gt;
-&lt;td&gt;❌&lt;/td&gt;
-&lt;td&gt;封面图片&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;views&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;Number&lt;/td&gt;
-&lt;td&gt;❌&lt;/td&gt;
-&lt;td&gt;浏览数&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;summary&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;❌&lt;/td&gt;
-&lt;td&gt;详细摘要&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;字段&lt;/th&gt;
+					&lt;th&gt;类型&lt;/th&gt;
+					&lt;th&gt;必需&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;title&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;String&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;文章标题&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;date&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;Date&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;发布日期&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;author&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;String&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;作者&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;categories&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;Array&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;分类（1-2 个）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;tags&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;Array&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;标签（3-10 个）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;description&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;String&lt;/td&gt;
+					&lt;td&gt;✅&lt;/td&gt;
+					&lt;td&gt;简短描述（&amp;lt;160 字符）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;draft&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;Boolean&lt;/td&gt;
+					&lt;td&gt;❌&lt;/td&gt;
+					&lt;td&gt;草稿状态&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;image&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;URL&lt;/td&gt;
+					&lt;td&gt;❌&lt;/td&gt;
+					&lt;td&gt;封面图片&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;views&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;Number&lt;/td&gt;
+					&lt;td&gt;❌&lt;/td&gt;
+					&lt;td&gt;浏览数&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;summary&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;String&lt;/td&gt;
+					&lt;td&gt;❌&lt;/td&gt;
+					&lt;td&gt;详细摘要&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
 &lt;h2 id="-写作规范"&gt;✍️ 写作规范
@@ -381,50 +382,50 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;-&lt;/span&gt; [&lt;span style="color:#f92672"&gt;链接 2&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;url&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="内容规范"&gt;内容规范
 &lt;/h3&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;项目&lt;/th&gt;
-&lt;th&gt;规则&lt;/th&gt;
-&lt;th&gt;示例&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;段落长度&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;3-5 句&lt;/td&gt;
-&lt;td&gt;保持易读性&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;标题层级&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;最多 4 级&lt;/td&gt;
-&lt;td&gt;# ## ### ####&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;列表项&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;3-7 项&lt;/td&gt;
-&lt;td&gt;不要过多&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;代码块&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;标注语言&lt;/td&gt;
-&lt;td&gt;```javascript&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;链接&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;使用有意义的文字&lt;/td&gt;
-&lt;td&gt;&lt;a class="link" href="url" &gt;点击这里&lt;/a&gt; ❌ 避免&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;图片宽度&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;最大 100%&lt;/td&gt;
-&lt;td&gt;响应式&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;段落首字&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;不缩进&lt;/td&gt;
-&lt;td&gt;Markdown 原生&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;项目&lt;/th&gt;
+					&lt;th&gt;规则&lt;/th&gt;
+					&lt;th&gt;示例&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;段落长度&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;3-5 句&lt;/td&gt;
+					&lt;td&gt;保持易读性&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;标题层级&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;最多 4 级&lt;/td&gt;
+					&lt;td&gt;# ## ### ####&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;列表项&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;3-7 项&lt;/td&gt;
+					&lt;td&gt;不要过多&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;代码块&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;标注语言&lt;/td&gt;
+					&lt;td&gt;```javascript&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;链接&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;使用有意义的文字&lt;/td&gt;
+					&lt;td&gt;&lt;a class="link" href="url" &gt;点击这里&lt;/a&gt; ❌ 避免&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;图片宽度&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;最大 100%&lt;/td&gt;
+					&lt;td&gt;响应式&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;strong&gt;段落首字&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;不缩进&lt;/td&gt;
+					&lt;td&gt;Markdown 原生&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h3 id="语言规范"&gt;语言规范
 &lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-markdown" data-lang="markdown"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;# ✅ 推荐
@@ -460,26 +461,33 @@
 &lt;/ul&gt;
 &lt;h3 id="发布流程"&gt;发布流程
 &lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;1. 创建分支
-git checkout -b post/article-title
+ git checkout -b post/article-title
+
 2. 编写文章
-创建或编辑 content/post/文件.md
+ 创建或编辑 content/post/文件.md
+
 3. 本地测试
-hugo server
-检查渲染效果
+ hugo server
+ 检查渲染效果
+
 4. 提交更改
-git add .
-git commit -m &amp;#34;docs: add article title&amp;#34;
+ git add .
+ git commit -m &amp;#34;docs: add article title&amp;#34;
+
 5. 推送分支
-git push origin post/article-title
+ git push origin post/article-title
+
 6. 创建 Pull Request
-标题: &amp;#34;Add: 文章标题&amp;#34;
-描述: 文章摘要
+ 标题: &amp;#34;Add: 文章标题&amp;#34;
+ 描述: 文章摘要
+
 7. 审查和合并
-检查 CI/CD 通过
-合并到 main
+ 检查 CI/CD 通过
+ 合并到 main
+
 8. 发布
-GitHub Pages 自动部署
-核实发布成功
+ GitHub Pages 自动部署
+ 核实发布成功
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="-标签和分类维护"&gt;📊 标签和分类维护
 &lt;/h2&gt;&lt;h3 id="定期审计"&gt;定期审计
@@ -552,13 +560,13 @@ Ops, DevOps devops
 &lt;/ul&gt;
 &lt;h3 id="改进流程"&gt;改进流程
 &lt;/h3&gt;&lt;pre tabindex="0"&gt;&lt;code&gt;月度审计
-↓
+ ↓
 分析表现不佳的文章
-↓
+ ↓
 识别共同问题
-↓
+ ↓
 调整规范（如需）
-↓
+ ↓
 应用到新文章
 &lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
 &lt;h2 id="-完整检查表"&gt;✅ 完整检查表
