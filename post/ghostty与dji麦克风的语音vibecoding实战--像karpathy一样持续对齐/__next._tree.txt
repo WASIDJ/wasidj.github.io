@@ -1,5 +1,5 @@
-:HL["/_next/static/chunks/3cys1bb-69v4e.css","style"]
+:HL["/_next/static/chunks/1pdjcexhn7dso.css","style"]
 :HC["/",""]
 2:[["children",{"s":"__PAGE__","h":160}]]
-1:[["children",{"s":{"n":"slug","t":"c","k":"post/ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90","s":[]},"h":65632,"c":"$Q2"}]]
-0:{"b":"hXnj-TTCNqo9iyBXNjf0A","t":{"t":{"s":"","h":131152,"c":"$Q1"}}}
+1:[["children",{"s":{"n":"slug","t":"c","k":"post/ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90","s":[]},"h":65600,"c":"$Q2"}]]
+0:{"b":"Tni7kO4Gsch-_V9lvmFXx","t":{"t":{"s":"","h":131088,"c":"$Q1"}}}
