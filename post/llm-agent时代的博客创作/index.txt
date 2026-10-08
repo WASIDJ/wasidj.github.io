@@ -1,0 +1,228 @@
+1:"$Sreact.fragment"
+2:"/_next/static/chunks/0umf92h1sb77c.js"
+3:I[39756,["$2"],"default"]
+4:I[37457,["$2"],"default"]
+5:"/_next/static/chunks/3xjomtfcozt80.js"
+6:"/_next/static/chunks/2rma8pywuzqyn.js"
+7:I[22016,["$2","$5","$6"],""]
+c:I[97367,["$2"],"OutletBoundary"]
+d:"$Sreact.suspense"
+f:"ViewportBoundary"
+10:I[97367,["$2"],"$f"]
+12:"MetadataBoundary"
+13:I[97367,["$2"],"$12"]
+15:I[68027,["$2"],"default",1]
+:HL["/_next/static/chunks/3cys1bb-69v4e.css","style"]
+:HC["/",""]
+9:X
+a:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":["$Lb",[["$","script","script-0",{"src":"/_next/static/chunks/3xjomtfcozt80.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/2rma8pywuzqyn.js","async":true,"nonce":"$undefined"}]],["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]]}],"p":false,"v":null}}]]
+8:[["children",{"s":{"n":"slug","t":"c","k":"post/llm-agent%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%88%9B%E4%BD%9C","s":[]},"h":66048,"d":{"r":["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$9"},"c":"$Qa"}]]
+0:{"P":null,"c":["","post","llm-agent%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%88%9B%E4%BD%9C",""],"q":"","i":false,"t":{"t":{"s":"","h":131600,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3cys1bb-69v4e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/0umf92h1sb77c.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"zh-CN","data-theme":"dark","suppressHydrationWarning":true,"children":["$","body",null,{"children":[["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","main",null,{"className":"not-found","children":[["$","span",null,{"className":"eyebrow","children":"WORKSPACE / 404"}],["$","h1",null,{"children":"这个路径没有内容。"}],["$","p",null,{"children":"也许它还只是一个想法。"}],["$","$L7",null,{"className":"primary-button","href":"/","children":"回到个人工作台 →","prefetch":false}],["$","$L7",null,{"href":"/post/","children":"浏览文章","prefetch":false}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"@id\":\"https://www.jeffkafka.top/#website\",\"url\":\"https://www.jeffkafka.top/\",\"name\":\"Ryou's Blog\",\"inLanguage\":\"zh-CN\",\"author\":{\"@type\":\"Person\",\"@id\":\"https://www.jeffkafka.top/#person\",\"name\":\"Ryou\",\"sameAs\":[\"https://github.com/WASIDJ\"]}}"}}]]}]}]]}],"p":false,"v":null},"c":"$Q8"},"h":{"r":["$","$1","h",{"children":[null,["$","$L10",null,{"children":"$L11"}],["$","$L13",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$d",null,{"name":"Next.Metadata","children":"$L14"}]}],null]}],null]}],"p":false,"v":null}},"m":"$undefined","G":["$15",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3cys1bb-69v4e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"hXnj-TTCNqo9iyBXNjf0A"}
+16:I[37489,["$2","$5","$6"],"Workspace"]
+9:C
+b:[["$","$L16","/post/llm-agent时代的博客创作/",{"catalog":{"posts":[{"id":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","path":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","file":"post/Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐.md","title":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐","description":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。","date":"2026-09-27T15:34:44.000Z","updated":"2026-09-27T15:34:44.000Z","tags":["vibecoding","ghostty","ai-agent","claude-code","speech-to-text","karpathy","macos"],"categories":["技术","工具"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jedzym.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"291dedb65d487f4a27966744b70db0c6","readingMinutes":9},{"id":"/post/2026-08-22-counting-sort/","path":"/post/2026-08-22-counting-sort/","file":"post/2026-08-22-counting-sort.md","title":"全新的非比较排序原理：计数排序（Counting Sort）深度解析与实现","description":"突破传统基于比较的 O(N log N) 排序理论下界！系统剖析非比较排序算法之计数排序（Counting Sort）的核心原理、时空复杂度、前缀和保持稳定性技巧、负数及自定义对象支持，并附 LeetCode 经典实战解析。","date":"2026-08-22T15:13:00.000Z","updated":"2026-08-22T15:13:00.000Z","tags":["Algorithm","Data-Structure","Sorting","Counting-Sort","LeetCode","Java","Go","Python"],"categories":["技术","算法"],"aliases":["/post/Counting Sort/","/post/计数排序/","/post/线性时间排序/"],"draft":false,"image":"https://w.wallhaven.cc/full/21/wallhaven-21oqrg.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"cac9f20f01b4857b993b0278c64700fd","readingMinutes":13},{"id":"/post/2026-08-14-the-twelve-factor-app/","path":"/post/2026-08-14-the-twelve-factor-app/","file":"post/2026-08-14-the-twelve-factor-app.md","title":"The Twelve-Factor App（十二要素应用宣言）全译与现代解读","description":"现代云原生与 SaaS 应用开发的黄金准则——Heroku 经典架构方法论 The Twelve-Factor App（十二要素应用宣言）全译、核心解析与演进思考。","date":"2026-08-14T08:48:59.000Z","updated":"2026-08-14T08:50:00.000Z","tags":["Twelve-Factor","Cloud-Native","Architecture","DevOps","Microservices","SaaS","Best-Practices"],"categories":["技术","架构"],"aliases":["/post/Twelve-Factor App/","/post/十二要素应用宣言/"],"draft":false,"image":"https://w.wallhaven.cc/full/og/wallhaven-og6q8l.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"19256d4d32a99c5a9f75644a50e9f3d4","readingMinutes":13},{"id":"/post/2026-08-09-gemini-live-screen-off-hyperos/","path":"/post/2026-08-09-gemini-live-screen-off-hyperos/","file":"post/2026-08-09-gemini-live-screen-off-hyperos.md","title":"在国行 HyperOS 上让 Gemini Live 熄屏继续对话","description":"记录如何通过 ADB 定位 Gemini Live 熄屏后消失的问题，并正确配置通知、锁屏权限与后台白名单。","date":"2026-08-09T13:15:00.000Z","updated":"2026-08-09T13:50:19.000Z","tags":["Gemini","Gemini-Live","Android","HyperOS","ADB","troubleshooting","tutorial"],"categories":["技术","工具"],"aliases":["/post/Gemini Live 锁屏继续对话/","/post/HyperOS Gemini Live 后台运行/"],"draft":false,"image":"","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"e55e60258aff36901063077f959975b6","readingMinutes":9},{"id":"/post/llm-agent时代的博客创作/","path":"/post/llm-agent时代的博客创作/","file":"post/LLM AGENT时代的博客创作.md","title":"LLM AGENT时代的博客创作","description":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。","date":"2026-05-16T16:43:58.000Z","updated":"2026-05-16T16:43:58.000Z","tags":["LLM","博客","创作","判断力","AGENT"],"categories":["思考"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jek28w.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"cb17d733679eaf421819132bfd880716","readingMinutes":6},{"id":"/post/fido介绍与其diy/","path":"/post/fido介绍与其diy/","file":"post/FIDO介绍与其DIY.md","title":"FIDO介绍与其DIY","description":"深入解析FIDO联盟认证标准、FIDO2/WebAuthn协议架构、主流硬件安全密钥产品对比，以及如何用30元DIY一个开源FIDO2安全密钥","date":"2026-03-30T14:38:41.000Z","updated":"2026-03-30T00:00:00.000Z","tags":["FIDO2","WebAuthn","Passkeys","硬件安全","DIY","认证"],"categories":["Security","Tutorial"],"aliases":["/post/FIDO完全指南/"],"draft":false,"image":"https://w.wallhaven.cc/full/6l/wallhaven-6l5emq.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"d81bb38d181695e720c3bd4e540ae7f9","readingMinutes":19},{"id":"/post/三资三化--人的私有化/","path":"/post/三资三化--人的私有化/","file":"post/三资三化--人的私有化.md","title":"三资三化--人的私有化","description":"如何将你的美貌、知识、品德转化为可计量、可定价、可转移、可变现的个人资产？本文从人力资本、社会资本、文化资本三大理论出发，提供一套完整的个人资本化方法论","date":"2026-01-28T11:30:33.000Z","updated":"2026-02-04T14:53:25.000Z","tags":["人的资本化","人力资本","社会资本","文化资本","个人品牌","知识变现"],"categories":["2026闲书系列"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/gw/wallhaven-gw55p3.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"5bbebf5d0ca50f5a0ecb11026372e72e","readingMinutes":5},{"id":"/post/博客写作规范和标签体系指南/","path":"/post/博客写作规范和标签体系指南/","file":"post/博客写作规范和标签体系指南.md","title":"博客写作规范和标签体系指南","description":"建立统一的写作规范、命名标准和标签分类体系","date":"2026-01-22T00:00:00.000Z","updated":"2026-02-04T22:20:18.000Z","tags":["standard","tagging","workflow"],"categories":["规范"],"aliases":[],"draft":false,"image":"","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"3d906ae1916686a5c59dc3d42e18f2ec","readingMinutes":10}],"projects":[{"id":"kite-rpc","name":"KiteRPC","label":"DISTRIBUTED SYSTEMS","color":"blue","tags":["Go","TCP","etcd"],"description":"从 TCP 分帧到服务治理，拆解一次 RPC 调用的完整路径。","problem":"如何用可阅读的实现理解 RPC 的协议、并发与服务治理，而不隐藏在框架抽象之后？","contribution":"公开维护的教学级 Go RPC 实现：自定义二进制分帧、Future 多路复用、注册发现与熔断限流。","tradeoff":"不依赖 IDL 桩代码，使用动态反射分发；优先呈现底层机制与学习路径。","repo":"https://github.com/WASIDJ/kite-rpc","evidence":"https://github.com/WASIDJ/kite-rpc#readme","diagram":["TCP / codec","Future / request ID","etcd / circuit breaker"]},{"id":"pulse-im","name":"Pulse IM","label":"REALTIME ENGINEERING","color":"green","tags":["Go","Vue","WebSocket"],"description":"让长连接、消息路由与音视频信令，成为可复现的工程系统。","problem":"如何将即时通信项目中的环境耦合和隐式副作用，改造成可配置、可部署的实现？","contribution":"基于开源生态二次开发与工程重构：显式依赖注入、Channel / Kafka 路由、WebRTC 信令和 Docker 编排。","tradeoff":"保留低依赖的单机 Channel 模式，同时提供 Kafka 模式探索分布式消息转发。","repo":"https://github.com/WASIDJ/pulse-im","evidence":"https://github.com/WASIDJ/pulse-im#readme","diagram":["Vue / WebSocket","Channel ↔ Kafka","MySQL / Redis"]},{"id":"sparksite","name":"SparkSite","label":"AGENT WORKSPACE","color":"mauve","tags":["Next.js","Agent Kit","E2B"],"description":"自然语言到代码，再到隔离沙箱里的即时预览。","problem":"如何将 Agent 的多轮工具调用与可运行的 Web 原型连接起来？","contribution":"公开维护的早期实验平台：状态化 Code Agent、E2B 沙箱、源码 / 预览双视图及项目持久化。","tradeoff":"用独立云端沙箱提供运行环境，用持久化工作流管理生成过程；定位为原型与学习实验。","repo":"https://github.com/WASIDJ/sparksite","evidence":"https://github.com/WASIDJ/sparksite#readme","diagram":["Prompt / Agent Kit","Tools / E2B sandbox","Source ↔ preview"]},{"id":"y2b","name":"y2b","label":"AUTOMATION PIPELINE","color":"peach","tags":["Go","FFmpeg","systemd"],"description":"为低内存 VPS 构建可恢复的媒体任务流水线。","problem":"如何在有限资源上编排下载、章节拆分、字幕与投稿，并从失败中恢复？","contribution":"公开维护的 Go 编排服务：受限任务日志、原子队列持久化、取消重试与中文控制台。","tradeoff":"媒体通过外部工具流式落盘，Go 管理元数据；默认复用字幕以减少转码。","repo":"https://github.com/WASIDJ/y2b","evidence":"https://github.com/WASIDJ/y2b#readme","diagram":["Download / yt-dlp","Chapters / subtitles","Queue / retry / publish"]}],"friends":[{"title":"GitHub","description":"GitHub is the world's largest software development platform.","website":"https://github.com","image":"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"}],"contentSha":"eb491436d41130c0585c08eb0cfc72a3be1ae4ff"},"home":false,"title":"LLM AGENT时代的博客创作","canonical":"/post/llm-agent时代的博客创作/","children":[false,"$L17"]}],"$L18","$L19"]
+1a:I[79512,["$2","$5","$6"],"Article"]
+1b:T277f,<blockquote class="callout callout-summary">
+<p class="callout-title">核心论点</p>
+<p>LLM Agent 时代，博客的价值不再在于记录"如何做"，而在于展现"为什么做"和"做了什么判断"。<strong>判断力就是新的稀缺</strong>。</p>
+</blockquote>
+<h2 id="一一次大清理">一、一次大清理</h2>
+<p>今天我做了一件事：删掉了博客 <code>post/</code> 目录下 63 篇博文，只保留了 9 篇。</p>
+<p>被删掉的有：</p>
+<ul>
+<li><code>git命令.md</code> — Git 命令参考</li>
+<li><code>tmux 使用教程.md</code> — Tmux 教程</li>
+<li><code>chmod 文件权限.md</code> — 权限命令指南</li>
+<li><code>golang中grpc常见的protoc命令行.md</code> — 命令速查</li>
+<li>等等，一共 63 篇</li>
+</ul>
+<p>留着的有：</p>
+<ul>
+<li><code>三资三化--人的私有化.md</code> — 关于个人资本化的理论框架</li>
+<li><code>工作的复利问题.md</code> — 对 VibeCoding 和媒介批判的深度分析</li>
+<li><code>笨蛋的思考.md</code> — 哲学随笔</li>
+<li><code>FIDO介绍与其DIY.md</code> — 从无密码认证的愿景到 30 元 DIY 实现</li>
+</ul>
+<p>看出区别了吗？</p>
+<p><strong>前者是"怎么做"的记录，后者是"为什么"的探索。</strong></p>
+<p>这不仅是内容分类的区别，更是在 LLM Agent 时代，人类创作者需要面对的根本性选择。</p>
+<hr>
+<h2 id="二llm-agent-改变了什么">二、LLM Agent 改变了什么</h2>
+<p>2026 年的今天，任何一个 LLM Agent 都可以：</p>
+<ul>
+<li>在 30 秒内写出一篇完整的 Git 教程</li>
+<li>用你从未见过的视角解释 gRPC 的工作原理</li>
+<li>生成一份带交互式图表的 Redis 深度指南</li>
+</ul>
+<p><strong>它唯一不能做的是：替你做出判断。</strong></p>
+<pre class="mermaid-source"><code class="language-mermaid">flowchart TB
+    subgraph AI能做的事
+        A1["📚 知识整理"]
+        A2["🔧 步骤说明"]
+        A3["📋 命令参考"]
+        A4["🔄 信息汇总"]
+    end
+    
+    subgraph 只有你能做的事
+        B1["💡 从0到1的想法"]
+        B2["⚖️ 判断力的展现"]
+        B3["🎯 专注力的选择"]
+        B4["🧭 方向的取舍"]
+        B5["💭 真实的经验"]
+    end
+    
+    A1 --> C["博客旧范式"]
+    B1 --> D["博客新范式"]
+    
+    style A1 fill:#e3f2fd
+    style A2 fill:#e3f2fd
+    style A3 fill:#e3f2fd
+    style A4 fill:#e3f2fd
+    style B1 fill:#ffebee
+    style B2 fill:#ffebee
+    style B3 fill:#ffebee
+    style B4 fill:#ffebee
+    style B5 fill:#ffebee
+    style C fill:#90caf9
+    style D fill:#ef9a9a
+</code></pre>
+<p>这并不是说 AI 写的教程没有价值——恰好相反，AI 教程的价值太高了，高到<strong>不值得人类去重复</strong>。</p>
+<p>如果你的博客内容是 AI 30 秒就能生成的东西，那你的读者为什么要来看？答案很残酷：<strong>他们不会来</strong>。</p>
+<hr>
+<h2 id="三新的创作哲学三问筛选法">三、新的创作哲学：三问筛选法</h2>
+<p>经过这次清理，我建立了一套博客创作的筛选标准。发表前，问自己三个问题：</p>
+<h3 id="第一问这篇文章是否体现了我的判断力">第一问：这篇文章是否体现了我的判断力？</h3>
+<p>判断力是 LLM Agent 时代最稀缺的能力。</p>
+<ul>
+<li>你选择研究什么、忽略什么？</li>
+<li>你在两个方案之间如何取舍？</li>
+<li>你从某个经历中学到了什么只有你能学到的东西？</li>
+</ul>
+<p>如果文章可以被一个 prompt 复现，那它不值得发表。</p>
+<h3 id="第二问这篇文章是否有从-0-到-1的成分">第二问：这篇文章是否有"从 0 到 1"的成分？</h3>
+<p>AI 擅长"从 1 到 100"——把已有知识结构化、完善化、可视化。</p>
+<p>人类擅长"从 0 到 1"——从模糊的想法出发，构建一个不完美但真实的 MVP。</p>
+<pre class="mermaid-source"><code class="language-mermaid">graph LR
+    subgraph AI擅长
+        A["已有知识"] --> B["结构化输出"]
+    end
+    
+    subgraph 人类擅长
+        C["模糊灵感"] --> D["粗糙但真实的MVP"]
+        D --> E["迭代"]
+        E --> C
+    end
+    
+    style A fill:#e3f2fd
+    style B fill:#e3f2fd
+    style C fill:#ffebee
+    style D fill:#ffebee
+    style E fill:#ffebee
+</code></pre>
+<p><strong>"不完美但原创"远比"完美但重复"有价值。</strong></p>
+<h3 id="第三问这篇文章是否诚实地记录了我的生活或思考">第三问：这篇文章是否诚实地记录了我的生活或思考？</h3>
+<p>日常生活记录、人生经验总结——这些是 AI 无法伪造的东西。</p>
+<ul>
+<li>你看了一部 1930 年的电影，有什么感受？</li>
+<li>你经历了一次职业选择，背后是什么思考？</li>
+<li>你观察到某个社会现象，你的立场是什么？</li>
+</ul>
+<p>AI 可以生成"西线无战事影评"，但无法生成<strong>你坐在电影院里、在 2026 年、作为你这个人——的真实感受</strong>。</p>
+<hr>
+<h2 id="四内容分类框架">四、内容分类框架</h2>
+<p>基于这个哲学，我把博客内容分为三类：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>类型</th><th>定义</th><th>例子</th><th>价值来源</th></tr></thead><tbody><tr><td><strong>思路 → MVP</strong></td><td>从一个伟大的想法出发，完成最小可行验证</td><td>FIDO DIY、Git Worktree 方案</td><td>判断力和执行力</td></tr><tr><td><strong>日常生活</strong></td><td>真实的经历和观察</td><td>观影感受、旅行见闻</td><td>不可复制的体验</td></tr><tr><td><strong>人生经验</strong></td><td>长期积累的思考总结</td><td>工作方法论、认知框架</td><td>时间和实践沉淀</td></tr></tbody></table>
+<p>这三类的共同特征是：<strong>都要求创作者的在场</strong>。没有你的判断、你的经历、你的思考，这些内容就不存在。</p>
+<hr>
+<h2 id="五关于干货的重新定义">五、关于"干货"的重新定义</h2>
+<p>传统博客圈喜欢说"干货"——即实用、可操作的内容。</p>
+<p>但在 LLM Agent 时代，"干货"的定义需要更新：</p>
+<ul>
+<li><strong>旧干货</strong>：操作步骤、命令参数、配置方法</li>
+<li><strong>新干货</strong>：思考框架、决策依据、经验教训</li>
+</ul>
+<p>为什么？<strong>因为旧干货正在急剧贬值，新干货正在持续升值。</strong></p>
+<pre class="mermaid-source"><code class="language-mermaid">timeline
+    title 博客内容价值趋势 (2024-2026)
+    2024 : 传统教程价值高峰
+         : AI 写代码能力爆发
+    2025 : 工具使用指南快速贬值
+         : AI 写作能力成熟
+    2026 : 纯教程内容几乎归零
+         : 判断力/经验类内容价值凸显
+</code></pre>
+<p>这是否意味着不要写技术内容？不。</p>
+<p>这意味着技术内容的写法需要改变：</p>
+<pre class="shiki shiki-themes catppuccin-mocha catppuccin-latte" style="background-color:#1e1e2e;--shiki-light-bg:#eff1f5;color:#cdd6f4;--shiki-light:#4c4f69" tabindex="0"><code><span class="line"><span>❌ 旧写法：列出所有 git 命令</span></span>
+<span class="line"><span>✅ 新写法：为什么选择这个方案、踩了什么坑、实际效果如何</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>❌ 旧写法：翻译协议规范</span></span>
+<span class="line"><span>✅ 新写法：密码认证的根本问题是什么、DIY 方案的取舍、对安全的理解</span></span>
+<span class="line"><span></span></span></code></pre>
+<p><strong>同样的主题，不同的切入角度，产生完全不同价值的内容。</strong></p>
+<hr>
+<h2 id="六创作即判断">六、创作即判断</h2>
+<p>回到最初的问题：在 LLM Agent 时代，博客应该创造什么？</p>
+<p>我的答案是：<strong>创造判断。</strong></p>
+<p>每一篇博客文章，都应该是一次判断力的公开展示。</p>
+<ul>
+<li>你判断什么值得关注</li>
+<li>你判断什么值得放弃</li>
+<li>你判断什么方法有效</li>
+<li>你判断什么方向正确</li>
+</ul>
+<p>AI 可以做很多事情，但它不能替你判断——<strong>因为你才是那个要为判断结果负责的人</strong>。</p>
+<p>这就是 LLM Agent 时代，博客创作的意义。</p>
+<hr>
+<h2 id="待办建立博客创作的-git-标注系统">待办：建立博客创作的 Git 标注系统</h2>
+<p>参考 Simon Willison 的做法，用 Git 来追踪和管理博客内容：</p>
+<blockquote>
+<p>Simon Willison 是 Python 生态知名开发者、Datasette 作者。他建立了一套"将 Git 作为 LLM 创作行为审计层"的方法论：</p>
+<ul>
+<li>每篇 AI 辅助创作的内容，commit message 中附上完整对话记录的链接</li>
+<li>通过脚本从 git history 自动提取 prompt 来源、生成 colophon 页面</li>
+<li>AI 生成的文档嵌入源文件的 commit hash，确保版本对应</li>
+</ul>
+<p>来源：<a href="https://simonwillison.net/2025/Mar/13/tools-colophon/" rel="noopener noreferrer">Adding AI-generated descriptions to my tools collection</a> · <a href="https://simonwillison.net/2025/Mar/11/using-llms-for-code/" rel="noopener noreferrer">Here's how I use LLMs to help me write code</a> · <a href="https://simonwillison.net/2022/Oct/29/the-perfect-commit/" rel="noopener noreferrer">The Perfect Commit</a></p>
+</blockquote>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 为每篇博客的 commit 标注 AI 参与程度（全文 AI / AI 辅助 / 纯人工）</li>
+<li class="task-list-item"><input type="checkbox" disabled> 在 commit message 中附上 prompt 或对话记录链接</li>
+<li class="task-list-item"><input type="checkbox" disabled> 建立 colophon 页面，自动从 git history 提取每篇博客的创作方式</li>
+<li class="task-list-item"><input type="checkbox" disabled> 用 <code>git log</code> 追踪博客内容的版本演变——每次修改都记录"改了判断"而不是"改了措辞"</li>
+</ul>1c:T1b89,!summary 核心论点 LLM Agent 时代，博客的价值不再在于记录"如何做"，而在于展现"为什么做"和"做了什么判断"。 判断力就是新的稀缺 。 一、一次大清理 今天我做了一件事：删掉了博客 post/ 目录下 63 篇博文，只保留了 9 篇。 被删掉的有： - git命令.md — Git 命令参考 - tmux 使用教程.md — Tmux 教程 - chmod 文件权限.md — 权限命令指南 - golang中grpc常见的protoc命令行.md — 命令速查 - 等等，一共 63 篇 留着的有： - 三资三化--人的私有化.md — 关于个人资本化的理论框架 - 工作的复利问题.md — 对 VibeCoding 和媒介批判的深度分析 - 笨蛋的思考.md — 哲学随笔 - FIDO介绍与其DIY.md — 从无密码认证的愿景到 30 元 DIY 实现 看出区别了吗？ 前者是"怎么做"的记录，后者是"为什么"的探索。 这不仅是内容分类的区别，更是在 LLM Agent 时代，人类创作者需要面对的根本性选择。 --- 二、LLM Agent 改变了什么 2026 年的今天，任何一个 LLM Agent 都可以： - 在 30 秒内写出一篇完整的 Git 教程 - 用你从未见过的视角解释 gRPC 的工作原理 - 生成一份带交互式图表的 Redis 深度指南 它唯一不能做的是：替你做出判断。 flowchart TB subgraph AI能做的事 A1 "📚 知识整理" A2 "🔧 步骤说明" A3 "📋 命令参考" A4 "🔄 信息汇总" end subgraph 只有你能做的事 B1 "💡 从0到1的想法" B2 "⚖️ 判断力的展现" B3 "🎯 专注力的选择" B4 "🧭 方向的取舍" B5 "💭 真实的经验" end A1 -- C "博客旧范式" B1 -- D "博客新范式" style A1 fill: e3f2fd style A2 fill: e3f2fd style A3 fill: e3f2fd style A4 fill: e3f2fd style B1 fill: ffebee style B2 fill: ffebee style B3 fill: ffebee style B4 fill: ffebee style B5 fill: ffebee style C fill: 90caf9 style D fill: ef9a9a 这并不是说 AI 写的教程没有价值——恰好相反，AI 教程的价值太高了，高到 不值得人类去重复 。 如果你的博客内容是 AI 30 秒就能生成的东西，那你的读者为什么要来看？答案很残酷： 他们不会来 。 --- 三、新的创作哲学：三问筛选法 经过这次清理，我建立了一套博客创作的筛选标准。发表前，问自己三个问题： 第一问：这篇文章是否体现了我的判断力？ 判断力是 LLM Agent 时代最稀缺的能力。 - 你选择研究什么、忽略什么？ - 你在两个方案之间如何取舍？ - 你从某个经历中学到了什么只有你能学到的东西？ 如果文章可以被一个 prompt 复现，那它不值得发表。 第二问：这篇文章是否有"从 0 到 1"的成分？ AI 擅长"从 1 到 100"——把已有知识结构化、完善化、可视化。 人类擅长"从 0 到 1"——从模糊的想法出发，构建一个不完美但真实的 MVP。 graph LR subgraph AI擅长 A "已有知识" -- B "结构化输出" end subgraph 人类擅长 C "模糊灵感" -- D "粗糙但真实的MVP" D -- E "迭代" E -- C end style A fill: e3f2fd style B fill: e3f2fd style C fill: ffebee style D fill: ffebee style E fill: ffebee "不完美但原创"远比"完美但重复"有价值。 第三问：这篇文章是否诚实地记录了我的生活或思考？ 日常生活记录、人生经验总结——这些是 AI 无法伪造的东西。 - 你看了一部 1930 年的电影，有什么感受？ - 你经历了一次职业选择，背后是什么思考？ - 你观察到某个社会现象，你的立场是什么？ AI 可以生成"西线无战事影评"，但无法生成 你坐在电影院里、在 2026 年、作为你这个人——的真实感受 。 --- 四、内容分类框架 基于这个哲学，我把博客内容分为三类： | 类型 | 定义 | 例子 | 价值来源 | |------|------|------|----------| | 思路 → MVP | 从一个伟大的想法出发，完成最小可行验证 | FIDO DIY、Git Worktree 方案 | 判断力和执行力 | | 日常生活 | 真实的经历和观察 | 观影感受、旅行见闻 | 不可复制的体验 | | 人生经验 | 长期积累的思考总结 | 工作方法论、认知框架 | 时间和实践沉淀 | 这三类的共同特征是： 都要求创作者的在场 。没有你的判断、你的经历、你的思考，这些内容就不存在。 --- 五、关于"干货"的重新定义 传统博客圈喜欢说"干货"——即实用、可操作的内容。 但在 LLM Agent 时代，"干货"的定义需要更新： - 旧干货 ：操作步骤、命令参数、配置方法 - 新干货 ：思考框架、决策依据、经验教训 为什么？ 因为旧干货正在急剧贬值，新干货正在持续升值。 timeline title 博客内容价值趋势 (2024-2026) 2024 : 传统教程价值高峰 : AI 写代码能力爆发 2025 : 工具使用指南快速贬值 : AI 写作能力成熟 2026 : 纯教程内容几乎归零 : 判断力/经验类内容价值凸显 这是否意味着不要写技术内容？不。 这意味着技术内容的写法需要改变： ❌ 旧写法：列出所有 git 命令 ✅ 新写法：为什么选择这个方案、踩了什么坑、实际效果如何 ❌ 旧写法：翻译协议规范 ✅ 新写法：密码认证的根本问题是什么、DIY 方案的取舍、对安全的理解 同样的主题，不同的切入角度，产生完全不同价值的内容。 --- 六、创作即判断 回到最初的问题：在 LLM Agent 时代，博客应该创造什么？ 我的答案是： 创造判断。 每一篇博客文章，都应该是一次判断力的公开展示。 - 你判断什么值得关注 - 你判断什么值得放弃 - 你判断什么方法有效 - 你判断什么方向正确 AI 可以做很多事情，但它不能替你判断—— 因为你才是那个要为判断结果负责的人 。 这就是 LLM Agent 时代，博客创作的意义。 --- 待办：建立博客创作的 Git 标注系统 参考 Simon Willison 的做法，用 Git 来追踪和管理博客内容： Simon Willison 是 Python 生态知名开发者、Datasette 作者。他建立了一套"将 Git 作为 LLM 创作行为审计层"的方法论： - 每篇 AI 辅助创作的内容，commit message 中附上完整对话记录的链接 - 通过脚本从 git history 自动提取 prompt 来源、生成 colophon 页面 - AI 生成的文档嵌入源文件的 commit hash，确保版本对应 来源： Adding AI-generated descriptions to my tools collection (https://simonwillison.net/2025/Mar/13/tools-colophon/) · Here's how I use LLMs to help me write code (https://simonwillison.net/2025/Mar/11/using-llms-for-code/) · The Perfect Commit (https://simonwillison.net/2022/Oct/29/the-perfect-commit/) - 为每篇博客的 commit 标注 AI 参与程度（全文 AI / AI 辅助 / 纯人工） - 在 commit message 中附上 prompt 或对话记录链接 - 建立 colophon 页面，自动从 git history 提取每篇博客的创作方式 - 用 git log 追踪博客内容的版本演变——每次修改都记录"改了判断"而不是"改了措辞"17:["$","$L1a",null,{"page":{"id":"/post/llm-agent时代的博客创作/","path":"/post/llm-agent时代的博客创作/","file":"post/LLM AGENT时代的博客创作.md","title":"LLM AGENT时代的博客创作","description":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。","date":"2026-05-16T16:43:58.000Z","updated":"2026-05-16T16:43:58.000Z","tags":["LLM","博客","创作","判断力","AGENT"],"categories":["思考"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jek28w.jpg","author":"Ryou","links":[],"section":"post","comments":true,"html":"$1b","headings":[{"level":2,"id":"一一次大清理","text":"一、一次大清理"},{"level":2,"id":"二llm-agent-改变了什么","text":"二、LLM Agent 改变了什么"},{"level":2,"id":"三新的创作哲学三问筛选法","text":"三、新的创作哲学：三问筛选法"},{"level":3,"id":"第一问这篇文章是否体现了我的判断力","text":"第一问：这篇文章是否体现了我的判断力？"},{"level":3,"id":"第二问这篇文章是否有从-0-到-1的成分","text":"第二问：这篇文章是否有\"从 0 到 1\"的成分？"},{"level":3,"id":"第三问这篇文章是否诚实地记录了我的生活或思考","text":"第三问：这篇文章是否诚实地记录了我的生活或思考？"},{"level":2,"id":"四内容分类框架","text":"四、内容分类框架"},{"level":2,"id":"五关于干货的重新定义","text":"五、关于\"干货\"的重新定义"},{"level":2,"id":"六创作即判断","text":"六、创作即判断"},{"level":2,"id":"待办建立博客创作的-git-标注系统","text":"待办：建立博客创作的 Git 标注系统"}],"plain":"$1c","unsupported":[],"paneKey":"cb17d733679eaf421819132bfd880716","readingMinutes":6}}]
+18:["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"LLM AGENT时代的博客创作\",\"description\":\"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。\",\"datePublished\":\"2026-05-16T16:43:58.000Z\",\"dateModified\":\"2026-05-16T16:43:58.000Z\",\"author\":{\"@type\":\"Person\",\"@id\":\"https://www.jeffkafka.top/#person\",\"name\":\"Ryou\",\"url\":\"https://www.jeffkafka.top/page/关于/\"},\"mainEntityOfPage\":\"https://www.jeffkafka.top/post/llm-agent时代的博客创作/\",\"inLanguage\":\"zh-CN\"}"}}]
+19:["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"首页\",\"item\":\"https://www.jeffkafka.top/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"LLM AGENT时代的博客创作\",\"item\":\"https://www.jeffkafka.top/post/llm-agent时代的博客创作/\"}]}"}}]
+11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+1d:I[27201,["$2"],"IconMark"]
+e:null
+14:[["$","title","0",{"children":"LLM AGENT时代的博客创作 | Ryou"}],["$","meta","1",{"name":"description","content":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。"}],["$","link","2",{"rel":"canonical","href":"https://www.jeffkafka.top/post/llm-agent%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%88%9B%E4%BD%9C/"}],["$","link","3",{"rel":"alternate","type":"application/rss+xml","href":"https://www.jeffkafka.top/index.xml"}],["$","meta","4",{"property":"og:title","content":"LLM AGENT时代的博客创作"}],["$","meta","5",{"property":"og:description","content":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。"}],["$","meta","6",{"property":"og:url","content":"https://www.jeffkafka.top/post/llm-agent%E6%97%B6%E4%BB%A3%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%88%9B%E4%BD%9C/"}],["$","meta","7",{"property":"og:image","content":"https://www.jeffkafka.top/og-card.png"}],["$","meta","8",{"property":"og:image:width","content":"1200"}],["$","meta","9",{"property":"og:image:height","content":"630"}],["$","meta","10",{"property":"og:image:alt","content":"Ryou · 构建，阅读，思考"}],["$","meta","11",{"property":"og:type","content":"article"}],["$","meta","12",{"property":"article:published_time","content":"2026-05-16T16:43:58.000Z"}],["$","meta","13",{"property":"article:modified_time","content":"2026-05-16T16:43:58.000Z"}],["$","meta","14",{"property":"article:author","content":"https://www.jeffkafka.top/page/关于/"}],["$","meta","15",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","16",{"name":"twitter:title","content":"LLM AGENT时代的博客创作"}],["$","meta","17",{"name":"twitter:description","content":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。"}],["$","meta","18",{"name":"twitter:image","content":"https://www.jeffkafka.top/og-card.png"}],["$","link","19",{"rel":"icon","href":"/favicon.svg"}],["$","$L1d","20",{}]]

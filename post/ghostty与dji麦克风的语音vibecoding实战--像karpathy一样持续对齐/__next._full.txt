@@ -1,0 +1,210 @@
+1:"$Sreact.fragment"
+2:"/_next/static/chunks/0umf92h1sb77c.js"
+3:I[39756,["$2"],"default"]
+4:I[37457,["$2"],"default"]
+5:"/_next/static/chunks/3xjomtfcozt80.js"
+6:"/_next/static/chunks/2rma8pywuzqyn.js"
+7:I[22016,["$2","$5","$6"],""]
+c:I[97367,["$2"],"OutletBoundary"]
+d:"$Sreact.suspense"
+f:"ViewportBoundary"
+10:I[97367,["$2"],"$f"]
+12:"MetadataBoundary"
+13:I[97367,["$2"],"$12"]
+15:I[68027,["$2"],"default",1]
+:HL["/_next/static/chunks/3cys1bb-69v4e.css","style"]
+:HC["/",""]
+9:X
+a:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":["$Lb",[["$","script","script-0",{"src":"/_next/static/chunks/3xjomtfcozt80.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/2rma8pywuzqyn.js","async":true,"nonce":"$undefined"}]],["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]]}],"p":false,"v":null}}]]
+8:[["children",{"s":{"n":"slug","t":"c","k":"post/ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90","s":[]},"h":66048,"d":{"r":["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$9"},"c":"$Qa"}]]
+0:{"P":null,"c":["","post","ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90",""],"q":"","i":false,"t":{"t":{"s":"","h":131600,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3cys1bb-69v4e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/0umf92h1sb77c.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"zh-CN","data-theme":"dark","suppressHydrationWarning":true,"children":["$","body",null,{"children":[["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","main",null,{"className":"not-found","children":[["$","span",null,{"className":"eyebrow","children":"WORKSPACE / 404"}],["$","h1",null,{"children":"这个路径没有内容。"}],["$","p",null,{"children":"也许它还只是一个想法。"}],["$","$L7",null,{"className":"primary-button","href":"/","children":"回到个人工作台 →","prefetch":false}],["$","$L7",null,{"href":"/post/","children":"浏览文章","prefetch":false}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"@id\":\"https://www.jeffkafka.top/#website\",\"url\":\"https://www.jeffkafka.top/\",\"name\":\"Ryou's Blog\",\"inLanguage\":\"zh-CN\",\"author\":{\"@type\":\"Person\",\"@id\":\"https://www.jeffkafka.top/#person\",\"name\":\"Ryou\",\"sameAs\":[\"https://github.com/WASIDJ\"]}}"}}]]}]}]]}],"p":false,"v":null},"c":"$Q8"},"h":{"r":["$","$1","h",{"children":[null,["$","$L10",null,{"children":"$L11"}],["$","$L13",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$d",null,{"name":"Next.Metadata","children":"$L14"}]}],null]}],null]}],"p":false,"v":null}},"m":"$undefined","G":["$15",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3cys1bb-69v4e.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"hXnj-TTCNqo9iyBXNjf0A"}
+16:I[37489,["$2","$5","$6"],"Workspace"]
+9:C
+b:[["$","$L16","/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/",{"catalog":{"posts":[{"id":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","path":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","file":"post/Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐.md","title":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐","description":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。","date":"2026-09-27T15:34:44.000Z","updated":"2026-09-27T15:34:44.000Z","tags":["vibecoding","ghostty","ai-agent","claude-code","speech-to-text","karpathy","macos"],"categories":["技术","工具"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jedzym.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"291dedb65d487f4a27966744b70db0c6","readingMinutes":9},{"id":"/post/2026-08-22-counting-sort/","path":"/post/2026-08-22-counting-sort/","file":"post/2026-08-22-counting-sort.md","title":"全新的非比较排序原理：计数排序（Counting Sort）深度解析与实现","description":"突破传统基于比较的 O(N log N) 排序理论下界！系统剖析非比较排序算法之计数排序（Counting Sort）的核心原理、时空复杂度、前缀和保持稳定性技巧、负数及自定义对象支持，并附 LeetCode 经典实战解析。","date":"2026-08-22T15:13:00.000Z","updated":"2026-08-22T15:13:00.000Z","tags":["Algorithm","Data-Structure","Sorting","Counting-Sort","LeetCode","Java","Go","Python"],"categories":["技术","算法"],"aliases":["/post/Counting Sort/","/post/计数排序/","/post/线性时间排序/"],"draft":false,"image":"https://w.wallhaven.cc/full/21/wallhaven-21oqrg.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"cac9f20f01b4857b993b0278c64700fd","readingMinutes":13},{"id":"/post/2026-08-14-the-twelve-factor-app/","path":"/post/2026-08-14-the-twelve-factor-app/","file":"post/2026-08-14-the-twelve-factor-app.md","title":"The Twelve-Factor App（十二要素应用宣言）全译与现代解读","description":"现代云原生与 SaaS 应用开发的黄金准则——Heroku 经典架构方法论 The Twelve-Factor App（十二要素应用宣言）全译、核心解析与演进思考。","date":"2026-08-14T08:48:59.000Z","updated":"2026-08-14T08:50:00.000Z","tags":["Twelve-Factor","Cloud-Native","Architecture","DevOps","Microservices","SaaS","Best-Practices"],"categories":["技术","架构"],"aliases":["/post/Twelve-Factor App/","/post/十二要素应用宣言/"],"draft":false,"image":"https://w.wallhaven.cc/full/og/wallhaven-og6q8l.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"19256d4d32a99c5a9f75644a50e9f3d4","readingMinutes":13},{"id":"/post/2026-08-09-gemini-live-screen-off-hyperos/","path":"/post/2026-08-09-gemini-live-screen-off-hyperos/","file":"post/2026-08-09-gemini-live-screen-off-hyperos.md","title":"在国行 HyperOS 上让 Gemini Live 熄屏继续对话","description":"记录如何通过 ADB 定位 Gemini Live 熄屏后消失的问题，并正确配置通知、锁屏权限与后台白名单。","date":"2026-08-09T13:15:00.000Z","updated":"2026-08-09T13:50:19.000Z","tags":["Gemini","Gemini-Live","Android","HyperOS","ADB","troubleshooting","tutorial"],"categories":["技术","工具"],"aliases":["/post/Gemini Live 锁屏继续对话/","/post/HyperOS Gemini Live 后台运行/"],"draft":false,"image":"","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"e55e60258aff36901063077f959975b6","readingMinutes":9},{"id":"/post/llm-agent时代的博客创作/","path":"/post/llm-agent时代的博客创作/","file":"post/LLM AGENT时代的博客创作.md","title":"LLM AGENT时代的博客创作","description":"当 AI 可以秒写任何教程时，博客应该创造什么？本文从一次博客大清理出发，提出 LLM Agent 时代的博客创作哲学。","date":"2026-05-16T16:43:58.000Z","updated":"2026-05-16T16:43:58.000Z","tags":["LLM","博客","创作","判断力","AGENT"],"categories":["思考"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jek28w.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"cb17d733679eaf421819132bfd880716","readingMinutes":6},{"id":"/post/fido介绍与其diy/","path":"/post/fido介绍与其diy/","file":"post/FIDO介绍与其DIY.md","title":"FIDO介绍与其DIY","description":"深入解析FIDO联盟认证标准、FIDO2/WebAuthn协议架构、主流硬件安全密钥产品对比，以及如何用30元DIY一个开源FIDO2安全密钥","date":"2026-03-30T14:38:41.000Z","updated":"2026-03-30T00:00:00.000Z","tags":["FIDO2","WebAuthn","Passkeys","硬件安全","DIY","认证"],"categories":["Security","Tutorial"],"aliases":["/post/FIDO完全指南/"],"draft":false,"image":"https://w.wallhaven.cc/full/6l/wallhaven-6l5emq.png","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"d81bb38d181695e720c3bd4e540ae7f9","readingMinutes":19},{"id":"/post/三资三化--人的私有化/","path":"/post/三资三化--人的私有化/","file":"post/三资三化--人的私有化.md","title":"三资三化--人的私有化","description":"如何将你的美貌、知识、品德转化为可计量、可定价、可转移、可变现的个人资产？本文从人力资本、社会资本、文化资本三大理论出发，提供一套完整的个人资本化方法论","date":"2026-01-28T11:30:33.000Z","updated":"2026-02-04T14:53:25.000Z","tags":["人的资本化","人力资本","社会资本","文化资本","个人品牌","知识变现"],"categories":["2026闲书系列"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/gw/wallhaven-gw55p3.jpg","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"5bbebf5d0ca50f5a0ecb11026372e72e","readingMinutes":5},{"id":"/post/博客写作规范和标签体系指南/","path":"/post/博客写作规范和标签体系指南/","file":"post/博客写作规范和标签体系指南.md","title":"博客写作规范和标签体系指南","description":"建立统一的写作规范、命名标准和标签分类体系","date":"2026-01-22T00:00:00.000Z","updated":"2026-02-04T22:20:18.000Z","tags":["standard","tagging","workflow"],"categories":["规范"],"aliases":[],"draft":false,"image":"","author":"Ryou","links":[],"section":"post","comments":true,"paneKey":"3d906ae1916686a5c59dc3d42e18f2ec","readingMinutes":10}],"projects":[{"id":"kite-rpc","name":"KiteRPC","label":"DISTRIBUTED SYSTEMS","color":"blue","tags":["Go","TCP","etcd"],"description":"从 TCP 分帧到服务治理，拆解一次 RPC 调用的完整路径。","problem":"如何用可阅读的实现理解 RPC 的协议、并发与服务治理，而不隐藏在框架抽象之后？","contribution":"公开维护的教学级 Go RPC 实现：自定义二进制分帧、Future 多路复用、注册发现与熔断限流。","tradeoff":"不依赖 IDL 桩代码，使用动态反射分发；优先呈现底层机制与学习路径。","repo":"https://github.com/WASIDJ/kite-rpc","evidence":"https://github.com/WASIDJ/kite-rpc#readme","diagram":["TCP / codec","Future / request ID","etcd / circuit breaker"]},{"id":"pulse-im","name":"Pulse IM","label":"REALTIME ENGINEERING","color":"green","tags":["Go","Vue","WebSocket"],"description":"让长连接、消息路由与音视频信令，成为可复现的工程系统。","problem":"如何将即时通信项目中的环境耦合和隐式副作用，改造成可配置、可部署的实现？","contribution":"基于开源生态二次开发与工程重构：显式依赖注入、Channel / Kafka 路由、WebRTC 信令和 Docker 编排。","tradeoff":"保留低依赖的单机 Channel 模式，同时提供 Kafka 模式探索分布式消息转发。","repo":"https://github.com/WASIDJ/pulse-im","evidence":"https://github.com/WASIDJ/pulse-im#readme","diagram":["Vue / WebSocket","Channel ↔ Kafka","MySQL / Redis"]},{"id":"sparksite","name":"SparkSite","label":"AGENT WORKSPACE","color":"mauve","tags":["Next.js","Agent Kit","E2B"],"description":"自然语言到代码，再到隔离沙箱里的即时预览。","problem":"如何将 Agent 的多轮工具调用与可运行的 Web 原型连接起来？","contribution":"公开维护的早期实验平台：状态化 Code Agent、E2B 沙箱、源码 / 预览双视图及项目持久化。","tradeoff":"用独立云端沙箱提供运行环境，用持久化工作流管理生成过程；定位为原型与学习实验。","repo":"https://github.com/WASIDJ/sparksite","evidence":"https://github.com/WASIDJ/sparksite#readme","diagram":["Prompt / Agent Kit","Tools / E2B sandbox","Source ↔ preview"]},{"id":"y2b","name":"y2b","label":"AUTOMATION PIPELINE","color":"peach","tags":["Go","FFmpeg","systemd"],"description":"为低内存 VPS 构建可恢复的媒体任务流水线。","problem":"如何在有限资源上编排下载、章节拆分、字幕与投稿，并从失败中恢复？","contribution":"公开维护的 Go 编排服务：受限任务日志、原子队列持久化、取消重试与中文控制台。","tradeoff":"媒体通过外部工具流式落盘，Go 管理元数据；默认复用字幕以减少转码。","repo":"https://github.com/WASIDJ/y2b","evidence":"https://github.com/WASIDJ/y2b#readme","diagram":["Download / yt-dlp","Chapters / subtitles","Queue / retry / publish"]}],"friends":[{"title":"GitHub","description":"GitHub is the world's largest software development platform.","website":"https://github.com","image":"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"}],"contentSha":"eb491436d41130c0585c08eb0cfc72a3be1ae4ff"},"home":false,"title":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐","canonical":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","children":[false,"$L17"]}],"$L18","$L19"]
+1a:I[79512,["$2","$5","$6"],"Article"]
+1b:T34e5,<blockquote class="callout callout-important">
+<p class="callout-title">核心认知：非对称带宽（Asymmetric Bandwidth）</p>
+<p><strong>“嘴巴输入（Voice In）+ 眼睛看（Visual Out）”是人机结对编程（Pair Programming）的最高效形态。</strong>
+打字是人类思考的吞吐量瓶颈；耳朵是线性低效的接收通道。用语音以 3 倍速倾倒上下文，用眼睛以 5 倍速扫视代码 Diff，形成高频、低摩擦的<strong>持续对齐（Continuous Steering &#x26; Alignment）</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="-一-背景打字是人机协作的最大摩擦力">🎯 一、 背景：打字是人机协作的最大摩擦力</h2>
+<p>在 Andrej Karpathy 提出 <strong>“Vibe Coding”</strong> 的概念后，AI 辅助编程正在从传统的“手写语法”全面转向“意图传达与架构推演”。</p>
+<p>然而，许多开发者在尝试 Vibe Coding 时往往陷入两难：</p>
+<ol>
+<li><strong>短命令导致幻觉</strong>：因为敲键盘有阻力，人类倾向于只打简短的 Prompt（如*“修复这个 Bug”<em>、</em>“写个登录接口”*），AI 缺乏上下文，生成的代码频频偏航；</li>
+<li><strong>长输入疲惫不堪</strong>：如果要像写 PR 描述一样敲入所有边界条件、防御性检查与架构考量，敲键盘的疲惫感迅速打断了灵感的心流。</li>
+</ol>
+<p><strong>解决这一瓶颈的关键钥匙就是语音</strong>。人类正常说话的语速约为 <strong>150 ~ 200 字/分钟</strong>，是打字速度的 3~4 倍。更关键的是，戴上领夹麦克风后，你可以靠在工学椅上、甚至站起来伸个懒腰，以**意识流（Stream of Consciousness）**的状态将脑海中的直觉、权衡与怀疑倾泻给 AI。</p>
+<hr>
+<h2 id="-二-深度辩证为什么不需要-ai-用语音回复你">💡 二、 深度辩证：为什么不需要 AI 用语音回复你？</h2>
+<p>许多初尝语音交互的开发者常有一个直觉疑问：<em>“我说话给 AI，AI 为什么不用语音读给我听？难道我不应该戴着耳机跟它聊天吗？”</em></p>
+<p><strong>答案是：千万不要让 AI 语音读代码！你看屏幕绝对快得多得多。</strong></p>
+<p>这是 Vibe Coding 中最核心的交互法则——<strong>非对称带宽模型</strong>：</p>
+<pre class="mermaid-source"><code class="language-mermaid">flowchart LR
+    subgraph 人类输出通道 [人类 -> AI: 语音极速倾倒]
+        Mouth["🗣️ 嘴巴说话: 150~200 WPM\n(低摩擦、零心理负担)"] -->|Voice In| Agent["🤖 AI 智能体 (Agent)"]
+    end
+    
+    subgraph 人类接收通道 [AI -> 人类: 屏幕高清扫视]
+        Agent -->|Text / Diff| Screen["🖥️ Ghostty 终端屏幕"]
+        Screen -->|Visual Out| Eye["👀 眼睛扫读: 400~800 WPM\n(非线性跳读、红绿色彩识别)"]
+    end
+    
+    subgraph 耳朵接收通道 [已被废弃的低效链路]
+        Agent -.->|TTS 语音朗读: 150 WPM| Ear["👂 耳朵: 极慢、无法跳读、听代码是灾难"]
+    end
+</code></pre>
+<h3 id="1-吞吐量维度的巨大鸿沟">1. 吞吐量维度的巨大鸿沟</h3>
+<ul>
+<li><strong>听音频</strong>：必须严格按时间线性播放，哪怕开 2 倍速也只有 ~300 WPM，中途走神一秒就失去上下文；</li>
+<li><strong>看屏幕</strong>：人类视觉支持<strong>非线性空间跳读</strong>。面对 50 行的 Git Diff，你的眼睛只需 <strong>0.5 秒</strong> 就能定位到红色的删除行与绿色的核心逻辑改动。</li>
+</ul>
+<h3 id="2-代码在听觉上的不可理解性">2. 代码在听觉上的“不可理解性”</h3>
+<p>试想耳朵听这样一段代码：</p>
+<blockquote>
+<p><em>“左括号，const response 等于 await fetch……注意在第四十二行存在未捕获的 TypeError……”</em></p>
+</blockquote>
+<p>这不仅毫无信息增益，反而是极其痛苦的认知过载。<strong>因此，最佳实践始终是：你说你的，它打它的，你眼睛扫一眼，直接给下一轮反馈。</strong></p>
+<hr>
+<h2 id="️-三-硬件基座dji-麦克风与-mac-mini-的免驱联动">🛠️ 三、 硬件基座：DJI 麦克风与 Mac mini 的免驱联动</h2>
+<p>Mac mini 作为极佳的桌面工作站，最大的短板是<strong>没有自带阵列麦克风</strong>（即便外接普通摄像头麦克风，也极易录入风扇噪音与机械键盘的敲击声）。</p>
+<p>**DJI 领夹麦克风（DJI Mic / Mic 2 / Mic Mini）**是这个工作流的绝配：</p>
+<pre class="mermaid-source"><code class="language-mermaid">flowchart TD
+    TX["🎙️ DJI 发射器 (TX)\n佩戴在锁骨下方 15-20cm\n开启黄色降噪指示灯"] -- 2.4GHz 私有低延迟通道 --> RX["📻 DJI 接收器 (RX)\nUSB-C 直接插入 Mac mini 后置端口"]
+    RX --> macOS["🍎 macOS 核心音频通道\n无需驱动 / 即插即用"]
+    macOS --> Ghostty["🖥️ Ghostty 终端模拟器\n开启 Bracketed Paste 保护"]
+</code></pre>
+<ul>
+<li><strong>降噪与收音</strong>：开启发射器上的环境降噪（黄色指示灯常亮），能彻底过滤机械键盘的 Click 声，保证语音转写模型获得高信噪比的纯净人声。</li>
+<li><strong>佩戴姿势</strong>：夹在领口或锁骨正下方，无需提高音量，轻声低语即可被清晰捕获。</li>
+</ul>
+<hr>
+<h2 id="-四-终端极客选型ghostty-下的专属语音方案">⚡ 四、 终端极客选型：Ghostty 下的专属语音方案</h2>
+<p>在 Ghostty 终端模拟器中做语音交互，比在臃肿的 GUI IDE 里更加敏捷纯粹。以下是两种最推荐的落地路径：</p>
+<h3 id="方案-1终端-cli-原生语音模式零额外软件">方案 1：终端 CLI 原生语音模式（零额外软件）</h3>
+<p>主流的终端 Agent（如 <strong>Claude Code</strong> 和 <strong>Aider</strong>）其实都在终端里原生集成了语音输入支持！</p>
+<h4 id="1-claude-code-的原生-voice">1. Claude Code 的原生 <code>/voice</code></h4>
+<ul>
+<li><strong>启动方式</strong>：在 Ghostty 终端中启动 <code>claude</code>，输入 <code>/voice</code> 回车开启语音模式。</li>
+<li><strong>交互手感</strong>：
+<ul>
+<li>**按住空格键（Hold Spacebar）**开始倾吐想法；</li>
+<li>说完后<strong>松开空格键</strong>，文字瞬时插入命令行提示符；</li>
+<li>回车确认提交。</li>
+</ul>
+</li>
+<li><strong>优势</strong>：由 Anthropic 针对编程术语深度优化，且不额外扣减会话 Token。</li>
+</ul>
+<h4 id="2-aider-的原生-voice">2. Aider 的原生 <code>/voice</code></h4>
+<ul>
+<li><strong>环境准备</strong>：<code>brew install portaudio</code></li>
+<li><strong>交互方式</strong>：在 Aider 对话中输入 <code>/voice</code>，按 Enter 开始录音，录完按 Enter 停止并提交，自动生成规范的 Git Commit。</li>
+</ul>
+<h3 id="方案-2全局-superwhisper-注入流karpathy-标配">方案 2：全局 Superwhisper 注入流（Karpathy 标配）</h3>
+<p>如果你希望跨终端、文档与浏览器统一使用语音：</p>
+<ul>
+<li><strong>核心配置</strong>：
+<ul>
+<li>引擎选本地 <code>whisper.cpp</code>（完全在 Apple Silicon M 系列芯片上本地推理，隐私且零延迟）；</li>
+<li><strong>至关重要的设置</strong>：<strong>关闭 <code>Auto-submit / Press Enter</code></strong>，只允许它向 Ghostty 粘贴文本，严禁自动触发回车；</li>
+<li><strong>快捷键绑定</strong>：设为 <code>Right Option</code> 或 <code>双击 Left Cmd</code>，避免与终端本身的常用键位冲突。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="-五-karpathy-式持续对齐实操四步法">🔄 五、 Karpathy 式“持续对齐”实操四步法</h2>
+<p>进入实际编码任务时，请遵循以下四步闭环：</p>
+<pre class="mermaid-source"><code class="language-mermaid">sequenceDiagram
+    autonumber
+    actor Human as 🧑 开发者 (DJI 麦克风)
+    participant Agent as 🤖 终端 Agent (Claude Code / Aider)
+    
+    Human->>Agent: 🗣️ 语音长篇倾倒（意图 + 边界 + 防御要求）
+    Agent-->>Human: 📋 打印实施计划（plan.md / 任务清单）
+    Human->>Agent: 🗣️ 语音微调对齐（"纠正第2步，其余通过"）
+    Agent-->>Human: ⚡ 自动化编码、运行测试、展示 Git Diff
+    Note over Human: 👀 眼睛扫视 Diff (0.5秒定位关键改动)
+    Human->>Agent: 🗣️ 语音下发最终指令（"补个异常用例，直接提交"）
+</code></pre>
+<h3 id="1-意图倾倒stream-of-consciousness">1. 意图倾倒（Stream of Consciousness）</h3>
+<p>不要惜字如金。按住麦克风，一口气说 30~50 秒：</p>
+<blockquote>
+<p><em>“我们要给当前服务加一个内存缓存层。千万不要引入外部 Redis，直接用内置的 lru-cache。先不要动手改业务逻辑，先看一眼 <code>services/user.ts</code>，把需要加缓存的方法和失效策略列成清单给我。”</em></p>
+</blockquote>
+<h3 id="2-计划锁死plan-freeze">2. 计划锁死（Plan Freeze）</h3>
+<p>Agent 打印出步骤清单后，<strong>只要有 10% 偏离你的本意，坚决不让它改代码</strong>：</p>
+<blockquote>
+<p><em>“第 2 步不对，不要在 Controller 里做缓存，统一收口在 Repository 层；其他步骤符合预期，放手执行。”</em></p>
+</blockquote>
+<h3 id="3-静默执行与视觉速读visual-skim">3. 静默执行与视觉速读（Visual Skim）</h3>
+<p>Agent 开始修改代码并跑测试：</p>
+<ul>
+<li>终端发出任务完成提示音；</li>
+<li>你的眼睛迅速扫过 Ghostty 终端里的高亮 Diff——重点关注<strong>红色删除了什么重要逻辑</strong>，以及<strong>绿色新增的函数签名是否规范</strong>。</li>
+</ul>
+<h3 id="4-口述微操与原子提交micro-steering">4. 口述微操与原子提交（Micro-Steering）</h3>
+<p>发现瑕疵，不要伸手去敲键盘修改：</p>
+<blockquote>
+<p><em>“看一眼刚才改的单测，少覆盖了空字符串的情况。补上测试用例，全部跑通后直接 git commit。”</em></p>
+</blockquote>
+<hr>
+<h2 id="-六-reddit-社区硬核实践与防踩坑指南">🌐 六、 Reddit 社区硬核实践与防踩坑指南</h2>
+<p>在 Reddit 的 r/ClaudeAI 和 r/commandline 社区中，全球极客们沉淀了宝贵的实操细节：</p>
+<h3 id="1-消除-whisper-的静默幻觉">1. 消除 Whisper 的“静默幻觉”</h3>
+<ul>
+<li><strong>痛点</strong>：思考中途停顿 2 秒，语音模型经常脑补出 <em>“Thank you for watching”</em> 等 YouTube 视频高频字幕。</li>
+<li><strong>解法</strong>：在 Superwhisper 或 Whisper 的 Prompt 参数中注入防御提示词：
+<pre class="shiki shiki-themes catppuccin-mocha catppuccin-latte" style="background-color:#1e1e2e;--shiki-light-bg:#eff1f5;color:#cdd6f4;--shiki-light:#4c4f69" tabindex="0"><code><span class="line"><span>Context: Strict technical programming dictation. Do not hallucinate filler phrases or subtitles.</span></span>
+<span class="line"><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="2-注入编程技术词典custom-vocabulary">2. 注入编程技术词典（Custom Vocabulary）</h3>
+<p>为防止将 <code>camelCase</code> 听成 <code>camel case</code>，把 <code>TypeScript</code> 听成 <code>text script</code>，务必在词典里配置常用术语：
+<code>TypeScript, Ghostty, refactor, Git, PR, Docker, SQLite, AST, Zod, API, endpoint, boolean</code></p>
+<h3 id="3-高阶硬件蓝牙指点笔与脚踏板foot-pedal">3. 高阶硬件：蓝牙指点笔与脚踏板（Foot Pedal）</h3>
+<p>Reddit 开发者普遍反感“0.8 秒触发延迟带来的心流打断”：</p>
+<ul>
+<li>不少人配备了十几美元的<strong>无线指尖翻页器</strong>或 <strong>USB 踏板</strong>；</li>
+<li>领口夹着 DJI 麦克风，手里拿着翻页笔，按住即可在任何姿势下说话，彻底解放双手与脊柱。</li>
+</ul>
+<hr>
+<h2 id="-七-精选视频教程与检索路径">📺 七、 精选视频教程与检索路径</h2>
+<p>想要观摩动态操作节奏，可以在 YouTube 搜索以下精确标题：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="left">视频标题</th><th align="left">核心学习点</th></tr></thead><tbody><tr><td align="left"><strong><code>Claude Code Voice Mode Tutorial &#x26; Workflow</code></strong></td><td align="left">学习终端原生 <code>/voice</code> 的按键手感与上下文对齐实操。</td></tr><tr><td align="left"><strong><code>Be a 10x Vibe Coder (Claude Code + MCP)</code></strong></td><td align="left">学习如何通过分步计划（Plan Mode）在终端高效调度多 Agent。</td></tr><tr><td align="left">**`VIBE CODING 3 min demo</td><td align="left">Cursor + o3-mini + SuperWhisper`**</td></tr></tbody></table>
+<hr>
+<h2 id="-总结与行动清单">📝 总结与行动清单</h2>
+<p>如果你今天就想把这套工作流跑通，只需完成以下三步：</p>
+<ol>
+<li><strong>硬件就绪</strong>：将 DJI 麦克风接收器插上 Mac mini，发射器夹在领口并开启降噪模式；</li>
+<li><strong>终端调优</strong>：打开 Ghostty，启动 <code>claude</code> 并输入 <code>/voice</code>，或者打开 <code>Superwhisper</code> 并关闭自动回车；</li>
+<li><strong>心态切换</strong>：告别逐行敲命令的旧习惯，像给资深搭档布置任务一样，一口气把“为什么要做、有什么限制、先给什么方案”聊出来。</li>
+</ol>
+<p><strong>把键盘留给微调，把思考交给声音，把验证交给眼睛。</strong></p>1c:T2630,!important 核心认知：非对称带宽（Asymmetric Bandwidth） “嘴巴输入（Voice In）+ 眼睛看（Visual Out）”是人机结对编程（Pair Programming）的最高效形态。 打字是人类思考的吞吐量瓶颈；耳朵是线性低效的接收通道。用语音以 3 倍速倾倒上下文，用眼睛以 5 倍速扫视代码 Diff，形成高频、低摩擦的 持续对齐（Continuous Steering & Alignment） 。 --- 🎯 一、 背景：打字是人机协作的最大摩擦力 在 Andrej Karpathy 提出 “Vibe Coding” 的概念后，AI 辅助编程正在从传统的“手写语法”全面转向“意图传达与架构推演”。 然而，许多开发者在尝试 Vibe Coding 时往往陷入两难： 1. 短命令导致幻觉 ：因为敲键盘有阻力，人类倾向于只打简短的 Prompt（如 “修复这个 Bug” 、 “写个登录接口” ），AI 缺乏上下文，生成的代码频频偏航； 2. 长输入疲惫不堪 ：如果要像写 PR 描述一样敲入所有边界条件、防御性检查与架构考量，敲键盘的疲惫感迅速打断了灵感的心流。 解决这一瓶颈的关键钥匙就是语音 。人类正常说话的语速约为 150 ~ 200 字/分钟 ，是打字速度的 3~4 倍。更关键的是，戴上领夹麦克风后，你可以靠在工学椅上、甚至站起来伸个懒腰，以 意识流（Stream of Consciousness） 的状态将脑海中的直觉、权衡与怀疑倾泻给 AI。 --- 💡 二、 深度辩证：为什么不需要 AI 用语音回复你？ 许多初尝语音交互的开发者常有一个直觉疑问： “我说话给 AI，AI 为什么不用语音读给我听？难道我不应该戴着耳机跟它聊天吗？” 答案是：千万不要让 AI 语音读代码！你看屏幕绝对快得多得多。 这是 Vibe Coding 中最核心的交互法则—— 非对称带宽模型 ： flowchart LR subgraph 人类输出通道 人类 - AI: 语音极速倾倒 Mouth "🗣️ 嘴巴说话: 150~200 WPM\n(低摩擦、零心理负担)" -- |Voice In| Agent "🤖 AI 智能体 (Agent)" end subgraph 人类接收通道 AI - 人类: 屏幕高清扫视 Agent -- |Text / Diff| Screen "🖥️ Ghostty 终端屏幕" Screen -- |Visual Out| Eye "👀 眼睛扫读: 400~800 WPM\n(非线性跳读、红绿色彩识别)" end subgraph 耳朵接收通道 已被废弃的低效链路 Agent -.- |TTS 语音朗读: 150 WPM| Ear "👂 耳朵: 极慢、无法跳读、听代码是灾难" end 1. 吞吐量维度的巨大鸿沟 听音频 ：必须严格按时间线性播放，哪怕开 2 倍速也只有 ~300 WPM，中途走神一秒就失去上下文； 看屏幕 ：人类视觉支持 非线性空间跳读 。面对 50 行的 Git Diff，你的眼睛只需 0.5 秒 就能定位到红色的删除行与绿色的核心逻辑改动。 2. 代码在听觉上的“不可理解性” 试想耳朵听这样一段代码： “左括号，const response 等于 await fetch……注意在第四十二行存在未捕获的 TypeError……” 这不仅毫无信息增益，反而是极其痛苦的认知过载。 因此，最佳实践始终是：你说你的，它打它的，你眼睛扫一眼，直接给下一轮反馈。 --- 🛠️ 三、 硬件基座：DJI 麦克风与 Mac mini 的免驱联动 Mac mini 作为极佳的桌面工作站，最大的短板是 没有自带阵列麦克风 （即便外接普通摄像头麦克风，也极易录入风扇噪音与机械键盘的敲击声）。 DJI 领夹麦克风（DJI Mic / Mic 2 / Mic Mini） 是这个工作流的绝配： flowchart TD TX "🎙️ DJI 发射器 (TX)\n佩戴在锁骨下方 15-20cm\n开启黄色降噪指示灯" -- 2.4GHz 私有低延迟通道 -- RX "📻 DJI 接收器 (RX)\nUSB-C 直接插入 Mac mini 后置端口" RX -- macOS "🍎 macOS 核心音频通道\n无需驱动 / 即插即用" macOS -- Ghostty "🖥️ Ghostty 终端模拟器\n开启 Bracketed Paste 保护" 降噪与收音 ：开启发射器上的环境降噪（黄色指示灯常亮），能彻底过滤机械键盘的 Click 声，保证语音转写模型获得高信噪比的纯净人声。 佩戴姿势 ：夹在领口或锁骨正下方，无需提高音量，轻声低语即可被清晰捕获。 --- ⚡ 四、 终端极客选型：Ghostty 下的专属语音方案 在 Ghostty 终端模拟器中做语音交互，比在臃肿的 GUI IDE 里更加敏捷纯粹。以下是两种最推荐的落地路径： 方案 1：终端 CLI 原生语音模式（零额外软件） 主流的终端 Agent（如 Claude Code 和 Aider ）其实都在终端里原生集成了语音输入支持！ 1. Claude Code 的原生 /voice 启动方式 ：在 Ghostty 终端中启动 claude ，输入 /voice 回车开启语音模式。 交互手感 ： 按住空格键（Hold Spacebar） 开始倾吐想法； 说完后 松开空格键 ，文字瞬时插入命令行提示符； 回车确认提交。 优势 ：由 Anthropic 针对编程术语深度优化，且不额外扣减会话 Token。 2. Aider 的原生 /voice 环境准备 ： brew install portaudio 交互方式 ：在 Aider 对话中输入 /voice ，按 Enter 开始录音，录完按 Enter 停止并提交，自动生成规范的 Git Commit。 方案 2：全局 Superwhisper 注入流（Karpathy 标配） 如果你希望跨终端、文档与浏览器统一使用语音： 核心配置 ： 引擎选本地 whisper.cpp （完全在 Apple Silicon M 系列芯片上本地推理，隐私且零延迟）； 至关重要的设置 ： 关闭 Auto-submit / Press Enter ，只允许它向 Ghostty 粘贴文本，严禁自动触发回车； 快捷键绑定 ：设为 Right Option 或 双击 Left Cmd ，避免与终端本身的常用键位冲突。 --- 🔄 五、 Karpathy 式“持续对齐”实操四步法 进入实际编码任务时，请遵循以下四步闭环： sequenceDiagram autonumber actor Human as 🧑 开发者 (DJI 麦克风) participant Agent as 🤖 终端 Agent (Claude Code / Aider) Human- Agent: 🗣️ 语音长篇倾倒（意图 + 边界 + 防御要求） Agent-- Human: 📋 打印实施计划（plan.md / 任务清单） Human- Agent: 🗣️ 语音微调对齐（"纠正第2步，其余通过"） Agent-- Human: ⚡ 自动化编码、运行测试、展示 Git Diff Note over Human: 👀 眼睛扫视 Diff (0.5秒定位关键改动) Human- Agent: 🗣️ 语音下发最终指令（"补个异常用例，直接提交"） 1. 意图倾倒（Stream of Consciousness） 不要惜字如金。按住麦克风，一口气说 30~50 秒： “我们要给当前服务加一个内存缓存层。千万不要引入外部 Redis，直接用内置的 lru-cache。先不要动手改业务逻辑，先看一眼 services/user.ts ，把需要加缓存的方法和失效策略列成清单给我。” 2. 计划锁死（Plan Freeze） Agent 打印出步骤清单后， 只要有 10% 偏离你的本意，坚决不让它改代码 ： “第 2 步不对，不要在 Controller 里做缓存，统一收口在 Repository 层；其他步骤符合预期，放手执行。” 3. 静默执行与视觉速读（Visual Skim） Agent 开始修改代码并跑测试： 终端发出任务完成提示音； 你的眼睛迅速扫过 Ghostty 终端里的高亮 Diff——重点关注 红色删除了什么重要逻辑 ，以及 绿色新增的函数签名是否规范 。 4. 口述微操与原子提交（Micro-Steering） 发现瑕疵，不要伸手去敲键盘修改： “看一眼刚才改的单测，少覆盖了空字符串的情况。补上测试用例，全部跑通后直接 git commit。” --- 🌐 六、 Reddit 社区硬核实践与防踩坑指南 在 Reddit 的 r/ClaudeAI 和 r/commandline 社区中，全球极客们沉淀了宝贵的实操细节： 1. 消除 Whisper 的“静默幻觉” 痛点 ：思考中途停顿 2 秒，语音模型经常脑补出 “Thank you for watching” 等 YouTube 视频高频字幕。 解法 ：在 Superwhisper 或 Whisper 的 Prompt 参数中注入防御提示词： Context: Strict technical programming dictation. Do not hallucinate filler phrases or subtitles. 2. 注入编程技术词典（Custom Vocabulary） 为防止将 camelCase 听成 camel case ，把 TypeScript 听成 text script ，务必在词典里配置常用术语： TypeScript, Ghostty, refactor, Git, PR, Docker, SQLite, AST, Zod, API, endpoint, boolean 3. 高阶硬件：蓝牙指点笔与脚踏板（Foot Pedal） Reddit 开发者普遍反感“0.8 秒触发延迟带来的心流打断”： 不少人配备了十几美元的 无线指尖翻页器 或 USB 踏板 ； 领口夹着 DJI 麦克风，手里拿着翻页笔，按住即可在任何姿势下说话，彻底解放双手与脊柱。 --- 📺 七、 精选视频教程与检索路径 想要观摩动态操作节奏，可以在 YouTube 搜索以下精确标题： | 视频标题 | 核心学习点 | | :--- | :--- | | Claude Code Voice Mode Tutorial & Workflow | 学习终端原生 /voice 的按键手感与上下文对齐实操。 | | Be a 10x Vibe Coder (Claude Code + MCP) | 学习如何通过分步计划（Plan Mode）在终端高效调度多 Agent。 | | VIBE CODING 3 min demo | Cursor + o3-mini + SuperWhisper | 体验 Karpathy 式“不碰键盘、高频口述纠偏”的极速节奏。 | --- 📝 总结与行动清单 如果你今天就想把这套工作流跑通，只需完成以下三步： 1. 硬件就绪 ：将 DJI 麦克风接收器插上 Mac mini，发射器夹在领口并开启降噪模式； 2. 终端调优 ：打开 Ghostty，启动 claude 并输入 /voice ，或者打开 Superwhisper 并关闭自动回车； 3. 心态切换 ：告别逐行敲命令的旧习惯，像给资深搭档布置任务一样，一口气把“为什么要做、有什么限制、先给什么方案”聊出来。 把键盘留给微调，把思考交给声音，把验证交给眼睛。17:["$","$L1a",null,{"page":{"id":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","path":"/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/","file":"post/Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐.md","title":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐","description":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。","date":"2026-09-27T15:34:44.000Z","updated":"2026-09-27T15:34:44.000Z","tags":["vibecoding","ghostty","ai-agent","claude-code","speech-to-text","karpathy","macos"],"categories":["技术","工具"],"aliases":[],"draft":false,"image":"https://w.wallhaven.cc/full/je/wallhaven-jedzym.png","author":"Ryou","links":[],"section":"post","comments":true,"html":"$1b","headings":[{"level":2,"id":"-一-背景打字是人机协作的最大摩擦力","text":"🎯 一、 背景：打字是人机协作的最大摩擦力"},{"level":2,"id":"-二-深度辩证为什么不需要-ai-用语音回复你","text":"💡 二、 深度辩证：为什么不需要 AI 用语音回复你？"},{"level":3,"id":"1-吞吐量维度的巨大鸿沟","text":"1. 吞吐量维度的巨大鸿沟"},{"level":3,"id":"2-代码在听觉上的不可理解性","text":"2. 代码在听觉上的“不可理解性”"},{"level":2,"id":"️-三-硬件基座dji-麦克风与-mac-mini-的免驱联动","text":"🛠️ 三、 硬件基座：DJI 麦克风与 Mac mini 的免驱联动"},{"level":2,"id":"-四-终端极客选型ghostty-下的专属语音方案","text":"⚡ 四、 终端极客选型：Ghostty 下的专属语音方案"},{"level":3,"id":"方案-1终端-cli-原生语音模式零额外软件","text":"方案 1：终端 CLI 原生语音模式（零额外软件）"},{"level":3,"id":"方案-2全局-superwhisper-注入流karpathy-标配","text":"方案 2：全局 Superwhisper 注入流（Karpathy 标配）"},{"level":2,"id":"-五-karpathy-式持续对齐实操四步法","text":"🔄 五、 Karpathy 式“持续对齐”实操四步法"},{"level":3,"id":"1-意图倾倒stream-of-consciousness","text":"1. 意图倾倒（Stream of Consciousness）"},{"level":3,"id":"2-计划锁死plan-freeze","text":"2. 计划锁死（Plan Freeze）"},{"level":3,"id":"3-静默执行与视觉速读visual-skim","text":"3. 静默执行与视觉速读（Visual Skim）"},{"level":3,"id":"4-口述微操与原子提交micro-steering","text":"4. 口述微操与原子提交（Micro-Steering）"},{"level":2,"id":"-六-reddit-社区硬核实践与防踩坑指南","text":"🌐 六、 Reddit 社区硬核实践与防踩坑指南"},{"level":3,"id":"1-消除-whisper-的静默幻觉","text":"1. 消除 Whisper 的“静默幻觉”"},{"level":3,"id":"2-注入编程技术词典custom-vocabulary","text":"2. 注入编程技术词典（Custom Vocabulary）"},{"level":3,"id":"3-高阶硬件蓝牙指点笔与脚踏板foot-pedal","text":"3. 高阶硬件：蓝牙指点笔与脚踏板（Foot Pedal）"},{"level":2,"id":"-七-精选视频教程与检索路径","text":"📺 七、 精选视频教程与检索路径"},{"level":2,"id":"-总结与行动清单","text":"📝 总结与行动清单"}],"plain":"$1c","unsupported":[],"paneKey":"291dedb65d487f4a27966744b70db0c6","readingMinutes":9}}]
+18:["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BlogPosting\",\"headline\":\"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐\",\"description\":\"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。\",\"datePublished\":\"2026-09-27T15:34:44.000Z\",\"dateModified\":\"2026-09-27T15:34:44.000Z\",\"author\":{\"@type\":\"Person\",\"@id\":\"https://www.jeffkafka.top/#person\",\"name\":\"Ryou\",\"url\":\"https://www.jeffkafka.top/page/关于/\"},\"mainEntityOfPage\":\"https://www.jeffkafka.top/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/\",\"inLanguage\":\"zh-CN\"}"}}]
+19:["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"首页\",\"item\":\"https://www.jeffkafka.top/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐\",\"item\":\"https://www.jeffkafka.top/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/\"}]}"}}]
+11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+1d:I[27201,["$2"],"IconMark"]
+e:null
+14:[["$","title","0",{"children":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐 | Ryou"}],["$","meta","1",{"name":"description","content":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。"}],["$","link","2",{"rel":"canonical","href":"https://www.jeffkafka.top/post/ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90/"}],["$","link","3",{"rel":"alternate","type":"application/rss+xml","href":"https://www.jeffkafka.top/index.xml"}],["$","meta","4",{"property":"og:title","content":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐"}],["$","meta","5",{"property":"og:description","content":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。"}],["$","meta","6",{"property":"og:url","content":"https://www.jeffkafka.top/post/ghostty%E4%B8%8Edji%E9%BA%A6%E5%85%8B%E9%A3%8E%E7%9A%84%E8%AF%AD%E9%9F%B3vibecoding%E5%AE%9E%E6%88%98--%E5%83%8Fkarpathy%E4%B8%80%E6%A0%B7%E6%8C%81%E7%BB%AD%E5%AF%B9%E9%BD%90/"}],["$","meta","7",{"property":"og:image","content":"https://www.jeffkafka.top/og-card.png"}],["$","meta","8",{"property":"og:image:width","content":"1200"}],["$","meta","9",{"property":"og:image:height","content":"630"}],["$","meta","10",{"property":"og:image:alt","content":"Ryou · 构建，阅读，思考"}],["$","meta","11",{"property":"og:type","content":"article"}],["$","meta","12",{"property":"article:published_time","content":"2026-09-27T15:34:44.000Z"}],["$","meta","13",{"property":"article:modified_time","content":"2026-09-27T15:34:44.000Z"}],["$","meta","14",{"property":"article:author","content":"https://www.jeffkafka.top/page/关于/"}],["$","meta","15",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","16",{"name":"twitter:title","content":"Ghostty与DJI麦克风的语音VibeCoding实战--像Karpathy一样持续对齐"}],["$","meta","17",{"name":"twitter:description","content":"深度解析基于 DJI 麦克风 + Mac mini + Ghostty 终端的高效语音 Vibe Coding 实战方案。探讨 Karpathy 式“非对称带宽（Voice In + Visual Out）”哲学、终端原生语音模式（Claude Code / Aider）、Reddit 极客实践与避坑指南。"}],["$","meta","18",{"name":"twitter:image","content":"https://www.jeffkafka.top/og-card.png"}],["$","link","19",{"rel":"icon","href":"/favicon.svg"}],["$","$L1d","20",{}]]

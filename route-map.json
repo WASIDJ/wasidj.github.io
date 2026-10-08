@@ -1,0 +1,670 @@
+[
+  {
+    "legacy": "/categories/2026闲书系列/",
+    "canonical": "/categories/2026闲书系列/"
+  },
+  {
+    "legacy": "/categories/2026闲书系列/page/1/",
+    "canonical": "/categories/2026闲书系列/"
+  },
+  {
+    "legacy": "/categories/",
+    "canonical": "/categories/"
+  },
+  {
+    "legacy": "/categories/page/1/",
+    "canonical": "/categories/"
+  },
+  {
+    "legacy": "/categories/page/2/",
+    "canonical": "/categories/"
+  },
+  {
+    "legacy": "/categories/security/",
+    "canonical": "/categories/security/"
+  },
+  {
+    "legacy": "/categories/security/page/1/",
+    "canonical": "/categories/security/"
+  },
+  {
+    "legacy": "/categories/tutorial/",
+    "canonical": "/categories/tutorial/"
+  },
+  {
+    "legacy": "/categories/tutorial/page/1/",
+    "canonical": "/categories/tutorial/"
+  },
+  {
+    "legacy": "/categories/工具/",
+    "canonical": "/categories/工具/"
+  },
+  {
+    "legacy": "/categories/工具/page/1/",
+    "canonical": "/categories/工具/"
+  },
+  {
+    "legacy": "/categories/思考/",
+    "canonical": "/categories/思考/"
+  },
+  {
+    "legacy": "/categories/思考/page/1/",
+    "canonical": "/categories/思考/"
+  },
+  {
+    "legacy": "/categories/技术/",
+    "canonical": "/categories/技术/"
+  },
+  {
+    "legacy": "/categories/技术/page/1/",
+    "canonical": "/categories/技术/"
+  },
+  {
+    "legacy": "/categories/架构/",
+    "canonical": "/categories/架构/"
+  },
+  {
+    "legacy": "/categories/架构/page/1/",
+    "canonical": "/categories/架构/"
+  },
+  {
+    "legacy": "/categories/算法/",
+    "canonical": "/categories/算法/"
+  },
+  {
+    "legacy": "/categories/算法/page/1/",
+    "canonical": "/categories/算法/"
+  },
+  {
+    "legacy": "/categories/规范/",
+    "canonical": "/categories/规范/"
+  },
+  {
+    "legacy": "/categories/规范/page/1/",
+    "canonical": "/categories/规范/"
+  },
+  {
+    "legacy": "/",
+    "canonical": "/"
+  },
+  {
+    "legacy": "/page/1/",
+    "canonical": "/"
+  },
+  {
+    "legacy": "/page/2/",
+    "canonical": "/"
+  },
+  {
+    "legacy": "/page/about-hugo/",
+    "canonical": "/page/关于/"
+  },
+  {
+    "legacy": "/page/about-us/",
+    "canonical": "/page/关于/"
+  },
+  {
+    "legacy": "/page/archives/",
+    "canonical": "/page/archives/"
+  },
+  {
+    "legacy": "/page/contact/",
+    "canonical": "/page/关于/"
+  },
+  {
+    "legacy": "/page/",
+    "canonical": "/page/"
+  },
+  {
+    "legacy": "/page/page/1/",
+    "canonical": "/page/"
+  },
+  {
+    "legacy": "/page/projects/",
+    "canonical": "/page/projects/"
+  },
+  {
+    "legacy": "/page/search/",
+    "canonical": "/page/search/"
+  },
+  {
+    "legacy": "/page/关于/",
+    "canonical": "/page/关于/"
+  },
+  {
+    "legacy": "/page/友链/",
+    "canonical": "/page/友链/"
+  },
+  {
+    "legacy": "/post/2026-08-09-gemini-live-screen-off-hyperos/",
+    "canonical": "/post/2026-08-09-gemini-live-screen-off-hyperos/"
+  },
+  {
+    "legacy": "/post/2026-08-14-the-twelve-factor-app/",
+    "canonical": "/post/2026-08-14-the-twelve-factor-app/"
+  },
+  {
+    "legacy": "/post/2026-08-22-counting-sort/",
+    "canonical": "/post/2026-08-22-counting-sort/"
+  },
+  {
+    "legacy": "/post/Counting Sort/",
+    "canonical": "/post/2026-08-22-counting-sort/"
+  },
+  {
+    "legacy": "/post/FIDO完全指南/",
+    "canonical": "/post/fido介绍与其diy/"
+  },
+  {
+    "legacy": "/post/Gemini Live 锁屏继续对话/",
+    "canonical": "/post/2026-08-09-gemini-live-screen-off-hyperos/"
+  },
+  {
+    "legacy": "/post/HyperOS Gemini Live 后台运行/",
+    "canonical": "/post/2026-08-09-gemini-live-screen-off-hyperos/"
+  },
+  {
+    "legacy": "/post/Twelve-Factor App/",
+    "canonical": "/post/2026-08-14-the-twelve-factor-app/"
+  },
+  {
+    "legacy": "/post/fido介绍与其diy/",
+    "canonical": "/post/fido介绍与其diy/"
+  },
+  {
+    "legacy": "/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/",
+    "canonical": "/post/ghostty与dji麦克风的语音vibecoding实战--像karpathy一样持续对齐/"
+  },
+  {
+    "legacy": "/post/",
+    "canonical": "/post/"
+  },
+  {
+    "legacy": "/post/llm-agent时代的博客创作/",
+    "canonical": "/post/llm-agent时代的博客创作/"
+  },
+  {
+    "legacy": "/post/page/1/",
+    "canonical": "/post/"
+  },
+  {
+    "legacy": "/post/page/2/",
+    "canonical": "/post/"
+  },
+  {
+    "legacy": "/post/三资三化--人的私有化/",
+    "canonical": "/post/三资三化--人的私有化/"
+  },
+  {
+    "legacy": "/post/十二要素应用宣言/",
+    "canonical": "/post/2026-08-14-the-twelve-factor-app/"
+  },
+  {
+    "legacy": "/post/博客写作规范和标签体系指南/",
+    "canonical": "/post/博客写作规范和标签体系指南/"
+  },
+  {
+    "legacy": "/post/线性时间排序/",
+    "canonical": "/post/2026-08-22-counting-sort/"
+  },
+  {
+    "legacy": "/post/计数排序/",
+    "canonical": "/post/2026-08-22-counting-sort/"
+  },
+  {
+    "legacy": "/tags/adb/",
+    "canonical": "/tags/adb/"
+  },
+  {
+    "legacy": "/tags/adb/page/1/",
+    "canonical": "/tags/adb/"
+  },
+  {
+    "legacy": "/tags/agent/",
+    "canonical": "/tags/agent/"
+  },
+  {
+    "legacy": "/tags/agent/page/1/",
+    "canonical": "/tags/agent/"
+  },
+  {
+    "legacy": "/tags/ai-agent/",
+    "canonical": "/tags/ai-agent/"
+  },
+  {
+    "legacy": "/tags/ai-agent/page/1/",
+    "canonical": "/tags/ai-agent/"
+  },
+  {
+    "legacy": "/tags/algorithm/",
+    "canonical": "/tags/algorithm/"
+  },
+  {
+    "legacy": "/tags/algorithm/page/1/",
+    "canonical": "/tags/algorithm/"
+  },
+  {
+    "legacy": "/tags/android/",
+    "canonical": "/tags/android/"
+  },
+  {
+    "legacy": "/tags/android/page/1/",
+    "canonical": "/tags/android/"
+  },
+  {
+    "legacy": "/tags/architecture/",
+    "canonical": "/tags/architecture/"
+  },
+  {
+    "legacy": "/tags/architecture/page/1/",
+    "canonical": "/tags/architecture/"
+  },
+  {
+    "legacy": "/tags/best-practices/",
+    "canonical": "/tags/best-practices/"
+  },
+  {
+    "legacy": "/tags/best-practices/page/1/",
+    "canonical": "/tags/best-practices/"
+  },
+  {
+    "legacy": "/tags/claude-code/",
+    "canonical": "/tags/claude-code/"
+  },
+  {
+    "legacy": "/tags/claude-code/page/1/",
+    "canonical": "/tags/claude-code/"
+  },
+  {
+    "legacy": "/tags/cloud-native/",
+    "canonical": "/tags/cloud-native/"
+  },
+  {
+    "legacy": "/tags/cloud-native/page/1/",
+    "canonical": "/tags/cloud-native/"
+  },
+  {
+    "legacy": "/tags/counting-sort/",
+    "canonical": "/tags/counting-sort/"
+  },
+  {
+    "legacy": "/tags/counting-sort/page/1/",
+    "canonical": "/tags/counting-sort/"
+  },
+  {
+    "legacy": "/tags/data-structure/",
+    "canonical": "/tags/data-structure/"
+  },
+  {
+    "legacy": "/tags/data-structure/page/1/",
+    "canonical": "/tags/data-structure/"
+  },
+  {
+    "legacy": "/tags/devops/",
+    "canonical": "/tags/devops/"
+  },
+  {
+    "legacy": "/tags/devops/page/1/",
+    "canonical": "/tags/devops/"
+  },
+  {
+    "legacy": "/tags/diy/",
+    "canonical": "/tags/diy/"
+  },
+  {
+    "legacy": "/tags/diy/page/1/",
+    "canonical": "/tags/diy/"
+  },
+  {
+    "legacy": "/tags/fido2/",
+    "canonical": "/tags/fido2/"
+  },
+  {
+    "legacy": "/tags/fido2/page/1/",
+    "canonical": "/tags/fido2/"
+  },
+  {
+    "legacy": "/tags/gemini-live/",
+    "canonical": "/tags/gemini-live/"
+  },
+  {
+    "legacy": "/tags/gemini-live/page/1/",
+    "canonical": "/tags/gemini-live/"
+  },
+  {
+    "legacy": "/tags/gemini/",
+    "canonical": "/tags/gemini/"
+  },
+  {
+    "legacy": "/tags/gemini/page/1/",
+    "canonical": "/tags/gemini/"
+  },
+  {
+    "legacy": "/tags/ghostty/",
+    "canonical": "/tags/ghostty/"
+  },
+  {
+    "legacy": "/tags/ghostty/page/1/",
+    "canonical": "/tags/ghostty/"
+  },
+  {
+    "legacy": "/tags/go/",
+    "canonical": "/tags/go/"
+  },
+  {
+    "legacy": "/tags/go/page/1/",
+    "canonical": "/tags/go/"
+  },
+  {
+    "legacy": "/tags/gtd/",
+    "canonical": "/tags/gtd/"
+  },
+  {
+    "legacy": "/tags/gtd/page/1/",
+    "canonical": "/tags/gtd/"
+  },
+  {
+    "legacy": "/tags/hyperos/",
+    "canonical": "/tags/hyperos/"
+  },
+  {
+    "legacy": "/tags/hyperos/page/1/",
+    "canonical": "/tags/hyperos/"
+  },
+  {
+    "legacy": "/tags/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/java/",
+    "canonical": "/tags/java/"
+  },
+  {
+    "legacy": "/tags/java/page/1/",
+    "canonical": "/tags/java/"
+  },
+  {
+    "legacy": "/tags/karpathy/",
+    "canonical": "/tags/karpathy/"
+  },
+  {
+    "legacy": "/tags/karpathy/page/1/",
+    "canonical": "/tags/karpathy/"
+  },
+  {
+    "legacy": "/tags/leetcode/",
+    "canonical": "/tags/leetcode/"
+  },
+  {
+    "legacy": "/tags/leetcode/page/1/",
+    "canonical": "/tags/leetcode/"
+  },
+  {
+    "legacy": "/tags/llm/",
+    "canonical": "/tags/llm/"
+  },
+  {
+    "legacy": "/tags/llm/page/1/",
+    "canonical": "/tags/llm/"
+  },
+  {
+    "legacy": "/tags/macos/",
+    "canonical": "/tags/macos/"
+  },
+  {
+    "legacy": "/tags/macos/page/1/",
+    "canonical": "/tags/macos/"
+  },
+  {
+    "legacy": "/tags/microservices/",
+    "canonical": "/tags/microservices/"
+  },
+  {
+    "legacy": "/tags/microservices/page/1/",
+    "canonical": "/tags/microservices/"
+  },
+  {
+    "legacy": "/tags/page/1/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/10/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/11/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/2/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/3/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/4/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/5/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/6/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/7/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/8/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/page/9/",
+    "canonical": "/tags/"
+  },
+  {
+    "legacy": "/tags/passkeys/",
+    "canonical": "/tags/passkeys/"
+  },
+  {
+    "legacy": "/tags/passkeys/page/1/",
+    "canonical": "/tags/passkeys/"
+  },
+  {
+    "legacy": "/tags/python/",
+    "canonical": "/tags/python/"
+  },
+  {
+    "legacy": "/tags/python/page/1/",
+    "canonical": "/tags/python/"
+  },
+  {
+    "legacy": "/tags/saas/",
+    "canonical": "/tags/saas/"
+  },
+  {
+    "legacy": "/tags/saas/page/1/",
+    "canonical": "/tags/saas/"
+  },
+  {
+    "legacy": "/tags/sorting/",
+    "canonical": "/tags/sorting/"
+  },
+  {
+    "legacy": "/tags/sorting/page/1/",
+    "canonical": "/tags/sorting/"
+  },
+  {
+    "legacy": "/tags/speech-to-text/",
+    "canonical": "/tags/speech-to-text/"
+  },
+  {
+    "legacy": "/tags/speech-to-text/page/1/",
+    "canonical": "/tags/speech-to-text/"
+  },
+  {
+    "legacy": "/tags/standard/",
+    "canonical": "/tags/standard/"
+  },
+  {
+    "legacy": "/tags/standard/page/1/",
+    "canonical": "/tags/standard/"
+  },
+  {
+    "legacy": "/tags/tagging/",
+    "canonical": "/tags/tagging/"
+  },
+  {
+    "legacy": "/tags/tagging/page/1/",
+    "canonical": "/tags/tagging/"
+  },
+  {
+    "legacy": "/tags/troubleshooting/",
+    "canonical": "/tags/troubleshooting/"
+  },
+  {
+    "legacy": "/tags/troubleshooting/page/1/",
+    "canonical": "/tags/troubleshooting/"
+  },
+  {
+    "legacy": "/tags/tutorial/",
+    "canonical": "/tags/tutorial/"
+  },
+  {
+    "legacy": "/tags/tutorial/page/1/",
+    "canonical": "/tags/tutorial/"
+  },
+  {
+    "legacy": "/tags/twelve-factor/",
+    "canonical": "/tags/twelve-factor/"
+  },
+  {
+    "legacy": "/tags/twelve-factor/page/1/",
+    "canonical": "/tags/twelve-factor/"
+  },
+  {
+    "legacy": "/tags/vibecoding/",
+    "canonical": "/tags/vibecoding/"
+  },
+  {
+    "legacy": "/tags/vibecoding/page/1/",
+    "canonical": "/tags/vibecoding/"
+  },
+  {
+    "legacy": "/tags/webauthn/",
+    "canonical": "/tags/webauthn/"
+  },
+  {
+    "legacy": "/tags/webauthn/page/1/",
+    "canonical": "/tags/webauthn/"
+  },
+  {
+    "legacy": "/tags/workflow/",
+    "canonical": "/tags/workflow/"
+  },
+  {
+    "legacy": "/tags/workflow/page/1/",
+    "canonical": "/tags/workflow/"
+  },
+  {
+    "legacy": "/tags/个人品牌/",
+    "canonical": "/tags/个人品牌/"
+  },
+  {
+    "legacy": "/tags/个人品牌/page/1/",
+    "canonical": "/tags/个人品牌/"
+  },
+  {
+    "legacy": "/tags/人力资本/",
+    "canonical": "/tags/人力资本/"
+  },
+  {
+    "legacy": "/tags/人力资本/page/1/",
+    "canonical": "/tags/人力资本/"
+  },
+  {
+    "legacy": "/tags/人的资本化/",
+    "canonical": "/tags/人的资本化/"
+  },
+  {
+    "legacy": "/tags/人的资本化/page/1/",
+    "canonical": "/tags/人的资本化/"
+  },
+  {
+    "legacy": "/tags/创作/",
+    "canonical": "/tags/创作/"
+  },
+  {
+    "legacy": "/tags/创作/page/1/",
+    "canonical": "/tags/创作/"
+  },
+  {
+    "legacy": "/tags/判断力/",
+    "canonical": "/tags/判断力/"
+  },
+  {
+    "legacy": "/tags/判断力/page/1/",
+    "canonical": "/tags/判断力/"
+  },
+  {
+    "legacy": "/tags/博客/",
+    "canonical": "/tags/博客/"
+  },
+  {
+    "legacy": "/tags/博客/page/1/",
+    "canonical": "/tags/博客/"
+  },
+  {
+    "legacy": "/tags/文化资本/",
+    "canonical": "/tags/文化资本/"
+  },
+  {
+    "legacy": "/tags/文化资本/page/1/",
+    "canonical": "/tags/文化资本/"
+  },
+  {
+    "legacy": "/tags/知识变现/",
+    "canonical": "/tags/知识变现/"
+  },
+  {
+    "legacy": "/tags/知识变现/page/1/",
+    "canonical": "/tags/知识变现/"
+  },
+  {
+    "legacy": "/tags/硬件安全/",
+    "canonical": "/tags/硬件安全/"
+  },
+  {
+    "legacy": "/tags/硬件安全/page/1/",
+    "canonical": "/tags/硬件安全/"
+  },
+  {
+    "legacy": "/tags/社会资本/",
+    "canonical": "/tags/社会资本/"
+  },
+  {
+    "legacy": "/tags/社会资本/page/1/",
+    "canonical": "/tags/社会资本/"
+  },
+  {
+    "legacy": "/tags/认证/",
+    "canonical": "/tags/认证/"
+  },
+  {
+    "legacy": "/tags/认证/page/1/",
+    "canonical": "/tags/认证/"
+  },
+  {
+    "legacy": "/tags/项目/",
+    "canonical": "/tags/项目/"
+  },
+  {
+    "legacy": "/tags/项目/page/1/",
+    "canonical": "/tags/项目/"
+  }
+]

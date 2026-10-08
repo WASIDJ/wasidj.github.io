@@ -1,1 +1,4 @@
 User-agent: *
+Allow: /
+Disallow: /panes/
+Sitemap: https://www.jeffkafka.top/sitemap.xml
